@@ -5,6 +5,7 @@ import {
   Button,
   ButtonGroup,
   Container,
+  Divider,
   Grid,
   Group,
   Image,
@@ -25,7 +26,7 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
         style={{
           minHeight: "100vh",
           background:
-            "linear-gradient(to bottom,var(--mantine-color-brand-1),var(--mantine-color-pink-0))",
+            "linear-gradient(to bottom,var(--mantine-color-blue-1),var(--mantine-color-pink-1))",
         }}
       >
         <Container size="lg">
@@ -90,6 +91,12 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
             </Grid.Col>
           </Grid>
         </Container>
+
+        <Divider
+          style={{
+            borderColor: "rgba(0,0,0,.1)",
+          }}
+        />
 
         {children}
       </section>
