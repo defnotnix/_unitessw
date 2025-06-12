@@ -23,6 +23,7 @@ import {
   ExclamationMark,
   Hash,
   Info,
+  InfoIcon,
 } from "@phosphor-icons/react";
 import { FormHandler } from "@vframework/core";
 import { PropsWithChildren, useEffect, useState } from "react";
@@ -49,13 +50,21 @@ import { jwtDecode } from "jwt-decode";
 import { useSearchParams } from "next/navigation";
 
 export function ModuleOnboarding() {
-  const [current, setCurrent] = useState(0);
+  const [current, sC] = useState(0);
 
   const queryParams: any = useSearchParams();
 
+  function setCurrent(value: number) {
+    sC(value);
+    sessionStorage.setItem("ssw_onboarding", value.toString());
+  }
+
   useEffect(() => {
-    if (queryParams.get("step")) {
-      Number(setCurrent(queryParams.get("step")));
+    if (queryParams.get("step") || sessionStorage.getItem("ssw_onboarding")) {
+      setCurrent(
+        Number(sessionStorage.getItem("ssw_onboarding")) |
+          Number(queryParams.get("step"))
+      );
     }
   }, []);
 
@@ -87,9 +96,30 @@ export function ModuleOnboarding() {
           flexDirection: "column",
           justifyContent: "space-between",
           overflowY: "scroll",
+          overflowX: "hidden",
         }}
       >
-        <Group justify="space-between" mb="xl">
+        <Group gap="xs" justify="center">
+          <Image
+            src={imgLogo.src}
+            h={24}
+            w={32}
+            style={{
+              objectFit: "contain",
+            }}
+          />
+          <Text size="sm" fw={600}>
+            UNITE SSW
+          </Text>
+        </Group>
+
+        <Group justify="space-between" hiddenFrom="lg">
+          <Text size="xs" c="gray.0">
+            Authorized to provide the services listed.
+          </Text>
+        </Group>
+
+        <Group justify="space-between" mb="xl" visibleFrom="lg">
           <Text size="xs">
             <b> UNITE SSW</b>
             <span
@@ -194,6 +224,7 @@ export function ModuleOnboarding() {
         <Container p="md">
           <Grid gutter={"sm"}>
             <Grid.Col
+              visibleFrom="lg"
               span={{
                 base: 12,
                 lg: 5,
@@ -250,7 +281,7 @@ export function ModuleOnboarding() {
                     {steps.map((_: string, index: number) => {
                       return (
                         <Paper
-                        radius="lg"
+                          radius="lg"
                           opacity={current >= index ? 1 : 0.5}
                           key={index}
                           p="md"
@@ -284,7 +315,7 @@ export function ModuleOnboarding() {
                   <Paper p="lg" radius="lg" bg="dark.9">
                     <Group gap="md" wrap="nowrap">
                       <ThemeIcon size="md">
-                        <Info />
+                        <InfoIcon />
                       </ThemeIcon>
                       <Text size="xs" c="gray.0">
                         You are in the process of building a comprehensive

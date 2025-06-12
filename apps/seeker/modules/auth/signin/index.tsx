@@ -11,6 +11,7 @@ import {
   Button,
   Center,
   Checkbox,
+  CheckIcon,
   Container,
   Divider,
   Group,
@@ -32,14 +33,10 @@ import { triggerNotification } from "@vframework/ui";
 
 //icons
 import {
-  AppleLogo,
-  Atom,
-  GoogleLogo,
-  Info,
-  X,
-  Warning,
-  CaretDown,
-  Check,
+  CaretDownIcon,
+  InfoIcon,
+  WarningIcon,
+  XIcon,
 } from "@phosphor-icons/react";
 
 //styles
@@ -48,9 +45,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 
 //api
-import { apiLogin } from "./auth.api";
+import { apiLogin, googleLogin } from "./auth.api";
 
 import { jwtDecode } from "jwt-decode";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+import { useLanguage } from "@/layouts/app/app.context";
 
 //components
 
@@ -64,7 +63,15 @@ export function ModuleAuthSignIn() {
   const Router = useRouter();
   const Params = useSearchParams();
 
+  const login = useGoogleLogin({
+    onSuccess: (tokenResponse) => console.log(tokenResponse),
+  });
+
+  const [processingGoogle, setProcessingGoogle] = useState(false);
+
   // * CONTEXT
+
+  const { language, setLanguage } = useLanguage();
 
   // * STATE
 
@@ -89,6 +96,27 @@ export function ModuleAuthSignIn() {
 
   const handleRememberMe = () => {};
 
+  function handleRedirect(res: any) {
+    const decoded: any = jwtDecode(res.data?.access_token);
+    console.log(decoded);
+
+    if (decoded?.is_applicant == "True" && decoded?.is_completed == "True") {
+      Router.push("/applicant");
+    } else if (decoded?.is_step5 == "True") {
+      Router.push("/onboarding?step=5");
+    } else if (decoded?.is_step4 == "True") {
+      Router.push("/onboarding?step=4");
+    } else if (decoded?.is_step3 == "True") {
+      Router.push("/onboarding?step=3");
+    } else if (decoded?.is_step2 == "True") {
+      Router.push("/onboarding?step=2");
+    } else if (decoded?.is_step1 == "True") {
+      Router.push("/onboarding?step=1");
+    } else {
+      Router.push("/onboarding");
+    }
+  }
+
   const mutation = useMutation({
     mutationFn: async () => {
       form.setFieldValue("fLoading", true);
@@ -106,28 +134,7 @@ export function ModuleAuthSignIn() {
       form.setFieldValue("fLoading", false);
       triggerNotification.auth.isSuccess({});
 
-      const decoded: any = jwtDecode(res.data?.access_token);
-      console.log(decoded);
-
-      if (decoded?.is_adminn) {
-        Router.push("/admin");
-      }
-
-      if (decoded?.is_applicant == "True" && decoded?.is_completed == "True") {
-        Router.push("/applicant");
-      } else if (decoded?.has_submitted_form == "True") {
-        Router.push("/profile");
-      } else if (decoded?.is_step1 == "True") {
-        Router.push("/onboarding?step=1");
-      } else if (decoded?.is_step2 == "True") {
-        Router.push("/onboarding?step=2");
-      } else if (decoded?.is_step3 == "True") {
-        Router.push("/onboarding?step=3");
-      } else if (decoded?.is_step4 == "True") {
-        Router.push("/onboarding?step=4");
-      } else if (decoded?.is_step5 == "True") {
-        Router.push("/onboarding?step=5");
-      }
+      handleRedirect(res);
     },
     onError: (err: any) => {
       const { response } = err.object;
@@ -147,13 +154,41 @@ export function ModuleAuthSignIn() {
     }
   }
 
+  async function onGoogleSuccess(tokenResponse: any) {
+    triggerNotification.auth.isLoading({});
+    setProcessingGoogle(true);
+    if (tokenResponse?.credential) {
+      console.log(tokenResponse);
+      await googleLogin({
+        token: tokenResponse.credential,
+      })
+        .then((res) => {
+          triggerNotification.auth.isSuccess({});
+          setCompleted(true);
+
+          handleRedirect(res);
+          setProcessingGoogle(false);
+        })
+        .catch((err) => {
+          triggerNotification.auth.isError({
+            message: "Linked account is not for this portal!",
+          });
+        });
+    } else {
+      setProcessingGoogle(false);
+      triggerNotification.auth.isError({
+        message: "Google Login Failed!",
+      });
+    }
+  }
+
   // * COMPONENTS
 
   const RenderAlert = () => {
     switch (errorType) {
       case "info":
         return (
-          <Alert py="xs" color="blue" icon={<Info weight="bold" />}>
+          <Alert py="xs" color="blue" icon={<InfoIcon weight="bold" />}>
             <Text size="xs" c="blue.8" fw={500} py="2">
               Server under Maintainance, Try Later!
             </Text>
@@ -161,7 +196,7 @@ export function ModuleAuthSignIn() {
         );
       case "pending":
         return (
-          <Alert py="xs" color="indigo" icon={<Info weight="bold" />}>
+          <Alert py="xs" color="indigo" icon={<InfoIcon weight="bold" />}>
             <Text size="xs" c="indigo.8" fw={500} py="2">
               Verification Pending, Try Later!
             </Text>
@@ -169,7 +204,7 @@ export function ModuleAuthSignIn() {
         );
       case "blocked":
         return (
-          <Alert py="xs" color="red" icon={<X weight="bold" />}>
+          <Alert py="xs" color="red" icon={<XIcon weight="bold" />}>
             <Text size="xs" c="red.8" fw={500} py="2">
               Account Blocked! Contact Admin
             </Text>
@@ -177,7 +212,7 @@ export function ModuleAuthSignIn() {
         );
       case "nan":
         return (
-          <Alert py="xs" color="red" icon={<X weight="bold" />}>
+          <Alert py="xs" color="red" icon={<XIcon weight="bold" />}>
             <Text size="xs" c="red.8" fw={500} py="2">
               Cannot Reach Server, Try Again!
             </Text>
@@ -185,7 +220,7 @@ export function ModuleAuthSignIn() {
         );
       default:
         return (
-          <Alert py="xs" color="red" icon={<Warning weight="bold" />}>
+          <Alert py="xs" color="red" icon={<WarningIcon weight="bold" />}>
             <Text size="xs" c="red.8" fw={500} py="2">
               Invalid Credentials. Try Again!
             </Text>
@@ -196,91 +231,66 @@ export function ModuleAuthSignIn() {
 
   // * ANIMATIONS
 
-  if (completed) {
-    return (
-      <>
-        <div>
-          <Stack gap="sm">
-            <div>
-              <Text size="xl" lh="lg" ta="center">
-                Account Created!
-                <br />
-                Please give me a moment.
-              </Text>
-            </div>
-          </Stack>
-
-          <Group justify="center" mt="xl">
-            <Loader size="xs" />{" "}
-            <Text size="xs" ta="center">
-              Sending a validation OTP ...
-            </Text>
-          </Group>
-        </div>
-        <Group gap={0} justify="space-between" px="lg">
-          <Text size="11" lh={5} fw={900}>
-            <span
-              style={{
-                opacity: 0.6,
-              }}
-            >
-              Based on
-            </span>{" "}
-            vFramework
-          </Text>
-          <Menu>
-            <Menu.Target>
-              <UnstyledButton>
-                <Badge variant="light" size="lg">
-                  <Group gap={3}>
-                    <Text fw={500} size="11" lh={5} tt="none">
-                      English (United States)
-                    </Text>
-                    <CaretDown size="11" />
-                  </Group>
-                </Badge>
-              </UnstyledButton>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item leftSection={<Check />}>
-                <Text size="xs">English (United States)</Text>
-              </Menu.Item>
-              <Menu.Item>
-                <Text size="xs">Japanese ( 日本語 )</Text>
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
-        </Group>
-      </>
-    );
-  }
-
   return (
     <>
       <Stack gap="sm">
         <div>
-          <Text size="2rem" lh="2.3rem" ta="center">
-            {Params.get("type") == "newaccount"
-              ? "Welcome Back!"
-              : "Welcome Back!"}
-            <br />
-            <i> Sign In </i>to{" "}
-            {Params.get("type") == "newaccount"
-              ? "start onboarding process."
-              : "get started."}
+          <Text size="2rem" lh="2.3rem" ta="center" visibleFrom="lg">
+            {language === "en" ? (
+              <>
+                Welcome Back!
+                <br />
+                <i> Sign In </i> to{" "}
+                {Params.get("type") == "newaccount"
+                  ? "start onboarding process."
+                  : "get started."}
+              </>
+            ) : (
+              <>
+                おかえりなさい！
+                <br />
+                <i> サインイン </i>して{" "}
+                {Params.get("type") == "newaccount"
+                  ? "オンボーディングを開始しましょう。"
+                  : "始めましょう。"}
+              </>
+            )}
+          </Text>
+
+          <Text size="1.5rem" lh="1.8rem" ta="center" hiddenFrom="lg" mt="xl">
+            {language === "en" ? (
+              <>
+                Welcome Back!
+                <br />
+                <i> Sign In </i> to{" "}
+                {Params.get("type") == "newaccount"
+                  ? "start onboarding process."
+                  : "get started."}
+              </>
+            ) : (
+              <>
+                おかえりなさい！
+                <br />
+                <i> サインイン </i>して{" "}
+                {Params.get("type") == "newaccount"
+                  ? "オンボーディングを開始しましょう。"
+                  : "始めましょう。"}
+              </>
+            )}
           </Text>
         </div>
 
         <SimpleGrid my="md" spacing="xs" cols={{ base: 1, lg: 1 }}>
-          <Button
-            radius="lg"
-            size="lg"
-            variant="light"
-            leftSection={<GoogleLogo weight="bold" />}
-            disabled={form.getValues()?.fLoading}
-          >
-            Sign In with Google
-          </Button>
+          <GoogleLogin
+            shape="circle"
+            onSuccess={(credentialResponse) => {
+              console.log(credentialResponse);
+              onGoogleSuccess(credentialResponse);
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+          />
         </SimpleGrid>
 
         <Divider label="or continue with" />
@@ -288,7 +298,7 @@ export function ModuleAuthSignIn() {
         <TextInput
           radius="lg"
           size="lg"
-          label="Email"
+          label={language == "en" ? "Email" : "メールアドレス"}
           placeholder="x@example.com"
           disabled={form.getValues()?.fLoading}
           {...form.getInputProps("email")}
@@ -297,7 +307,7 @@ export function ModuleAuthSignIn() {
         <PasswordInput
           radius="lg"
           size="lg"
-          label="Password"
+          label={language == "en" ? "Password" : "パスワード"}
           disabled={form.getValues()?.fLoading}
           {...form.getInputProps("password")}
         />
@@ -310,7 +320,7 @@ export function ModuleAuthSignIn() {
             label="Remember me"
           />
           <Anchor size="xs" c="dark" fw={600}>
-            Forgot Password?
+            {language == "en" ? "Forgot Password?" : "パス"}
           </Anchor>
         </Group>
 
@@ -327,7 +337,7 @@ export function ModuleAuthSignIn() {
               }
             }}
           >
-            Sign In
+            {language == "en" ? "Sign In" : "サインイン"}
           </Button>
           <Button
             radius="lg"
@@ -337,7 +347,9 @@ export function ModuleAuthSignIn() {
               Router.push("/signup");
             }}
           >
-            Don't have an account? Sign Up Here
+            {language == "en"
+              ? "Don't have an account? Sign Up Here"
+              : "アカウントをお持ちでない場合は、こちらからサインアップしてください。"}
           </Button>
         </Stack>
       </Stack>
@@ -349,9 +361,10 @@ export function ModuleAuthSignIn() {
               opacity: 0.6,
             }}
           >
-            Based on
+            {language == "en"
+              ? "  Based on vFramework"
+              : " vFramework によるベース"}
           </span>{" "}
-          vFramework
         </Text>
         <Menu>
           <Menu.Target>
@@ -361,16 +374,25 @@ export function ModuleAuthSignIn() {
                   <Text fw={500} size="11" lh={5} tt="none">
                     English (United States)
                   </Text>
-                  <CaretDown size="11" />
+                  <CaretDownIcon size="11" />
                 </Group>
               </Badge>
             </UnstyledButton>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item leftSection={<Check />}>
+            <Menu.Item
+              leftSection={<CheckIcon />}
+              onClick={() => {
+                setLanguage("en");
+              }}
+            >
               <Text size="xs">English (United States)</Text>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item
+              onClick={() => {
+                setLanguage("jp");
+              }}
+            >
               <Text size="xs">Japanese ( 日本語 )</Text>
             </Menu.Item>
           </Menu.Dropdown>

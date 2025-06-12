@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  AspectRatio,
   Badge,
   Button,
   Container,
@@ -11,6 +12,7 @@ import {
   Paper,
   SimpleGrid,
   Stack,
+  Table,
   Text,
   Timeline,
 } from "@mantine/core";
@@ -23,16 +25,25 @@ import { BookIcon, CheckIcon } from "@phosphor-icons/react";
 export function ModuleApplicant() {
   const data: any = {
     name: "Ram Prasad Shrestha",
+    name_jp: "ラム・プラサード・シュレスタ",
     email: "ram@example.com",
     phone: "021-7250834",
     location: "Lalitpur, Nepal",
+    location_jp: "ネパール、ラリトプル",
     job: "Hospitality",
+    job_jp: "ホスピタリティ",
     gender: "Male",
+    gender_jp: "男性",
     age: "26",
+    age_jp: "26歳",
     dob: "26 February 1998",
+    dob_jp: "1998年2月26日",
     height: "161cm",
+    height_jp: "161cm",
     weight: "76kg",
+    weight_jp: "76kg",
     marital: "Married",
+    marital_jp: "既婚",
   };
 
   const personal = [
@@ -79,6 +90,72 @@ export function ModuleApplicant() {
     { label: "Marital Status", key: "marital" },
   ];
 
+  const academics = [
+    {
+      index: 1,
+      year_range: "1975-1978",
+      degree: "Diploma in Caregiving",
+      institution: "Tribhuvan University, Nepal.",
+    },
+    {
+      index: 2,
+      year_range: "1972-1975",
+      degree: "Diploma in Hotel Management",
+      institution: "Kathmandu University, Nepal.",
+    },
+    {
+      index: 3,
+      year_range: "1992-1995",
+      degree: "Bachelors in Education",
+      institution: "Nepal Academy of Tourism and Hotel Management, Nepal.",
+    },
+    {
+      index: 4,
+      year_range: "1979-1982",
+      degree: "Bachelors in Business Studies",
+      institution: "Tribhuvan University, Nepal.",
+    },
+    {
+      index: 5,
+      year_range: "2017-2019",
+      degree: "Certificate in Elderly Care",
+      institution: "Nepal Academy of Tourism and Hotel Management, Nepal.",
+    },
+  ];
+
+  const work = [
+    {
+      index: 1,
+      year_range: "1999-2000",
+      company: "Grande International Hospital",
+      location: "Kathmandu, Nepal.",
+    },
+    {
+      index: 2,
+      year_range: "1970-1973",
+      company: "Nepal Japan Care Center",
+      location: "Kathmandu, Nepal.",
+    },
+    {
+      index: 3,
+      year_range: "1972-1973",
+      company: "Soaltee Crowne Plaza",
+      location: "Kathmandu, Nepal.",
+    },
+    {
+      index: 4,
+      year_range: "2023-2024",
+      company: "Grande International Hospital",
+      location: "Pokhara, Nepal.",
+    },
+    {
+      index: 5,
+      year_range: "2009-2013",
+      company: "Void Studio",
+      location: "Bhaktapur, Nepal.",
+    },
+  ];
+
   return (
     <>
       <section
@@ -98,7 +175,8 @@ export function ModuleApplicant() {
                   objectFit: "contain",
                 }}
               />
-              <Text size="xs" c="white" fw={600}>
+
+              <Text size="xs" c="white" fw={600} visibleFrom="lg">
                 UNITE SSW{" "}
                 <span
                   style={{
@@ -120,8 +198,8 @@ export function ModuleApplicant() {
           </Group>
 
           <Group justify="space-between" mb="xl">
-            <Text size="xl" c="gray.0">
-              Applicant CV.{" "}
+            <Text size="xl" c="gray.0" visibleFrom="lg">
+              Applicant CV. <br />
               <span
                 style={{
                   opacity: 0.5,
@@ -129,6 +207,9 @@ export function ModuleApplicant() {
               >
                 This is what you can expect seekers to seee.
               </span>
+            </Text>
+            <Text size="md" c="gray.0" hiddenFrom="lg">
+              Applicant CV. <br />
             </Text>
             <Badge
               radius="sm"
@@ -163,6 +244,16 @@ export function ModuleApplicant() {
                     }
                   />
 
+                  <AspectRatio ratio={16 / 9} mt={-16}>
+                    <iframe
+                      src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"
+                      title="YouTube video player"
+                      style={{ border: 0 }}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </AspectRatio>
+
                   <div>
                     <Text size="sm" fw={800}>
                       PROFILE
@@ -179,6 +270,11 @@ export function ModuleApplicant() {
                       ))}
                     </SimpleGrid>
                   </div>
+
+                  <Text size="xs" opacity={0.5}>
+                    This is an auto-generated CV under UNITE SSW. Any misuse of
+                    this information is strictly prohibited.
+                  </Text>
                 </Stack>
               </Grid.Col>
               <Grid.Col span={{ base: 12, lg: 8 }} p="xl">
@@ -197,77 +293,59 @@ export function ModuleApplicant() {
                 <Divider my="md" />
 
                 <Text size="sm" fw={800}>
-                  Work History
-                </Text>
-
-                <Timeline active={1} bulletSize={24} lineWidth={2} mt="md">
-                  <Timeline.Item
-                    fs="xs"
-                    bullet={<BookIcon size={12} />}
-                    title="Bachelors in Hospitality Management"
-                  >
-                    <Group justify="space-between">
-                      <Text c="dimmed" size="sm">
-                        Madhyanagar University, Nepal
-                      </Text>
-                      <Text size="xs" mt={4}>
-                        2020-2025
-                      </Text>
-                    </Group>
-                  </Timeline.Item>
-                  <Timeline.Item
-                    fs="xs"
-                    bullet={<BookIcon size={12} />}
-                    title="Bachelors in Hospitality Management"
-                  >
-                    <Group justify="space-between">
-                      <Text c="dimmed" size="sm">
-                        Madhyanagar University, Nepal
-                      </Text>
-                      <Text size="xs" mt={4}>
-                        2020-2025
-                      </Text>
-                    </Group>
-                  </Timeline.Item>
-                </Timeline>
-
-                <Divider my="md" />
-                <Text size="sm" fw={800}>
                   Academics
                 </Text>
 
-                <Timeline active={1} bulletSize={24} lineWidth={2} mt="md">
-                  <Timeline.Item
-                    fs="xs"
-                    bullet={<BookIcon size={12} />}
-                    title="Bachelors in Hospitality Management"
-                  >
-                    <Text size="sm">Salary : NPR 24,000/month</Text>
-                    <Group justify="space-between">
-                      <Text c="dimmed" size="sm">
-                        Madhyanagar University, Nepal
-                      </Text>
-                      <Text size="xs" mt={4}>
-                        2020-2025
-                      </Text>
-                    </Group>
-                  </Timeline.Item>
-                  <Timeline.Item
-                    fs="xs"
-                    bullet={<BookIcon size={12} />}
-                    title="Bachelors in Hospitality Management"
-                  >
-                    <Text size="sm">Salary : NPR 24,000/month</Text>
-                    <Group justify="space-between">
-                      <Text c="dimmed" size="sm">
-                        Madhyanagar University, Nepal
-                      </Text>
-                      <Text size="xs" mt={4}>
-                        2020-2025
-                      </Text>
-                    </Group>
-                  </Timeline.Item>
-                </Timeline>
+                <Table withColumnBorders striped withTableBorder mt="sm">
+                  <Table.Thead>
+                    <Table.Tr>
+                      <Table.Th w={50}>#</Table.Th>
+                      <Table.Th w={120}>Year</Table.Th>
+                      <Table.Th w={250}>Institute</Table.Th>
+                      <Table.Th>Location</Table.Th>
+                    </Table.Tr>
+                  </Table.Thead>
+                  <Table.Tbody>
+                    {academics.map((item, index) => (
+                      <Table.Tr key={index}>
+                        <Table.Td>{item.index}</Table.Td>
+                        <Table.Td>{item.year_range}</Table.Td>
+                        <Table.Td>
+                          <b>{item.degree}</b>
+                        </Table.Td>
+                        <Table.Td>{item.institution}</Table.Td>
+                      </Table.Tr>
+                    ))}
+                  </Table.Tbody>
+                </Table>
+
+                <Divider my="md" />
+                <Text size="sm" fw={800}>
+                  Work History
+                </Text>
+
+                <Table withColumnBorders striped withTableBorder mt="sm">
+                  <Table.Thead>
+                    <Table.Tr>
+                      <Table.Th w={50}>#</Table.Th>
+                      <Table.Th w={120}>Year</Table.Th>
+                      <Table.Th w={300}>Organization</Table.Th>
+                      <Table.Th>Salary</Table.Th>
+                    </Table.Tr>
+                  </Table.Thead>
+                  <Table.Tbody>
+                    {work.map((item, index) => (
+                      <Table.Tr key={index}>
+                        <Table.Td>{item.index}</Table.Td>
+                        <Table.Td>{item.year_range}</Table.Td>
+                        <Table.Td>
+                          <b>{item.company}</b>
+                        </Table.Td>
+                        <Table.Td>{item.location}</Table.Td>
+                      </Table.Tr>
+                    ))}
+                  </Table.Tbody>
+                </Table>
 
                 <Divider my="md" />
 
@@ -275,7 +353,7 @@ export function ModuleApplicant() {
                   Medical Details
                 </Text>
 
-                <SimpleGrid cols={3} spacing="xs" mt="md">
+                <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="xs" mt="md">
                   <div>
                     <Text size="sm" fw={600} my="xs" c="brand.6">
                       Optical Characteristics <br />
@@ -360,6 +438,30 @@ export function ModuleApplicant() {
                     </Text>
                   </Group>
                   <Text size="sm">Silver Filler + Braces</Text>
+                </SimpleGrid>
+
+                <SimpleGrid cols={2} spacing="xs" mt="md">
+                  <Group>
+                    <Text size="sm" fw={800}>
+                      2.
+                    </Text>
+                    <Text size="sm" fw={600}>
+                      Upper Right Central Incisor (下右中切歯)
+                    </Text>
+                  </Group>
+                  <Text size="sm">Braces</Text>
+                </SimpleGrid>
+
+                <SimpleGrid cols={2} spacing="xs" mt="md">
+                  <Group>
+                    <Text size="sm" fw={800}>
+                      4.
+                    </Text>
+                    <Text size="sm" fw={600}>
+                      Front Right Central Incisor (下右中切歯)
+                    </Text>
+                  </Group>
+                  <Text size="sm">Metal Cap</Text>
                 </SimpleGrid>
               </Grid.Col>
             </Grid>

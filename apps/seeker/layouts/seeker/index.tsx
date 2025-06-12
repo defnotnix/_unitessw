@@ -18,15 +18,19 @@ import { PropsWithChildren } from "react";
 //assets
 import imgLogo from "@/assets/img/sswmini.png";
 import { DoorOpenIcon } from "@phosphor-icons/react";
+import { useLanguage } from "../app/app.context";
+import { useRouter } from "next/navigation";
 
 export function LayoutSeeker({ children }: PropsWithChildren) {
+  const { language, setLanguage } = useLanguage();
+  const Router = useRouter();
+
   return (
     <>
       <section
         style={{
           minHeight: "100vh",
-          background:
-            "linear-gradient(to bottom,var(--mantine-color-blue-1),var(--mantine-color-pink-1))",
+          background: "var(--mantine-color-gray-2)",
         }}
       >
         <Container size="lg">
@@ -49,7 +53,9 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
                         opacity: 0.5,
                       }}
                     >
-                      | SEEKER PORTAL
+                      {language === "en"
+                        ? "| SEEKER PORTAL"
+                        : "| 求職者ポータル"}
                     </span>
                   </Text>
                 </Group>
@@ -57,20 +63,33 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
             </Grid.Col>
             <Grid.Col span={{ base: 12, lg: 6 }}>
               <Group justify="center" gap={0}>
-                <Button size="xs" variant="light">
-                  Home
+                <Button
+                  size="xs"
+                  variant="light"
+                  onClick={() => {
+                    Router.push("/home");
+                  }}
+                >
+                  {language === "en" ? "Home" : "ホーム"}
+                </Button>
+                <Button
+                  size="xs"
+                  variant="subtle"
+                  c="dark.2"
+                  onClick={() => {
+                    Router.push("/applicants");
+                  }}
+                >
+                  {language === "en" ? "Browse Employees" : "従業員を閲覧"}
+                </Button>
+                {/* <Button size="xs" variant="subtle" c="dark.2">
+                  {language === "en" ? "Booked Candidates" : "予約済み候補者"}
                 </Button>
                 <Button size="xs" variant="subtle" c="dark.2">
-                  Browse Employees
-                </Button>
+                  {language === "en" ? "Hired Candidates" : "採用済み候補者"}
+                </Button> */}
                 <Button size="xs" variant="subtle" c="dark.2">
-                  Booked Candidates
-                </Button>
-                <Button size="xs" variant="subtle" c="dark.2">
-                  Hired Candidates
-                </Button>
-                <Button size="xs" variant="subtle" c="dark.2">
-                  Contact
+                  {language === "en" ? "Contact" : "お問い合わせ"}
                 </Button>
               </Group>
             </Grid.Col>
@@ -78,8 +97,18 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
             <Grid.Col span={{ base: 12, lg: 3 }}>
               <Group justify="flex-end" gap="xs">
                 <ButtonGroup>
-                  <Button size="xs">EN</Button>
-                  <Button size="xs" variant="light">
+                  <Button
+                    size="xs"
+                    variant={language == "en" ? undefined : "light"}
+                    onClick={() => setLanguage("en")}
+                  >
+                    EN
+                  </Button>
+                  <Button
+                    size="xs"
+                    variant={language == "jp" ? undefined : "light"}
+                    onClick={() => setLanguage("jp")}
+                  >
                     JP
                   </Button>
                 </ButtonGroup>

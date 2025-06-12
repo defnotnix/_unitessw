@@ -11,6 +11,7 @@ import {
   Button,
   Center,
   Checkbox,
+  CheckIcon,
   Container,
   Divider,
   Group,
@@ -32,14 +33,10 @@ import { triggerNotification } from "@vframework/ui";
 
 //icons
 import {
-  AppleLogo,
-  Atom,
-  GoogleLogo,
-  Info,
-  X,
-  Warning,
-  CaretDown,
-  Check,
+  CaretDownIcon,
+  InfoIcon,
+  WarningIcon,
+  XIcon,
 } from "@phosphor-icons/react";
 
 //styles
@@ -52,6 +49,7 @@ import { apiLogin, googleLogin } from "./auth.api";
 
 import { jwtDecode } from "jwt-decode";
 import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+import { useLanguage } from "@/layouts/app/app.context";
 
 //components
 
@@ -72,6 +70,8 @@ export function ModuleAuthSignIn() {
   const [processingGoogle, setProcessingGoogle] = useState(false);
 
   // * CONTEXT
+
+  const { language, setLanguage } = useLanguage();
 
   // * STATE
 
@@ -104,16 +104,22 @@ export function ModuleAuthSignIn() {
       Router.push("/applicant");
     } else if (decoded?.is_step5 == "True") {
       Router.push("/onboarding?step=5");
+      sessionStorage.setItem("ssw_onboarding", "5");
     } else if (decoded?.is_step4 == "True") {
       Router.push("/onboarding?step=4");
+      sessionStorage.setItem("ssw_onboarding", "4");
     } else if (decoded?.is_step3 == "True") {
       Router.push("/onboarding?step=3");
+      sessionStorage.setItem("ssw_onboarding", "3");
     } else if (decoded?.is_step2 == "True") {
       Router.push("/onboarding?step=2");
+      sessionStorage.setItem("ssw_onboarding", "2");
     } else if (decoded?.is_step1 == "True") {
       Router.push("/onboarding?step=1");
+      sessionStorage.setItem("ssw_onboarding", "1");
     } else {
       Router.push("/onboarding");
+      sessionStorage.setItem("ssw_onboarding", "0");
     }
   }
 
@@ -140,11 +146,23 @@ export function ModuleAuthSignIn() {
       const { response } = err.object;
 
       console.log("ERROR", response);
-      setErrorType(response?.data?.type || "nan");
-      form.setFieldValue("fLoading", false);
-      triggerNotification.auth.isError({
-        message: err.message || "Cannot Reach Server, Try Again!",
-      });
+      if (
+        response.data.message ==
+        "This Account Has Not Been Verified with OTP. Please Proceed to OTP Verification."
+      ) {
+        triggerNotification.auth.isInfo({
+          message:
+            "You have not completed the OTP Step. Proceeding to OTP Verification.",
+        });
+
+        Router.push("/signup-verify?id=" + form.getValues()?.email);
+      } else {
+        setErrorType(response?.data?.type || "nan");
+        form.setFieldValue("fLoading", false);
+        triggerNotification.auth.isError({
+          message: err.message || "Cannot Reach Server, Try Again!",
+        });
+      }
     },
   });
 
@@ -188,7 +206,7 @@ export function ModuleAuthSignIn() {
     switch (errorType) {
       case "info":
         return (
-          <Alert py="xs" color="blue" icon={<Info weight="bold" />}>
+          <Alert py="xs" color="blue" icon={<InfoIcon weight="bold" />}>
             <Text size="xs" c="blue.8" fw={500} py="2">
               Server under Maintainance, Try Later!
             </Text>
@@ -196,7 +214,7 @@ export function ModuleAuthSignIn() {
         );
       case "pending":
         return (
-          <Alert py="xs" color="indigo" icon={<Info weight="bold" />}>
+          <Alert py="xs" color="indigo" icon={<InfoIcon weight="bold" />}>
             <Text size="xs" c="indigo.8" fw={500} py="2">
               Verification Pending, Try Later!
             </Text>
@@ -204,7 +222,7 @@ export function ModuleAuthSignIn() {
         );
       case "blocked":
         return (
-          <Alert py="xs" color="red" icon={<X weight="bold" />}>
+          <Alert py="xs" color="red" icon={<XIcon weight="bold" />}>
             <Text size="xs" c="red.8" fw={500} py="2">
               Account Blocked! Contact Admin
             </Text>
@@ -212,7 +230,7 @@ export function ModuleAuthSignIn() {
         );
       case "nan":
         return (
-          <Alert py="xs" color="red" icon={<X weight="bold" />}>
+          <Alert py="xs" color="red" icon={<XIcon weight="bold" />}>
             <Text size="xs" c="red.8" fw={500} py="2">
               Cannot Reach Server, Try Again!
             </Text>
@@ -220,7 +238,7 @@ export function ModuleAuthSignIn() {
         );
       default:
         return (
-          <Alert py="xs" color="red" icon={<Warning weight="bold" />}>
+          <Alert py="xs" color="red" icon={<WarningIcon weight="bold" />}>
             <Text size="xs" c="red.8" fw={500} py="2">
               Invalid Credentials. Try Again!
             </Text>
@@ -235,15 +253,48 @@ export function ModuleAuthSignIn() {
     <>
       <Stack gap="sm">
         <div>
-          <Text size="2rem" lh="2.3rem" ta="center">
-            {Params.get("type") == "newaccount"
-              ? "Welcome Back!"
-              : "Welcome Back!"}
-            <br />
-            <i> Sign In </i>to{" "}
-            {Params.get("type") == "newaccount"
-              ? "start onboarding process."
-              : "get started."}
+          <Text size="2rem" lh="2.3rem" ta="center" visibleFrom="lg">
+            {language === "en" ? (
+              <>
+                Welcome Back!
+                <br />
+                <i> Sign In </i> to{" "}
+                {Params.get("type") == "newaccount"
+                  ? "start onboarding process."
+                  : "get started."}
+              </>
+            ) : (
+              <>
+                おかえりなさい！
+                <br />
+                <i> サインイン </i>して{" "}
+                {Params.get("type") == "newaccount"
+                  ? "オンボーディングを開始しましょう。"
+                  : "始めましょう。"}
+              </>
+            )}
+          </Text>
+
+          <Text size="1.5rem" lh="1.8rem" ta="center" hiddenFrom="lg" mt="xl">
+            {language === "en" ? (
+              <>
+                Welcome Back!
+                <br />
+                <i> Sign In </i> to{" "}
+                {Params.get("type") == "newaccount"
+                  ? "start onboarding process."
+                  : "get started."}
+              </>
+            ) : (
+              <>
+                おかえりなさい！
+                <br />
+                <i> サインイン </i>して{" "}
+                {Params.get("type") == "newaccount"
+                  ? "オンボーディングを開始しましょう。"
+                  : "始めましょう。"}
+              </>
+            )}
           </Text>
         </div>
 
@@ -265,7 +316,7 @@ export function ModuleAuthSignIn() {
         <TextInput
           radius="lg"
           size="lg"
-          label="Email"
+          label={language == "en" ? "Email" : "メールアドレス"}
           placeholder="x@example.com"
           disabled={form.getValues()?.fLoading}
           {...form.getInputProps("email")}
@@ -274,7 +325,7 @@ export function ModuleAuthSignIn() {
         <PasswordInput
           radius="lg"
           size="lg"
-          label="Password"
+          label={language == "en" ? "Password" : "パスワード"}
           disabled={form.getValues()?.fLoading}
           {...form.getInputProps("password")}
         />
@@ -287,7 +338,7 @@ export function ModuleAuthSignIn() {
             label="Remember me"
           />
           <Anchor size="xs" c="dark" fw={600}>
-            Forgot Password?
+            {language == "en" ? "Forgot Password?" : "パス"}
           </Anchor>
         </Group>
 
@@ -304,7 +355,7 @@ export function ModuleAuthSignIn() {
               }
             }}
           >
-            Sign In
+            {language == "en" ? "Sign In" : "サインイン"}
           </Button>
           <Button
             radius="lg"
@@ -314,7 +365,9 @@ export function ModuleAuthSignIn() {
               Router.push("/signup");
             }}
           >
-            Don't have an account? Sign Up Here
+            {language == "en"
+              ? "Don't have an account? Sign Up Here"
+              : "アカウントをお持ちでない場合は、こちらからサインアップしてください。"}
           </Button>
         </Stack>
       </Stack>
@@ -326,9 +379,10 @@ export function ModuleAuthSignIn() {
               opacity: 0.6,
             }}
           >
-            Based on
+            {language == "en"
+              ? "  Based on vFramework"
+              : " vFramework によるベース"}
           </span>{" "}
-          vFramework
         </Text>
         <Menu>
           <Menu.Target>
@@ -338,16 +392,25 @@ export function ModuleAuthSignIn() {
                   <Text fw={500} size="11" lh={5} tt="none">
                     English (United States)
                   </Text>
-                  <CaretDown size="11" />
+                  <CaretDownIcon size="11" />
                 </Group>
               </Badge>
             </UnstyledButton>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item leftSection={<Check />}>
+            <Menu.Item
+              leftSection={<CheckIcon />}
+              onClick={() => {
+                setLanguage("en");
+              }}
+            >
               <Text size="xs">English (United States)</Text>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item
+              onClick={() => {
+                setLanguage("jp");
+              }}
+            >
               <Text size="xs">Japanese ( 日本語 )</Text>
             </Menu.Item>
           </Menu.Dropdown>

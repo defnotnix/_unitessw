@@ -16,13 +16,14 @@ import "@mantine/notifications/styles.css";
 import "@mantine/charts/styles.css";
 
 import "@/public/styles/global.css";
+import { LanguageContext, LanguageProvider } from "./app.context";
 
 //oauth
 
 export function LayoutApp({ children }: PropsWithChildren) {
   return (
     <QueryWrapper
-      apiProvider={"http://192.168.101.200:5666"}
+      apiProvider={"http://10.0.0.5:8000"}
       //apiProvider="http://192.168.30.12:8000/"
       queryProps={{
         defaultOptions: {
@@ -49,7 +50,7 @@ export function LayoutApp({ children }: PropsWithChildren) {
         }
       >
         <GoogleOAuthProvider clientId="891191709922-oqundf96vqb74d9ubv0nd5urhn5eh072.apps.googleusercontent.com">
-          {children}
+          <LanguageProvider>{children}</LanguageProvider>
         </GoogleOAuthProvider>
       </AppWrapper>
     </QueryWrapper>

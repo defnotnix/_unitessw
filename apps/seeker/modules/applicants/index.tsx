@@ -1,5 +1,7 @@
 "use client";
 
+import { UserCard } from "@/components/UserCard/page";
+import { useLanguage } from "@/layouts/app/app.context";
 import {
   ActionIcon,
   Avatar,
@@ -26,26 +28,78 @@ import {
 } from "@phosphor-icons/react";
 
 export function ModuleSeekerApplicants() {
+  const { language } = useLanguage();
+
   return (
-    <>
-      <Container size="xl" py="xl">
-        <Grid>
-          <Grid.Col span={{ base: 12, lg: 3.5 }}>
-            <Group justify="space-between">
-              <Text size="xs">Showing XX of XX Applicants</Text>
-              <ActionIcon variant="light">
-                <ArrowClockwiseIcon />
-              </ActionIcon>
-            </Group>
+    <Container size="xl" py="xl">
+      <Grid gutter="xs">
+        <Grid.Col span={{ base: 12, lg: 3.5 }}>
+          <Group justify="space-between">
+            <Text size="xs">
+              {language === "en"
+                ? "Showing XX of XX Applicants"
+                : "応募者 XX 名中 XX 名を表示中"}
+            </Text>
+            <ActionIcon variant="light">
+              <ArrowClockwiseIcon />
+            </ActionIcon>
+          </Group>
 
-            <Paper withBorder p="lg" mt="lg" radius="lg">
-              <Stack>
-                <Text size="xs" tt="uppercase" opacity={0.5}>
-                  Filter Parameters
-                </Text>
-                <Stack gap="xs">
-                  <Select
-                    data={[]}
+          <Paper
+            withBorder
+            p="lg"
+            mt="lg"
+            radius="md"
+            style={{
+              position: "sticky",
+              top: "1rem",
+            }}
+          >
+            <Stack>
+              <Text size="xs" tt="uppercase" opacity={0.5}>
+                {language === "en"
+                  ? "Filter Parameters"
+                  : "フィルターパラメーター"}
+              </Text>
+              <Stack gap="xs">
+                <Select
+                  data={[]}
+                  styles={{
+                    input: {
+                      background: "white",
+                      padding: "16px 0",
+                      border: "none",
+                    },
+                  }}
+                  variant="filled"
+                  label={language === "en" ? "Job Category" : "職種"}
+                  placeholder={
+                    language === "en"
+                      ? "Select Job Category"
+                      : "職種を選択してください"
+                  }
+                />
+                <Select
+                  data={[]}
+                  styles={{
+                    input: {
+                      background: "white",
+                      padding: "16px 0",
+                      border: "none",
+                    },
+                  }}
+                  variant="filled"
+                  label={language === "en" ? "Gender" : "性別"}
+                  placeholder={
+                    language === "en"
+                      ? "Select Gender"
+                      : "性別を選択してください"
+                  }
+                />
+
+                <SimpleGrid spacing="xs" cols={2}>
+                  <NumberInput
+                    hideControls
                     styles={{
                       input: {
                         background: "white",
@@ -54,11 +108,13 @@ export function ModuleSeekerApplicants() {
                       },
                     }}
                     variant="filled"
-                    label="Job Category"
-                    placeholder="Select Job Category"
+                    label={language === "en" ? "Min Age" : "最低年齢"}
+                    placeholder={
+                      language === "en" ? "Minimum Age" : "最低年齢を入力"
+                    }
                   />
-                  <Select
-                    data={[]}
+                  <NumberInput
+                    hideControls
                     styles={{
                       input: {
                         background: "white",
@@ -67,210 +123,232 @@ export function ModuleSeekerApplicants() {
                       },
                     }}
                     variant="filled"
-                    label="Gender"
-                    placeholder="Select Job Category"
+                    label={language === "en" ? "Max Age" : "最高年齢"}
+                    placeholder={
+                      language === "en" ? "Maximum Age" : "最高年齢を入力"
+                    }
                   />
-
-                  <SimpleGrid spacing="xs" cols={2}>
-                    <NumberInput
-                      hideControls
-                      styles={{
-                        input: {
-                          background: "white",
-                          padding: "16px 0",
-                          border: "none",
-                        },
-                      }}
-                      variant="filled"
-                      label="Min Age"
-                      placeholder="Minium Age"
-                    />
-                    <NumberInput
-                      hideControls
-                      styles={{
-                        input: {
-                          background: "white",
-                          padding: "16px 0",
-                          border: "none",
-                        },
-                      }}
-                      variant="filled"
-                      label="Max Age"
-                      placeholder="Minium Age"
-                    />
-                  </SimpleGrid>
-
-                  <Select
-                    data={[]}
-                    styles={{
-                      input: {
-                        background: "white",
-                        padding: "16px 0",
-                        border: "none",
-                      },
-                    }}
-                    variant="filled"
-                    label="Job Category"
-                    placeholder="Select Job Category"
-                  />
-                  <Select
-                    data={[]}
-                    styles={{
-                      input: {
-                        background: "white",
-                        padding: "16px 0",
-                        border: "none",
-                      },
-                    }}
-                    variant="filled"
-                    label="Gender"
-                    placeholder="Select Job Category"
-                  />
-
-                  <Select
-                    data={[]}
-                    styles={{
-                      input: {
-                        background: "white",
-                        padding: "16px 0",
-                        border: "none",
-                      },
-                    }}
-                    variant="filled"
-                    label="Job Category"
-                    placeholder="Select Job Category"
-                  />
-                  <Select
-                    data={[]}
-                    styles={{
-                      input: {
-                        background: "white",
-                        padding: "16px 0",
-                        border: "none",
-                      },
-                    }}
-                    variant="filled"
-                    label="Gender"
-                    placeholder="Select Job Category"
-                  />
-
-                  <Button variant="light">Apply Filter</Button>
-                </Stack>
-              </Stack>
-            </Paper>
-          </Grid.Col>
-
-          <Grid.Col span={{ base: 12, lg: 7.5 }}>
-            <Group justify="space-between">
-              <Text size="xs">Showing XX of XX Applicants</Text>
-              <Menu>
-                <Menu.Target>
-                  <Button
-                    variant="white"
-                    rightSection={<CaretDownIcon size={12} />}
-                    size="xs"
-                  >
-                    Sort By : Registered Date
-                  </Button>
-                </Menu.Target>
-              </Menu>
-            </Group>
-
-            <Stack mt="lg">
-              <Paper withBorder radius="lg">
-                <Stack gap="lg" p="lg">
-                  <Group justify="space-between">
-                    <Group>
-                      <Avatar
-                        size="xl"
-                        src="https://images.squarespace-cdn.com/content/v1/54f62cc5e4b03dc2ab4c1f4b/1630379950747-QT5HD9JKQ3JVZC9RPP2R/Passport+size+photo.JPEG"
-                      />
-
-                      <Stack gap={0}>
-                        <Group gap={"xs"} mb="xs">
-                          <Text size="sm">Nepal</Text>
-                          <Badge
-                            color="teal"
-                            variant="light"
-                            tt="none"
-                            leftSection={<CheckCircleIcon />}
-                          >
-                            Verified Applicant
-                          </Badge>
-                          <Badge color="indigo" variant="light" tt="none">
-                            Seeking on : Hospitality
-                          </Badge>
-                        </Group>
-
-                        <Text size="1.5rem">Ram Kumar Shrestha</Text>
-                        <Text size="xs" opacity={0.5}>
-                          Proficient in English, Nepali, Hindi, and Urdu
-                        </Text>
-                      </Stack>
-                    </Group>
-
-                    <Button size="md" radius="lg" variant="light">
-                      View Profile
-                    </Button>
-                  </Group>
-
-                  <SimpleGrid cols={6}>
-                    <Text size="sm" opacity={0.6} fw={600}>
-                      24 Years Old
-                    </Text>
-                    <Text size="sm" opacity={0.6} fw={600}>
-                      Height : 113cm
-                    </Text>
-                    <Text size="sm" opacity={0.6} fw={600}>
-                      Weight : 60kg
-                    </Text>
-                    <Text size="sm" opacity={0.6} fw={600}>
-                      Male / Unmarried
-                    </Text>
-
-                    <Text size="sm" opacity={0.6} fw={600}>
-                      Has Language Certificate
-                    </Text>
-                    <Text size="sm" opacity={0.6} fw={600}>
-                      Has Driving License
-                    </Text>
-                  </SimpleGrid>
-                </Stack>
-
-                <Divider />
-
-                <SimpleGrid cols={2} p="lg">
-                  <div>
-                    <Text size="xs" opacity={0.5}>
-                      Recent Education
-                    </Text>
-
-                    <Text size="lg" fw={600}>
-                      Bachelors in Hospitality
-                    </Text>
-                    <Text size="xs">2016-2020</Text>
-                    <Text size="xs">
-                      Kansas Hospitality School, Kathmandu, Nepal.
-                    </Text>
-                  </div>
-
-                  <div>
-                    <Text opacity={0.5} size="xs">
-                      Recent Work History
-                    </Text>
-
-                    <Text size="lg" fw={600}>
-                      Guest Attending Staff
-                    </Text>
-                    <Text size="xs">2016-2020</Text>
-                    <Text size="xs">Soaltee Hotel, Kathmandu, Nepal.</Text>
-                  </div>
                 </SimpleGrid>
-              </Paper>
+
+                <Button variant="light">
+                  {language === "en" ? "Apply Filter" : "フィルターを適用"}
+                </Button>
+              </Stack>
             </Stack>
-          </Grid.Col>
-        </Grid>
-      </Container>
-    </>
+          </Paper>
+        </Grid.Col>
+
+        <Grid.Col span={{ base: 12, lg: 7.5 }}>
+          <Group justify="space-between">
+            <Text size="xs">
+              {language === "en"
+                ? "Showing XX of XX Applicants"
+                : "応募者 XX 名中 XX 名を表示中"}
+            </Text>
+            <Menu>
+              <Menu.Target>
+                <Button
+                  variant="white"
+                  rightSection={<CaretDownIcon size={12} />}
+                  size="xs"
+                >
+                  {language === "en"
+                    ? "Sort By : Registered Date"
+                    : "並び替え：登録日"}
+                </Button>
+              </Menu.Target>
+            </Menu>
+          </Group>
+
+          <Stack mt="lg" gap="xs">
+            <UserCard
+              applicant={{
+                name: "Ram Kumar Shrestha",
+                jp_name: "ラム・クマール・シュレスタ",
+                gender: "M",
+                is_married: false,
+                dob: "2000-01-01",
+                address: "Kathmandu, Nepal",
+                jp_address: "ネパール・カトマンズ",
+                height: "170",
+                weight: "60",
+                dominant_hand: "R",
+                naked_eye_left_power: 0.0,
+                naked_eye_right_power: -0.5,
+                naked_eye_both_power: -0.25,
+                corrective_eye_left_power: -1.0,
+                corrective_eye_right_power: -1.25,
+                corrective_eye_both_power: -1.12,
+                has_food_allergy: true,
+                has_food_prohibition: false,
+                strong_point: "Team player with discipline",
+                jp_strong_point: "チーム意識があり、規律正しい",
+                negative_point: "Sometimes overthinks",
+                jp_negative_point: "考えすぎることがある",
+                has_driving_license: true,
+                has_passport: true,
+                date_of_passport_availability: "2024-07-01",
+                language_training_year: "2023",
+                certified_skill: "Caregiver",
+                jp_certified_skill: "介護福祉士",
+                language_certification: "JLPT N4",
+                jp_language_certification: "JLPT N4",
+                youtube_link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                image:
+                  "https://tibetanencounter.com/wp-content/uploads/2019/04/my-passport-size-photo.jpg",
+              }}
+            />
+            <UserCard
+              applicant={{
+                name: "Ram Kumar Shrestha",
+                jp_name: "ラム・クマール・シュレスタ",
+                gender: "M",
+                is_married: false,
+                dob: "2000-01-01",
+                address: "Kathmandu, Nepal",
+                jp_address: "ネパール・カトマンズ",
+                height: "170",
+                weight: "60",
+                dominant_hand: "R",
+                naked_eye_left_power: 0.0,
+                naked_eye_right_power: -0.5,
+                naked_eye_both_power: -0.25,
+                corrective_eye_left_power: -1.0,
+                corrective_eye_right_power: -1.25,
+                corrective_eye_both_power: -1.12,
+                has_food_allergy: true,
+                has_food_prohibition: false,
+                strong_point: "Team player with discipline",
+                jp_strong_point: "チーム意識があり、規律正しい",
+                negative_point: "Sometimes overthinks",
+                jp_negative_point: "考えすぎることがある",
+                has_driving_license: true,
+                has_passport: true,
+                date_of_passport_availability: "2024-07-01",
+                language_training_year: "2023",
+                certified_skill: "Caregiver",
+                jp_certified_skill: "介護福祉士",
+                language_certification: "JLPT N4",
+                jp_language_certification: "JLPT N4",
+                youtube_link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                image:
+                  "https://tibetanencounter.com/wp-content/uploads/2019/04/my-passport-size-photo.jpg",
+              }}
+            />
+            <UserCard
+              applicant={{
+                name: "Ram Kumar Shrestha",
+                jp_name: "ラム・クマール・シュレスタ",
+                gender: "M",
+                is_married: false,
+                dob: "2000-01-01",
+                address: "Kathmandu, Nepal",
+                jp_address: "ネパール・カトマンズ",
+                height: "170",
+                weight: "60",
+                dominant_hand: "R",
+                naked_eye_left_power: 0.0,
+                naked_eye_right_power: -0.5,
+                naked_eye_both_power: -0.25,
+                corrective_eye_left_power: -1.0,
+                corrective_eye_right_power: -1.25,
+                corrective_eye_both_power: -1.12,
+                has_food_allergy: true,
+                has_food_prohibition: false,
+                strong_point: "Team player with discipline",
+                jp_strong_point: "チーム意識があり、規律正しい",
+                negative_point: "Sometimes overthinks",
+                jp_negative_point: "考えすぎることがある",
+                has_driving_license: true,
+                has_passport: true,
+                date_of_passport_availability: "2024-07-01",
+                language_training_year: "2023",
+                certified_skill: "Caregiver",
+                jp_certified_skill: "介護福祉士",
+                language_certification: "JLPT N4",
+                jp_language_certification: "JLPT N4",
+                youtube_link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                image:
+                  "https://tibetanencounter.com/wp-content/uploads/2019/04/my-passport-size-photo.jpg",
+              }}
+            />
+            <UserCard
+              applicant={{
+                name: "Ram Kumar Shrestha",
+                jp_name: "ラム・クマール・シュレスタ",
+                gender: "M",
+                is_married: false,
+                dob: "2000-01-01",
+                address: "Kathmandu, Nepal",
+                jp_address: "ネパール・カトマンズ",
+                height: "170",
+                weight: "60",
+                dominant_hand: "R",
+                naked_eye_left_power: 0.0,
+                naked_eye_right_power: -0.5,
+                naked_eye_both_power: -0.25,
+                corrective_eye_left_power: -1.0,
+                corrective_eye_right_power: -1.25,
+                corrective_eye_both_power: -1.12,
+                has_food_allergy: true,
+                has_food_prohibition: false,
+                strong_point: "Team player with discipline",
+                jp_strong_point: "チーム意識があり、規律正しい",
+                negative_point: "Sometimes overthinks",
+                jp_negative_point: "考えすぎることがある",
+                has_driving_license: true,
+                has_passport: true,
+                date_of_passport_availability: "2024-07-01",
+                language_training_year: "2023",
+                certified_skill: "Caregiver",
+                jp_certified_skill: "介護福祉士",
+                language_certification: "JLPT N4",
+                jp_language_certification: "JLPT N4",
+                youtube_link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                image:
+                  "https://tibetanencounter.com/wp-content/uploads/2019/04/my-passport-size-photo.jpg",
+              }}
+            />
+            <UserCard
+              applicant={{
+                name: "Ram Kumar Shrestha",
+                jp_name: "ラム・クマール・シュレスタ",
+                gender: "M",
+                is_married: false,
+                dob: "2000-01-01",
+                address: "Kathmandu, Nepal",
+                jp_address: "ネパール・カトマンズ",
+                height: "170",
+                weight: "60",
+                dominant_hand: "R",
+                naked_eye_left_power: 0.0,
+                naked_eye_right_power: -0.5,
+                naked_eye_both_power: -0.25,
+                corrective_eye_left_power: -1.0,
+                corrective_eye_right_power: -1.25,
+                corrective_eye_both_power: -1.12,
+                has_food_allergy: true,
+                has_food_prohibition: false,
+                strong_point: "Team player with discipline",
+                jp_strong_point: "チーム意識があり、規律正しい",
+                negative_point: "Sometimes overthinks",
+                jp_negative_point: "考えすぎることがある",
+                has_driving_license: true,
+                has_passport: true,
+                date_of_passport_availability: "2024-07-01",
+                language_training_year: "2023",
+                certified_skill: "Caregiver",
+                jp_certified_skill: "介護福祉士",
+                language_certification: "JLPT N4",
+                jp_language_certification: "JLPT N4",
+                youtube_link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                image:
+                  "https://tibetanencounter.com/wp-content/uploads/2019/04/my-passport-size-photo.jpg",
+              }}
+            />
+          </Stack>
+        </Grid.Col>
+      </Grid>
+    </Container>
   );
 }

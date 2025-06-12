@@ -204,7 +204,7 @@ export function ModuleAuthSignUp() {
           <Stack gap="sm">
             <div>
               <Text size="xl" lh="lg" ta="center">
-                Welcome Back!
+                Creating your account!
                 <br />
                 Please give me a moment.
               </Text>
@@ -213,9 +213,6 @@ export function ModuleAuthSignUp() {
 
           <Group justify="center" mt="xl">
             <Loader size="xs" />{" "}
-            <Text size="xs" ta="center">
-              Grabbing your information...
-            </Text>
           </Group>
         </div>
         <Group gap={0} justify="space-between" px="lg">

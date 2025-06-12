@@ -13,6 +13,9 @@ import "@mantine/notifications/styles.css";
 import "@mantine/charts/styles.css";
 
 import "@/public/styles/global.css";
+import { LanguageProvider } from "./app.context";
+
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 //oauth
 
@@ -45,7 +48,10 @@ export function LayoutApp({ children }: PropsWithChildren) {
           </>
         }
       >
-        {children}
+        {" "}
+        <GoogleOAuthProvider clientId="891191709922-oqundf96vqb74d9ubv0nd5urhn5eh072.apps.googleusercontent.com">
+          <LanguageProvider>{children}</LanguageProvider>{" "}
+        </GoogleOAuthProvider>
       </AppWrapper>
     </QueryWrapper>
   );

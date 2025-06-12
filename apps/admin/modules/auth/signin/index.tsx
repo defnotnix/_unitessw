@@ -51,6 +51,7 @@ import { useMutation } from "@tanstack/react-query";
 import { apiLogin } from "./auth.api";
 
 import { jwtDecode } from "jwt-decode";
+import { useTimeout } from "@mantine/hooks";
 
 //components
 
@@ -109,25 +110,9 @@ export function ModuleAuthSignIn() {
       const decoded: any = jwtDecode(res.data?.access_token);
       console.log(decoded);
 
-      if (decoded?.is_adminn) {
+      setTimeout(() => {
         Router.push("/admin");
-      }
-
-      if (decoded?.is_applicant == "True" && decoded?.is_completed == "True") {
-        Router.push("/applicant");
-      } else if (decoded?.has_submitted_form == "True") {
-        Router.push("/profile");
-      } else if (decoded?.is_step1 == "True") {
-        Router.push("/onboarding?step=1");
-      } else if (decoded?.is_step2 == "True") {
-        Router.push("/onboarding?step=2");
-      } else if (decoded?.is_step3 == "True") {
-        Router.push("/onboarding?step=3");
-      } else if (decoded?.is_step4 == "True") {
-        Router.push("/onboarding?step=4");
-      } else if (decoded?.is_step5 == "True") {
-        Router.push("/onboarding?step=5");
-      }
+      }, 1000);
     },
     onError: (err: any) => {
       const { response } = err.object;
@@ -203,18 +188,15 @@ export function ModuleAuthSignIn() {
           <Stack gap="sm">
             <div>
               <Text size="xl" lh="lg" ta="center">
-                Account Created!
+                Welcome Back!
                 <br />
-                Please give me a moment.
+                Give me a moment while i arrange few things.
               </Text>
             </div>
           </Stack>
 
           <Group justify="center" mt="xl">
             <Loader size="xs" />{" "}
-            <Text size="xs" ta="center">
-              Sending a validation OTP ...
-            </Text>
           </Group>
         </div>
         <Group gap={0} justify="space-between" px="lg">
@@ -271,7 +253,7 @@ export function ModuleAuthSignIn() {
           </Text>
         </div>
 
-        <SimpleGrid my="md" spacing="xs" cols={{ base: 1, lg: 1 }}>
+        {/* <SimpleGrid my="md" spacing="xs" cols={{ base: 1, lg: 1 }}>
           <Button
             radius="lg"
             size="lg"
@@ -283,7 +265,7 @@ export function ModuleAuthSignIn() {
           </Button>
         </SimpleGrid>
 
-        <Divider label="or continue with" />
+        <Divider label="or continue with" /> */}
 
         <TextInput
           radius="lg"
@@ -329,7 +311,7 @@ export function ModuleAuthSignIn() {
           >
             Sign In
           </Button>
-          <Button
+          {/* <Button
             radius="lg"
             size="lg"
             variant="subtle"
@@ -338,7 +320,7 @@ export function ModuleAuthSignIn() {
             }}
           >
             Don't have an account? Sign Up Here
-          </Button>
+          </Button> */}
         </Stack>
       </Stack>
 

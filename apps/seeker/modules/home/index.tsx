@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/layouts/app/app.context";
 import {
   Badge,
   Button,
@@ -18,6 +19,8 @@ import {
 import { ArrowRightIcon, CaretDownIcon } from "@phosphor-icons/react";
 
 export function ModuleSeekerHome() {
+  const { language } = useLanguage();
+
   return (
     <>
       <Container size="lg" py={100}>
@@ -26,11 +29,23 @@ export function ModuleSeekerHome() {
             UNITE SSW
           </Text>
           <Title size="4rem" lh="4.3rem" ta="center">
-            Find <i>employees</i> that
-            <br /> meets your <i>standard</i>.
+            {language === "en" ? (
+              <>
+                Find <i>employees</i> that
+                <br /> meet your <i>standard</i>.
+              </>
+            ) : (
+              <>
+                あなたの<i>基準</i>に合った
+                <br /> <i>従業員</i>を見つけましょう。
+              </>
+            )}
           </Title>
+
           <Text size="xs" ta="center">
-            Discover verified workers from all over Nepal.
+            {language === "en"
+              ? "Discover verified workers from all over Nepal."
+              : "ネパール全土から認証済みの労働者を見つけましょう。"}
           </Text>
         </Stack>
 
@@ -41,17 +56,23 @@ export function ModuleSeekerHome() {
             size="xl"
             rightSection={<ArrowRightIcon />}
           >
-            Browse all employees manually
+            {language === "en"
+              ? "Browse all employees manually"
+              : "すべての従業員を手動で閲覧する"}
           </Button>
         </Group>
 
         <Paper p="xl" withBorder shadow="md" radius="lg">
           <Group justify="space-between">
             <Text size="sm" fw={800}>
-              What are you looking for?{" "}
+              {language === "en"
+                ? "What are you looking for? "
+                : "お探しのものは何ですか？"}
             </Text>
             <Text size="sm" c="gray.5">
-              Detailed employee search
+              {language === "en"
+                ? "Detailed employee search"
+                : "従業員の詳細検索"}
             </Text>
           </Group>
 
