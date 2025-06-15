@@ -29,6 +29,8 @@ import {
   TrashIcon,
 } from "@phosphor-icons/react";
 import { DateInput, DatePickerInput } from "@mantine/dates";
+import { modals } from "@mantine/modals";
+import { apiLicense } from "../../module.api";
 //mantine
 
 //icons
@@ -88,7 +90,7 @@ export function StepCertificates() {
             Step 8 : Licenses
           </b>
           <br />
-          <b>Next, List academics records. 📚</b>
+          <b>Next, All registered licenses. 📚</b>
         </Text>
 
         <FormElement.SectionTitle
@@ -133,7 +135,31 @@ export function StepCertificates() {
         {form.values.licenses?.map((_: any, index: any) => (
           <div key={index} style={{ position: "relative" }}>
             <ActionIcon
-              onClick={() => form.removeListItem("licenses", index)}
+              onClick={() => {
+                if (_.id) {
+                  modals.openConfirmModal({
+                    title: "Are you sure?",
+                    children: (
+                      <Text size="sm">
+                        Are you sure you want to delete this record?
+                      </Text>
+                    ),
+                    labels: {
+                      confirm: "Delete",
+                      cancel: "Cancel",
+                    },
+                    confirmProps: {
+                      color: "red",
+                    },
+                    onConfirm: () => {
+                      apiLicense.delete(_.id);
+                      form.removeListItem("licenses", index);
+                    },
+                  });
+                } else {
+                  form.removeListItem("licenses", index);
+                }
+              }}
               size="md"
               variant="light"
               color="red"
@@ -172,7 +198,7 @@ export function StepCertificates() {
 
               <SimpleGrid cols={2} spacing="xs">
                 <DateInput
-                placeholder="Select Date"
+                  placeholder="Select Date"
                   {...form.getInputProps(`licenses.${index}.date_received`)}
                 />
 

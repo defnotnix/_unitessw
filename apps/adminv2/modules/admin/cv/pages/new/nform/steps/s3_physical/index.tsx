@@ -78,18 +78,32 @@ export function StepPhysical() {
           </b>
         </Text>
 
-        <Select
-          label="Dominant Hand"
-          placeholder="Select your dominant hand"
-          description="Specify your preferred writing or working hand"
-          data={[
-            { value: "Right", label: "Right" },
-            { value: "Left", label: "Left" },
-            { value: "Ambidextrous", label: "Ambidextrous" },
-          ]}
-          {...form.getInputProps("dominant_hand")}
-        />
         <SimpleGrid cols={2} spacing="xs">
+          <Select
+            label="Dominant Hand"
+            placeholder="Select your dominant hand"
+            data={[
+              { value: "Right", label: "Right" },
+              { value: "Left", label: "Left" },
+              { value: "Ambidextrous", label: "Ambidextrous" },
+            ]}
+            {...form.getInputProps("dominant_hand")}
+          />
+          <Select
+            label="Blood Group"
+            placeholder="Select appropriate blood group"
+            data={[
+              { label: "A+", value: "A+" },
+              { label: "A-", value: "A-" },
+              { label: "B+", value: "B+" },
+              { label: "B-", value: "B-" },
+              { label: "AB+", value: "AB+" },
+              { label: "AB-", value: "AB-" },
+              { label: "O+", value: "O+" },
+              { label: "O-", value: "O-" },
+            ]}
+            {...form.getInputProps("blood_type")}
+          />
           <NumberInput
             label="Eyesight Left"
             placeholder="e.g. 1.0"

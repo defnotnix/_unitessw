@@ -191,19 +191,17 @@ export function _List() {
 
   return (
     <>
-      <RBACCheck showStaff>
-        <ListHandler
-          endpoint={moduleConfig.endpoint}
-          moduleKey={moduleConfig.moduleKey}
-          enableServerPagination
-          enableServerSearch
-          getRecords={getRecords}
-        >
-          <Tabs value={tab} onChange={(e: any) => setTab(e)}>
-            <RenderTable />
-          </Tabs>
-        </ListHandler>
-      </RBACCheck>
+      <ListHandler
+        endpoint={moduleConfig.endpoint}
+        moduleKey={moduleConfig.moduleKey}
+        enableServerPagination
+        enableServerSearch
+        getRecords={getRecords}
+      >
+        <Tabs value={tab} onChange={(e: any) => setTab(e)}>
+          <RenderTable />
+        </Tabs>
+      </ListHandler>
     </>
   );
 }

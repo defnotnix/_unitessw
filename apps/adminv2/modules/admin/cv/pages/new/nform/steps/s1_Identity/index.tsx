@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 //next
 
 //mantine
@@ -18,6 +18,7 @@ import { FormHandler } from "@vframework/core";
 import { ImageUpload } from "@vframework/ui";
 import { ExclamationMark } from "@phosphor-icons/react";
 import { DatePickerInput } from "@mantine/dates";
+import { useParams } from "next/navigation";
 //mantine
 
 //icons
@@ -54,6 +55,7 @@ export function StepIdentity() {
   // * DEFINITIONS
 
   const form = FormHandler.useForm();
+  const Params = useParams();
 
   // * CONTEXT
 
@@ -107,6 +109,31 @@ export function StepIdentity() {
           <TextInput
             placeholder="e.g. タナカ タロウ"
             {...form.getInputProps("furigana")}
+            styles={styles.bot}
+            leftSection={
+              <Text size="xs" fw={800}>
+                JP
+              </Text>
+            }
+          />
+        </Stack>
+
+        <Stack gap={0}>
+          <TextInput
+            label="About Me (Introduction)"
+            placeholder="e.g. I am ...."
+            description="About me section of the CV"
+            {...form.getInputProps("remark")}
+            styles={styles.top}
+            leftSection={
+              <Text size="xs" fw={800}>
+                EN
+              </Text>
+            }
+          />
+          <TextInput
+            placeholder="e.g. タナカ タロウ"
+            {...form.getInputProps("jp_remark")}
             styles={styles.bot}
             leftSection={
               <Text size="xs" fw={800}>

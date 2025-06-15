@@ -130,7 +130,6 @@ export function ListHandler({
   const { data, isLoading, isLoadingError, refetch, isFetching } = useQuery({
     queryKey: moduleKey,
     queryFn: async () => {
-      console.log("Initiating Get");
       const res: any = await getRecords({
         endpoint: endpoint,
         searchValue: searchVal,
@@ -162,6 +161,7 @@ export function ListHandler({
       return _data;
     },
     initialData: [],
+    enabled: !enableServerPagination,
   });
 
   useEffect(() => {

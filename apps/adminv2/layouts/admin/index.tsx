@@ -22,6 +22,7 @@ import {
   Note,
   UserCheck,
   UserPlus,
+  UserPlusIcon,
 } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import { moduleApiCall } from "@vframework/core";
@@ -91,7 +92,7 @@ export function LayoutAdmin({ children }: PropsWithChildren) {
                 rightSection={<CaretRight />}
                 onClick={() => Router.push("/takeAttendance")}
               >
-                <UserPlus />{" "}
+                <UserPlusIcon />{" "}
                 <span
                   style={{
                     marginLeft: 8,

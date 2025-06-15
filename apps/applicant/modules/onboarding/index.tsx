@@ -50,7 +50,7 @@ import { jwtDecode } from "jwt-decode";
 import { useSearchParams } from "next/navigation";
 
 export function ModuleOnboarding() {
-  const [current, sC] = useState(0);
+  const [current, sC] = useState(2);
 
   const queryParams: any = useSearchParams();
 

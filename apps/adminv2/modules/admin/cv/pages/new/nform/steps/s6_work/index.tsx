@@ -28,7 +28,9 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@phosphor-icons/react";
-import { DateInput, DatePickerInput } from "@mantine/dates";
+import { DateInput, DatePickerInput, YearPickerInput } from "@mantine/dates";
+import { modals } from "@mantine/modals";
+import { apiWork } from "../../module.api";
 //mantine
 
 //icons
@@ -134,7 +136,31 @@ export function StepWork() {
         {form.values.work_experience?.map((_: any, index: any) => (
           <div key={index} style={{ position: "relative" }}>
             <ActionIcon
-              onClick={() => form.removeListItem("work_experience", index)}
+              onClick={() => {
+                if (_.id) {
+                  modals.openConfirmModal({
+                    title: "Are you sure?",
+                    children: (
+                      <Text size="sm">
+                        Are you sure you want to delete this record?
+                      </Text>
+                    ),
+                    labels: {
+                      confirm: "Delete",
+                      cancel: "Cancel",
+                    },
+                    confirmProps: {
+                      color: "red",
+                    },
+                    onConfirm: () => {
+                      apiWork.delete(_.id);
+                      form.removeListItem("work_experience", index);
+                    },
+                  });
+                } else {
+                  form.removeListItem("work_experience", index);
+                }
+              }}
               size="md"
               variant="light"
               color="red"
@@ -218,13 +244,14 @@ export function StepWork() {
               </Stack>
 
               <Stack gap={0}>
-                <TextInput
-                  placeholder="Select start date e.g. 2015"
+                <YearPickerInput
+                  placeholder="e.g. 2015"
                   {...form.getInputProps(`work_experience.${index}.start_date`)}
                   styles={styles.top}
                 />
-                <TextInput
-                  placeholder="Select end date e.g. 2018"
+                <YearPickerInput
+                  minDate={form.getValues().work_experience[index].start_date}
+                  placeholder=" e.g. 2018"
                   {...form.getInputProps(`work_experience.${index}.end_date`)}
                   styles={styles.bot}
                 />

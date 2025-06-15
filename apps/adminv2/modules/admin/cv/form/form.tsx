@@ -17,6 +17,7 @@ import {
   ActionIcon,
   Center,
   Button,
+  Grid,
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { FormHandler } from "@vframework/core";
@@ -32,21 +33,27 @@ export function _Form() {
     case 0:
       return (
         <Paper px="lg" py="md" withBorder>
+          <Grid>
+            <Grid.Col span={{ base: 12, lg: 4 }}>
+              <FormElement.SectionTitle
+                isTopElement
+                title="General Details"
+                description="Comprehensive personal information"
+              />
+            </Grid.Col>
+
+            <Grid.Col span={{ base: 12, lg: 8 }}>
+              <ImageUpload
+                {...form.getInputProps("image")}
+                label="Profile Picture"
+                description="Upload a recent passport-size photo"
+                onChange={(image: any) => form.setFieldValue("image", image)}
+                value={form.getValues()?.image}
+              />
+            </Grid.Col>
+          </Grid>
+
           <Stack gap="xs">
-            <FormElement.SectionTitle
-              isTopElement
-              title="General Details"
-              description="Comprehensive personal information"
-            />
-
-            <ImageUpload
-              {...form.getInputProps("image")}
-              label="Profile Picture"
-              description="Upload a recent passport-size photo"
-              onChange={(image: any) => form.setFieldValue("image", image)}
-              value={form.getValues()?.image}
-            />
-
             <SimpleGrid cols={2} spacing="xs">
               <TextInput
                 label="Furigana"

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 //next
 
 //mantine
@@ -149,31 +149,6 @@ export function StepBackground() {
           />
         </Stack>
 
-        <Stack gap={0}>
-          <TextInput
-            label="Religion"
-            placeholder="e.g. Hinduism"
-            description="Enter your religion"
-            {...form.getInputProps("religion")}
-            styles={styles.top}
-            leftSection={
-              <Text size="xs" fw={800}>
-                EN
-              </Text>
-            }
-          />
-          <TextInput
-            placeholder="e.g. ヒンドゥー教"
-            {...form.getInputProps("jp_religion")}
-            styles={styles.bot}
-            leftSection={
-              <Text size="xs" fw={800}>
-                JP
-              </Text>
-            }
-          />
-        </Stack>
-
         <DateInput
           label="Residence Expiry"
           placeholder="e.g. 2026-04-01"
@@ -186,11 +161,21 @@ export function StepBackground() {
             label="Drinks Alcohol"
             description="Indicate if you consume alcoholic beverages"
             {...form.getInputProps("drinks_alcohol", { type: "checkbox" })}
+            styles={{
+              label: {
+                fontSize: "var(--mantine-font-size-xs)",
+              },
+            }}
           />
           <Switch
             label="Smokes"
             description="Indicate if you smoke tobacco products"
             {...form.getInputProps("smokes", { type: "checkbox" })}
+            styles={{
+              label: {
+                fontSize: "var(--mantine-font-size-xs)",
+              },
+            }}
           />
         </SimpleGrid>
 

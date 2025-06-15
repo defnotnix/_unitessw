@@ -91,7 +91,7 @@ export function StepStory() {
             label="Personal Traits"
             placeholder="e.g. Responsible, punctual, team player"
             description="Positive qualities that describe the person"
-            {...form.getInputProps("motivation_statement")}
+            {...form.getInputProps("personal_traits")}
             styles={styles.top}
             leftSection={
               <Text size="xs" fw={800}>

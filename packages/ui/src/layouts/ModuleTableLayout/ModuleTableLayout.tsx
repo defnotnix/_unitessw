@@ -13,7 +13,11 @@ import {
   Breadcrumbs,
   Button,
   ButtonGroup,
+  Center,
+  CheckIcon,
+  Container,
   Divider,
+  Grid,
   Group,
   HoverCard,
   LoadingOverlay,
@@ -34,8 +38,10 @@ import { useDisclosure, useTimeout } from "@mantine/hooks";
 //icons
 import {
   ArrowLeft,
+  ArrowLeftIcon,
   ArrowsClockwise,
   CaretDown,
+  CaretDownIcon,
   Check,
   DotsThree,
   DotsThreeVertical,
@@ -43,11 +49,13 @@ import {
   Eye,
   GearSix,
   House,
+  HouseIcon,
   MagnifyingGlass,
   PaintBucket,
   Pen,
   Plus,
   SlidersHorizontal,
+  SmileyNervousIcon,
   Trash,
   Warning,
 } from "@phosphor-icons/react";
@@ -69,6 +77,7 @@ export function ModuleTableLayout({
    * Breadcrumb navigation links
    */
   bread = [],
+  tabs = [],
 
   /**
    * Module information
@@ -114,7 +123,6 @@ export function ModuleTableLayout({
    * Tab settings
    */
   enableTabs = false,
-  tabs = [],
 
   /**
    * Pagination settings
@@ -427,185 +435,158 @@ export function ModuleTableLayout({
           }
         }}
       >
-        <Paper
-          px="md"
-          pt="md"
-          pb="lg"
-          bg="linear-gradient(to right, var(--mantine-color-gray-0), var(--mantine-color-brand-0))"
-        >
-          <Breadcrumbs
-            separatorMargin={4}
-            separator={
-              <Text size="xs" c="gray.5">
-                /
-              </Text>
-            }
-          >
-            <House
-              weight="duotone"
-              size={12}
-              color="var(--mantine-color-brand-5)"
-            />
-            {bread.map((breadinfo: any, index: number) => (
-              <Anchor
-                size="xs"
-                c={index == bread.length - 1 ? "dark.9" : "gray.5"}
-                fw={600}
-                key={index}
-              >
-                {breadinfo.label}
-              </Anchor>
-            ))}
-          </Breadcrumbs>
-
-          <Space h="md" />
-          <Group justify="space-between" align="flex-end">
-            <Group gap="sm">
-              {withBackButton && (
-                <ActionIcon
-                  onClick={() => {
-                    Router.back();
-                  }}
-                >
-                  <ArrowLeft />
-                </ActionIcon>
-              )}
-              <div>
-                <Text size="xl" fw={700}>
-                  Manage {moduleName}
-                </Text>
-                <Text size="sm" opacity={0.5}>
-                  {moduleDescription}
-                </Text>
-              </div>
-            </Group>
-
-            <Group gap={4} visibleFrom="lg">
-              {/* <HoverCard shadow="md" withArrow>
-                <HoverCard.Target>
-                  <ActionIcon
-                    size={28}
-                    onClick={() => {
-                      setEnableRowStyle(!enableRowStyle);
-                    }}
-                    variant={enableRowStyle ? "filled" : "light"}
-                  >
-                    <PaintBucket />
-                  </ActionIcon>
-                </HoverCard.Target>
-                <HoverCard.Dropdown>
-                  <Text size="xs" ta="center">
-                    Row Color :{" "}
-                    <b
-                      style={{
-                        color: enableRowStyle
-                          ? "var(--mantine-color-teal-6)"
-                          : "var(--mantine-color-orange-6)",
+        <Paper>
+          <Container py="sm">
+            <Grid align="center">
+              <Grid.Col span={{ base: 12, lg: 3 }}>
+                <Group gap="xs">
+                  {withBackButton && (
+                    <ActionIcon
+                      onClick={() => {
+                        Router.back();
                       }}
                     >
-                      {enableRowStyle ? "Enabled" : "Disabled"}
-                    </b>
+                      <ArrowLeftIcon />
+                    </ActionIcon>
+                  )}
+
+                  <Text size="xs" fw={700}>
+                    Manage {moduleName}
                   </Text>
-                </HoverCard.Dropdown>
-              </HoverCard> */}
+                  <Text size="xs" fw={700} opacity={0.6} c="gray.9">
+                    {moduleDescription.substring(0, 30)}
+                  </Text>
+                </Group>
+              </Grid.Col>
 
-              <TextInput
-                rightSection={<MagnifyingGlass />}
-                size="xs"
-                placeholder="Search"
-                w={{ base: "100%", md: "400" }}
-                onChange={(e) => {
-                  setSearchVal(e.target.value);
-                }}
-              />
+              <Grid.Col span={{ base: 12, lg: 9 }}>
+                <Group gap={4} visibleFrom="lg" justify="flex-end">
+                  {tabs.length > 0 && (
+                    <>
+                      <ButtonGroup>
+                        {tabs.map((tab, index) => {
+                          return (
+                            <Button
+                              leftSection={
+                                tabActive == index ? (
+                                  <CheckIcon size={8} />
+                                ) : null
+                              }
+                              color={tabActive === index ? "dark" : "gray"}
+                              key={index}
+                              size="xs"
+                              variant={index === tabActive ? "filled" : "light"}
+                              onClick={() => {
+                                dispatch({
+                                  type: "SET_TAB_ACTIVE",
+                                  payload: index,
+                                });
+                              }}
+                            >
+                              {tab.label}
+                            </Button>
+                          );
+                        })}
+                      </ButtonGroup>
 
-              {withFilter && (
-                <Button
-                  leftSection={<SlidersHorizontal size={12} />}
-                  variant="light"
-                  size="xs"
-                >
-                  Filters
-                </Button>
-              )}
+                      <Divider orientation="vertical" opacity={0.5} mx="sm" />
+                    </>
+                  )}
 
-              {withColumnSelect && (
-                <Button
-                  leftSection={<GearSix size={12} />}
-                  variant="light"
-                  size="xs"
-                >
-                  Customize
-                </Button>
-              )}
-
-              <Menu
-                withArrow
-                styles={{
-                  item: {
-                    fontSize: "var(--mantine-font-size-xs)",
-                  },
-                }}
-              >
-                <Menu.Target>
-                  <Button
-                    variant="light"
-                    rightSection={<CaretDown />}
-                    disabled={isFetching}
+                  <TextInput
+                    rightSection={<MagnifyingGlass />}
                     size="xs"
+                    placeholder="Search"
+                    w={{ base: "100%", md: "400" }}
+                    onChange={(e) => {
+                      setSearchVal(e.target.value);
+                    }}
+                  />
+
+                  {withFilter && (
+                    <Button
+                      leftSection={<SlidersHorizontal size={12} />}
+                      variant="light"
+                      size="xs"
+                    >
+                      Filters
+                    </Button>
+                  )}
+
+                  {withColumnSelect && (
+                    <Button
+                      leftSection={<GearSix size={12} />}
+                      variant="light"
+                      size="xs"
+                    >
+                      Customize
+                    </Button>
+                  )}
+
+                  <Menu
+                    withArrow
+                    styles={{
+                      item: {
+                        fontSize: "var(--mantine-font-size-xs)",
+                      },
+                    }}
                   >
-                    Actions
-                  </Button>
-                </Menu.Target>
-                <Menu.Dropdown w={200}>
-                  {/* <Menu.Label>Bulk Actions</Menu.Label>
+                    <Menu.Target>
+                      <Button variant="light" disabled={isFetching} size="xs">
+                        <CaretDown />
+                      </Button>
+                    </Menu.Target>
+                    <Menu.Dropdown w={200}>
+                      {/* <Menu.Label>Bulk Actions</Menu.Label>
                   <Menu.Item leftSection={<Pen />}>Bulk Edit</Menu.Item>
                   <Menu.Item leftSection={<Trash />}>Bulk Delete</Menu.Item>
                   <Menu.Divider /> */}
-                  <Menu.Label>General</Menu.Label>
+                      <Menu.Label>General</Menu.Label>
 
-                  <Menu.Item
-                    leftSection={<ArrowsClockwise />}
-                    onClick={() => {
-                      refetch();
-                    }}
-                  >
-                    Reload Table
-                  </Menu.Item>
-                  <Menu.Divider />
-                  <Menu.Label>Export to CSV</Menu.Label>
-                  <Menu.Item leftSection={<Export />}>Export All</Menu.Item>
-                  <Menu.Item leftSection={<Check />}>Export Selected</Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
+                      <Menu.Item
+                        leftSection={<ArrowsClockwise />}
+                        onClick={() => {
+                          refetch();
+                        }}
+                      >
+                        Reload Table
+                      </Menu.Item>
+                      <Menu.Divider />
+                      <Menu.Label>Export to CSV</Menu.Label>
+                      <Menu.Item leftSection={<Export />}>Export All</Menu.Item>
+                      <Menu.Item leftSection={<Check />}>
+                        Export Selected
+                      </Menu.Item>
+                    </Menu.Dropdown>
+                  </Menu>
 
-              <ButtonGroup>
-                <Button
-                  disabled={disableAdd}
-                  variant="filled"
-                  size="xs"
-                  leftSection={<Plus />}
-                  onClick={() => {
-                    if (customCreate) {
-                      customCreate(records);
-                    } else {
-                      if (hasModalForms) {
-                        setActiveEdit(null);
-                        handlersFormModal.open();
-                        if (onModalNewOpen) {
-                          onModalNewOpen({});
+                  <ButtonGroup>
+                    <Button
+                      disabled={disableAdd}
+                      variant="filled"
+                      size="xs"
+                      leftSection={<Plus />}
+                      onClick={() => {
+                        if (customCreate) {
+                          customCreate(records);
+                        } else {
+                          if (hasModalForms) {
+                            setActiveEdit(null);
+                            handlersFormModal.open();
+                            if (onModalNewOpen) {
+                              onModalNewOpen({});
+                            }
+                          } else {
+                            Router.push(
+                              customNewUrl ? customNewUrl : Pathname + "/new"
+                            );
+                          }
                         }
-                      } else {
-                        Router.push(
-                          customNewUrl ? customNewUrl : Pathname + "/new"
-                        );
-                      }
-                    }
-                  }}
-                >
-                  {customCreateText || "Add " + moduleTerm || "Item"}
-                </Button>
-                {/* <Button
+                      }}
+                    >
+                      {customCreateText || "Add " + moduleTerm || "Item"}
+                    </Button>
+                    {/* <Button
                   disabled={!withAddExtra}
                   variant="filled"
                   size="xs"
@@ -614,94 +595,16 @@ export function ModuleTableLayout({
                 >
                   <CaretDown />
                 </Button> */}
-              </ButtonGroup>
-            </Group>
-          </Group>
-
-          <Stack gap="xs" hiddenFrom="lg" mt="sm">
-            <TextInput
-              rightSection={<MagnifyingGlass />}
-              size="xs"
-              placeholder="Search"
-              w={{ base: "100%", md: "auto" }}
-              onChange={(e) => {
-                setSearchVal(e.target.value);
-              }}
-            />
-
-            <SimpleGrid cols={2} spacing={4} hiddenFrom="lg">
-              <Menu
-                withArrow
-                styles={{
-                  item: {
-                    fontSize: "var(--mantine-font-size-xs)",
-                  },
-                }}
-              >
-                <Menu.Target>
-                  <Button
-                    variant="light"
-                    rightSection={<CaretDown />}
-                    disabled={isFetching}
-                    size="xs"
-                  >
-                    Actions
-                  </Button>
-                </Menu.Target>
-                <Menu.Dropdown w={200}>
-                  <Menu.Label>Bulk Actions</Menu.Label>
-                  <Menu.Item leftSection={<Pen />}>Bulk Edit</Menu.Item>
-                  <Menu.Item leftSection={<Trash />}>Bulk Delete</Menu.Item>
-                  <Menu.Divider />
-                  <Menu.Label>General</Menu.Label>
-
-                  <Menu.Item
-                    leftSection={<ArrowsClockwise />}
-                    onClick={() => {
-                      refetch();
-                    }}
-                  >
-                    Reload Table
-                  </Menu.Item>
-                  <Menu.Divider />
-                  <Menu.Label>Export to CSV</Menu.Label>
-                  <Menu.Item leftSection={<Export />}>Export All</Menu.Item>
-                  <Menu.Item leftSection={<Check />}>Export Selected</Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-
-              <Button
-                disabled={disableAdd}
-                variant="filled"
-                size="xs"
-                leftSection={<Plus />}
-                onClick={() => {
-                  if (customCreate) {
-                    customCreate(records);
-                  } else {
-                    if (hasModalForms) {
-                      setActiveEdit(null);
-                      handlersFormModal.open();
-                      if (onModalNewOpen) {
-                        onModalNewOpen({});
-                      }
-                    } else {
-                      Router.push(
-                        customNewUrl ? customNewUrl : Pathname + "/new"
-                      );
-                    }
-                  }
-                }}
-              >
-                {customCreateText || "Add " + moduleTerm || "Item"}
-              </Button>
-            </SimpleGrid>
-          </Stack>
+                  </ButtonGroup>
+                </Group>
+              </Grid.Col>
+            </Grid>
+          </Container>
         </Paper>
 
-        {!contentPreTable && <Divider mb={!enableTabs ? "md" : 0} />}
+        {/* {!contentPreTable && <Divider mb={!enableTabs ? "md" : 0} />} */}
 
-        {enableTabs && (
+        {/* {enableTabs && (
           <>
             <Group
               justify="space-between"
@@ -740,7 +643,7 @@ export function ModuleTableLayout({
 
             <Divider mb="sm" />
           </>
-        )}
+        )} */}
 
         {contentPreTable}
 
@@ -751,77 +654,103 @@ export function ModuleTableLayout({
             handleDelete={handleDelete}
           />
         ) : (
-          <Paper radius="md" withBorder h={"calc(100vh - 205px)"} mx="md">
-            <DataTable
-              //Loading
-              fetching={isFetching}
-              styles={{
-                header: {
-                  background: "var(--mantine-color-gray-1)",
-                },
-              }}
-              //fonts
-              fz="xs"
-              fw={500}
-              // styling
-              highlightOnHover
-              // spacing
-              verticalSpacing="xs"
-              horizontalSpacing="md"
-              //Data
-              idAccessor={idAccessor}
-              records={forceFilter ? forceFilter(records) : records}
-              columns={[
-                {
-                  accessor: "#",
-                  title: "#",
-                  width: 50,
-                  render: (row, index) => <>{index + 1}</>,
-                },
-                ...columns,
-                ...tableActions,
-              ]}
-              //Row Styling
-              rowColor={rowColor}
-              rowBackgroundColor={rowBackgroundColor}
-              rowStyle={enableRowStyle ? rowStyle : undefined}
-              //Sorting
-              sortStatus={sortStatus}
-              onSortStatusChange={setSortStatus}
-              //Pagination
-              totalRecords={
-                hasServerSearch ? totalPages * pageSize : records.length
-              }
-              page={page}
-              onPageChange={(p) => {
-                dispatch({
-                  type: "SET_PAGE",
-                  payload: p,
-                });
-              }}
-              // > Pagination Size
-              recordsPerPage={pageSize}
-              recordsPerPageOptions={pageSizes}
-              onRecordsPerPageChange={(e) => {
-                dispatch({
-                  type: "SET_PAGE_DATA",
-                  payload: {
-                    pageSize: e,
-                    page: 1,
+          <Container py="md">
+            <Paper radius="md" withBorder h={"calc(100vh - 205px)"}>
+              <DataTable
+                emptyState={
+                  <Center>
+                    <Stack>
+                      <Center>
+                        <SmileyNervousIcon
+                          size={48}
+                          weight="duotone"
+                          color="var(--mantine-color-brand-2)"
+                        />
+                      </Center>
+
+                      <div>
+                        <Text size="lg" c="gray.4" ta="center">
+                          Seems like you have not added any{" "}
+                          {moduleConfig.moduleTerm} yet.
+                        </Text>
+                        <Text size="xs" c="gray.4" ta="center">
+                          Start by adding from "New {moduleConfig.moduleTerm}"
+                          above
+                        </Text>
+                      </div>
+                    </Stack>
+                  </Center>
+                }
+                //Loading
+                fetching={isFetching}
+                styles={{
+                  header: {
+                    background: "var(--mantine-color-gray-0)",
                   },
-                });
-              }}
-              // Selection handling
-              selectedRecords={selectedRecords}
-              onSelectedRecordsChange={(e) => {
-                dispatch({
-                  type: "SET_SELECTED_RECORDS",
-                  payload: e,
-                });
-              }}
-              selectionTrigger="cell"
-            />
-          </Paper>
+                }}
+                //fonts
+                fz="xs"
+                fw={500}
+                // styling
+                highlightOnHover
+                // spacing
+                verticalSpacing="xs"
+                horizontalSpacing="md"
+                //Data
+                idAccessor={idAccessor}
+                records={forceFilter ? forceFilter(records) : records}
+                columns={[
+                  {
+                    accessor: "#",
+                    title: "#",
+                    width: 50,
+                    render: (row, index) => <>{index + 1}</>,
+                  },
+                  ...columns,
+                  ...tableActions,
+                ]}
+                //Row Styling
+                rowColor={rowColor}
+                rowBackgroundColor={rowBackgroundColor}
+                rowStyle={enableRowStyle ? rowStyle : undefined}
+                //Sorting
+                sortStatus={sortStatus}
+                onSortStatusChange={setSortStatus}
+                //Pagination
+                totalRecords={
+                  hasServerSearch ? totalPages * pageSize : records.length
+                }
+                page={page}
+                onPageChange={(p) => {
+                  dispatch({
+                    type: "SET_PAGE",
+                    payload: p,
+                  });
+                }}
+                // > Pagination Size
+                recordsPerPage={pageSize}
+                recordsPerPageOptions={pageSizes}
+                onRecordsPerPageChange={(e) => {
+                  dispatch({
+                    type: "SET_PAGE_DATA",
+                    payload: {
+                      pageSize: e,
+                      page: 1,
+                    },
+                  });
+                }}
+                // Selection handling
+                selectedRecords={selectedRecords}
+                onSelectedRecordsChange={(e) => {
+                  dispatch({
+                    type: "SET_SELECTED_RECORDS",
+                    payload: e,
+                  });
+                }}
+                selectionTrigger="cell"
+              />
+            </Paper>
+          </Container>
         )}
 
         {/* Modal for creating new items */}

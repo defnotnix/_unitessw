@@ -28,7 +28,9 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@phosphor-icons/react";
-import { DateInput, DatePickerInput } from "@mantine/dates";
+import { DateInput, DatePickerInput, YearPickerInput } from "@mantine/dates";
+import { modals } from "@mantine/modals";
+import { apiEducation } from "../../module.api";
 //mantine
 
 //icons
@@ -131,7 +133,31 @@ export function StepAcademics() {
         {form.values.education?.map((_: any, index: any) => (
           <div key={index} style={{ position: "relative" }}>
             <ActionIcon
-              onClick={() => form.removeListItem("education", index)}
+              onClick={() => {
+                if (_.id) {
+                  modals.openConfirmModal({
+                    title: "Are you sure?",
+                    children: (
+                      <Text size="sm">
+                        Are you sure you want to delete this record?
+                      </Text>
+                    ),
+                    labels: {
+                      confirm: "Delete",
+                      cancel: "Cancel",
+                    },
+                    confirmProps: {
+                      color: "red",
+                    },
+                    onConfirm: () => {
+                      apiEducation.delete(_.id);
+                      form.removeListItem("education", index);
+                    },
+                  });
+                } else {
+                  form.removeListItem("education", index);
+                }
+              }}
               size="md"
               variant="light"
               color="red"
@@ -194,12 +220,14 @@ export function StepAcademics() {
               </Stack>
 
               <Stack gap={0}>
-                <TextInput
+                <YearPickerInput
                   placeholder="Select start date e.g. 2015"
                   {...form.getInputProps(`education.${index}.start_date`)}
                   styles={styles.top}
                 />
-                <TextInput
+                <YearPickerInput
+                  disabled={!form.getValues().education[index].start_date}
+                  minDate={form.getValues().education[index].start_date}
                   placeholder="Select end date e.g. 2018"
                   {...form.getInputProps(`education.${index}.end_date`)}
                   styles={styles.bot}

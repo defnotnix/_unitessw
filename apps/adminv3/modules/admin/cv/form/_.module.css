@@ -1,0 +1,4 @@
+.stepcard:hover {
+  background: var(--mantine-color-gray-0) !important;
+  cursor: pointer;
+}

@@ -167,15 +167,13 @@ export function FormHandler({
     onError: (err: any) => {
       let errObject = err.object?.response?.data;
 
-      console.log(err, errObject);
-
       if (onSubmitError) {
         onSubmitError(formType == "edit" ? form.getValues() : err);
       }
 
-      switch (errObject.type) {
-        case "Validation Error":
-          form.setErrors(errObject);
+      switch (errObject.error_alias) {
+        case "ValidationError":
+          form.setErrors(errObject.details);
           triggerNotification.form.isError({
             title: "Whoops! Hold on a Moment 🖐️",
             message:

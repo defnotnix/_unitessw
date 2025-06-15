@@ -11,10 +11,7 @@ import { _Form as Form } from "../../form/form";
 //formconfig
 import { formProps } from "../../form/form.config";
 //api
-import { createRecord } from "../../module.api";
-import { ModuleFormLayout } from "@vframework/ui";
-import { moduleConfig } from "../../module.config";
-import { RBACCheck } from "@/components/RBACCheck";
+
 import { ModuleOnboarding } from "./nform";
 
 export function _New() {

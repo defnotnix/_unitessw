@@ -40,6 +40,7 @@ type PropTabs = {
   label: string;
   titleLabel?: string;
   onChange?: (id: any) => void;
+  getApi?: any;
   count?: number | string;
 };
 
@@ -90,6 +91,7 @@ type TableStyle = {
  */
 export type PropModuleTableLayout = {
   bread?: { label?: string; url?: string }[];
+
   moduleName?: string;
   moduleDescription?: string;
   moduleTerm?: string;
