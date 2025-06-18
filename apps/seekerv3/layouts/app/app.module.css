@@ -1,0 +1,8 @@
+.body {
+  min-height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    var(--mantine-color-indigo-8),
+    var(--mantine-color-brand-9)
+  );
+}
