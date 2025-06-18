@@ -189,7 +189,18 @@ export function _CV() {
   const [cvColor, setCvColor] = useState<any>("brand");
 
   const contentRef = useRef<HTMLDivElement>(null);
-  const reactToPrintFn = useReactToPrint({ contentRef });
+
+  const [printSt, setPrintSt] = useState(false);
+
+  const reactToPrintFn = useReactToPrint({
+    contentRef,
+    onBeforePrint: async () => {
+      setPrintSt(true);
+    },
+    onAfterPrint: () => {
+      setPrintSt(false);
+    },
+  });
 
   return (
     <>
@@ -363,27 +374,57 @@ export function _CV() {
         <Paper withBorder>
           <div ref={contentRef}>
             {cvType == "1" && (
-              <CV1 color={cvColor} data={demoData} language={language} />
+              <CV1
+                color={cvColor}
+                data={demoData}
+                language={language}
+                printSt={printSt}
+              />
             )}
 
             {cvType == "2" && (
-              <CV2 color={cvColor} data={demoData} language={language} />
+              <CV2
+                color={cvColor}
+                data={demoData}
+                language={language}
+                printSt={printSt}
+              />
             )}
 
             {cvType == "3" && (
-              <CV3 color={cvColor} data={demoData} language={language} />
+              <CV3
+                color={cvColor}
+                data={demoData}
+                language={language}
+                printSt={printSt}
+              />
             )}
 
             {cvType == "4" && (
-              <CV4 color={cvColor} data={demoData} language={language} />
+              <CV4
+                color={cvColor}
+                data={demoData}
+                language={language}
+                printSt={printSt}
+              />
             )}
 
             {cvType == "5" && (
-              <CV5 color={cvColor} data={demoData} language={language} />
+              <CV5
+                color={cvColor}
+                data={demoData}
+                language={language}
+                printSt={printSt}
+              />
             )}
 
             {cvType == "6" && (
-              <CV6 color={cvColor} data={demoData} language={language} />
+              <CV6
+                color={cvColor}
+                data={demoData}
+                language={language}
+                printSt={printSt}
+              />
             )}
           </div>
         </Paper>

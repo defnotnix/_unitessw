@@ -7,10 +7,8 @@ import React from "react";
 import {} from "@mantine/core";
 import { FormHandler } from "@vframework/core";
 //component
-import { _Form as Form } from "../../form/form";
-//formconfig
-import { formProps } from "../../form/form.config";
-//api
+import { _Form } from "../../form";
+
 import { createRecord } from "../../module.api";
 import { ModuleFormLayout } from "@vframework/ui";
 import { moduleConfig } from "../../module.config";
@@ -29,18 +27,5 @@ export function _New() {
 
   // * ANIMATIONS
 
-  return (
-    <RBACCheck showStaff>
-      <FormHandler {...formProps} apiSubmit={createRecord}>
-        <ModuleFormLayout
-          {...moduleConfig}
-          size="md"
-          withStepper
-          steps={formProps.steps}
-        >
-          <Form />
-        </ModuleFormLayout>
-      </FormHandler>
-    </RBACCheck>
-  );
+  return <_Form />;
 }

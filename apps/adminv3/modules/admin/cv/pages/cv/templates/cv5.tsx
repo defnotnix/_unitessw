@@ -149,10 +149,12 @@ export function CV5({
   color = "brand",
   data,
   language,
+  printSt,
 }: {
   color: any;
   data: any;
   language: any;
+  printSt: boolean;
 }) {
   useEffect(() => {}, [color]);
 
@@ -163,7 +165,7 @@ export function CV5({
           style={{
             borderRadius: ".1in",
           }}
-          span={{ base: 12, lg: 4 }}
+          span={4}
           p="xl"
           bg={`linear-gradient(to top, var(--mantine-color-${color}-5) 0%, var(--mantine-color-${color}-8) 100%)`}
           h="11.7in"
@@ -188,15 +190,17 @@ export function CV5({
               }
             />
 
-            <AspectRatio ratio={16 / 9} mt={-16}>
-              <iframe
-                src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"
-                title="YouTube video player"
-                style={{ border: 0 }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </AspectRatio>
+            {!printSt && (
+              <AspectRatio ratio={16 / 9} mt={-16}>
+                <iframe
+                  src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"
+                  title="YouTube video player"
+                  style={{ border: 0 }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </AspectRatio>
+            )}
 
             <div>
               <Text size="xs" fw={800} c="gray.0">
@@ -219,7 +223,7 @@ export function CV5({
           </Stack>
         </Grid.Col>
 
-        <Grid.Col span={{ base: 12, lg: 8 }} p="xl">
+        <Grid.Col span={8} p="xl">
           <Text size="xs" fw={800}>
             {language === "en" ? "About Me" : "自己紹介"}
           </Text>

@@ -152,10 +152,12 @@ export function CV4({
   color = "brand",
   data,
   language,
+  printSt,
 }: {
   color: any;
   data: any;
   language: any;
+  printSt: boolean;
 }) {
   useEffect(() => {}, [color]);
 
@@ -222,7 +224,7 @@ export function CV4({
             </Grid>
           </Paper>
         </Grid.Col>
-        <Grid.Col span={{ base: 12, lg: 8 }} p="xl">
+        <Grid.Col span={8} p="xl">
           <Text size="xs" fw={800}>
             Academics
           </Text>
@@ -329,7 +331,7 @@ export function CV4({
         </Grid.Col>
 
         <Grid.Col
-          span={{ base: 12, lg: 4 }}
+          span={4}
           p="xl"
           //  bg={color + ".0"}
           h="10.35in"
@@ -356,15 +358,17 @@ export function CV4({
 
             <Divider />
 
-            <AspectRatio ratio={16 / 9}>
-              <iframe
-                src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"
-                title="YouTube video player"
-                style={{ border: 0 }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </AspectRatio>
+            {!printSt && (
+              <AspectRatio ratio={16 / 9} mt={-16}>
+                <iframe
+                  src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"
+                  title="YouTube video player"
+                  style={{ border: 0 }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </AspectRatio>
+            )}
           </Stack>
         </Grid.Col>
       </Grid>

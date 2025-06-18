@@ -152,10 +152,12 @@ export function CV3({
   color = "brand",
   data,
   language,
+  printSt,
 }: {
   color: any;
   data: any;
   language: any;
+  printSt: boolean;
 }) {
   useEffect(() => {}, [color]);
 
@@ -164,7 +166,7 @@ export function CV3({
       <Paper radius={0} pos="absolute" w="100%" h=".05in" bg={color + ".6"} />
 
       <Grid gutter={0}>
-        <Grid.Col span={{ base: 12, lg: 8 }} px="xl" py=".5in">
+        <Grid.Col span={8} px="xl" py=".5in">
           <Group wrap="nowrap">
             <Avatar
               src="https://r2.erweima.ai/imgcompressed/compressed_37c94e20cb613116de36841ba02309d2.webp"
@@ -302,13 +304,7 @@ export function CV3({
           </Table>
         </Grid.Col>
 
-        <Grid.Col
-          span={{ base: 12, lg: 4 }}
-          p="xl"
-          bg={color + ".0"}
-          h="10.35in"
-          mt="1.35in"
-        >
+        <Grid.Col span={4} p="xl" bg={color + ".0"} h="10.35in" mt="1.35in">
           <Stack gap="s">
             <div>
               <Text size="xs" fw={800}>
@@ -355,15 +351,17 @@ export function CV3({
 
             <Divider color={color + ".4"} />
 
-            <AspectRatio ratio={16 / 9}>
-              <iframe
-                src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"
-                title="YouTube video player"
-                style={{ border: 0 }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </AspectRatio>
+            {!printSt && (
+              <AspectRatio ratio={16 / 9} mt={-16}>
+                <iframe
+                  src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"
+                  title="YouTube video player"
+                  style={{ border: 0 }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </AspectRatio>
+            )}
           </Stack>
         </Grid.Col>
       </Grid>

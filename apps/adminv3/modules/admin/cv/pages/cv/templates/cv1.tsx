@@ -149,10 +149,12 @@ export function CV1({
   color = "brand",
   data,
   language,
+  printSt,
 }: {
   color: any;
   data: any;
   language: any;
+  printSt: boolean;
 }) {
   useEffect(() => {}, [color]);
 
@@ -180,15 +182,17 @@ export function CV1({
               }
             />
 
-            <AspectRatio ratio={16 / 9} mt={-16}>
-              <iframe
-                src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"
-                title="YouTube video player"
-                style={{ border: 0 }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </AspectRatio>
+            {!printSt && (
+              <AspectRatio ratio={16 / 9} mt={-16}>
+                <iframe
+                  src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"
+                  title="YouTube video player"
+                  style={{ border: 0 }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </AspectRatio>
+            )}
 
             <div>
               <Text size="xs" fw={800}>

@@ -27,6 +27,31 @@ export const navItems: PropAdminNavItems[] = [
     icon: ChartDonutIcon,
     value: "/admin",
   },
+
+  {
+    label: "Accounts",
+    icon: UserIcon,
+    value: "/admin/accounts",
+    children: [
+      {
+        label: "Admin Accounts",
+        value: "/admin/accounts/admin",
+      },
+      {
+        label: "Staff Accounts",
+        value: "/admin/accounts/staff",
+      },
+      {
+        label: "Seeker Accounts",
+        value: "/admin/accounts/seeker",
+      },
+      {
+        label: "Account Roles & Permissions",
+        value: "/admin/accounts/role",
+      },
+    ],
+  },
+
   {
     label: "Job Category",
     icon: BagIcon,
@@ -38,22 +63,17 @@ export const navItems: PropAdminNavItems[] = [
     value: "/admin/applicants",
     children: [
       {
-        label: "All Applicants",
-        value: "/admin/applicants",
+        label: "Applicants",
+        value: "/admin/applicants/all",
       },
       {
-        label: "Applicant Reqeuests",
+        label: "Applicant Requests",
         value: "/admin/applicants",
       },
       {
         label: "Applicant Bookings",
         value: "/admin/applicants",
       },
-      {
-        label: "Active Applicants",
-        value: "/admin/applicants",
-      },
-
     ],
   },
 
@@ -61,21 +81,5 @@ export const navItems: PropAdminNavItems[] = [
     label: "CV",
     icon: PaperPlaneTiltIcon,
     value: "/admin/cv",
-  },
-
-  {
-    label: "Seekers",
-    icon: EyeIcon,
-    value: "/admin/seekers",
-  },
-  {
-    label: "Accounts",
-    icon: UserIcon,
-    value: "/admin/accounts",
-  },
-  {
-    label: "Vacancy",
-    icon: SpeakerHifiIcon,
-    value: "/admin/vacancy",
   },
 ];

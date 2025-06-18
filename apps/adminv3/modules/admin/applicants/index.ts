@@ -1,5 +1,5 @@
 import { ListDashes } from "@phosphor-icons/react";
-import { _Edit } from "./pages/edit";
+
 import { _List } from "./pages/list";
 import { _ListPublished } from "./pages/list_published";
 import { _ListRequest } from "./pages/list_request";
@@ -15,7 +15,7 @@ const Module: any = {
   ListDeleted: _ListDeleted,
   ListBooked: _ListBooked,
   New: _New,
-  Edit: _Edit,
+  Edit: _New,
   Profile: _Profile,
 };
 

@@ -150,17 +150,19 @@ export function CV2({
   color = "brand",
   data,
   language,
+  printSt,
 }: {
   color: any;
   data: any;
   language: any;
+  printSt: boolean;
 }) {
   useEffect(() => {}, [color]);
 
   return (
     <Paper h={"11.7in"} w={"8.5in"} pos="relative">
       <Grid gutter={0}>
-        <Grid.Col span={{ base: 12, lg: 8 }} p="xl">
+        <Grid.Col span={8} p="xl">
           <SimpleGrid cols={2}>
             <Text size="2.5rem" fw={800}>
               {language === "en" ? data?.full_name : data?.furigana}
@@ -174,8 +176,7 @@ export function CV2({
             </Text>
           </SimpleGrid>
 
-           <Divider my="md" />
-
+          <Divider my="md" />
 
           <Text size="xs" fw={800}>
             {language === "en" ? "About Me" : "自己紹介"}
@@ -320,12 +321,7 @@ export function CV2({
           </Table>
         </Grid.Col>
 
-        <Grid.Col
-          span={{ base: 12, lg: 4 }}
-          p="xl"
-          bg={color + ".1"}
-          h="11.7in"
-        >
+        <Grid.Col span={4} p="xl" bg={color + ".1"} h="11.7in">
           <Stack gap="xl">
             <Image
               src={
@@ -333,15 +329,17 @@ export function CV2({
               }
             />
 
-            <AspectRatio ratio={16 / 9} mt={-16}>
-              <iframe
-                src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"
-                title="YouTube video player"
-                style={{ border: 0 }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </AspectRatio>
+            {!printSt && (
+              <AspectRatio ratio={16 / 9} mt={-16}>
+                <iframe
+                  src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"
+                  title="YouTube video player"
+                  style={{ border: 0 }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </AspectRatio>
+            )}
 
             <div>
               <Text size="xs" fw={800}>

@@ -337,7 +337,7 @@ export function ModuleAdminDashboard() {
                 </SimpleGrid>
               </Paper>
 
-              <Paper radius={0} bg="brand.0" p="sm">
+              <Paper radius={0} bg="brand.0" p="sm" withBorder>
                 <SimpleGrid cols={2} spacing="xs">
                   <div>
                     <Group gap="xs">
@@ -371,7 +371,7 @@ export function ModuleAdminDashboard() {
                   </Group>
                 </SimpleGrid>
               </Paper>
-              <Paper radius={0} p="sm">
+              <Paper radius={0} p="sm" withBorder>
                 <SimpleGrid cols={2} spacing="xs">
                   <div>
                     <Group gap="xs">
@@ -406,7 +406,7 @@ export function ModuleAdminDashboard() {
                 </SimpleGrid>
               </Paper>
 
-              <Paper radius={0} p="sm" bg="brand.0">
+              <Paper radius={0} p="sm" bg="brand.0" withBorder>
                 <SimpleGrid cols={2} spacing="xs">
                   <div>
                     <Group gap="xs">
