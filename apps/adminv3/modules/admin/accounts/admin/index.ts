@@ -4,4 +4,4 @@ const Module: any = {
   List: _List,
 };
 
-export { Module as ModuleAccounts };
+export { Module as ModuleAccountAdmin };

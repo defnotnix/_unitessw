@@ -22,7 +22,7 @@ export function RBACCheck({
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("kcatoken");
+    const token = sessionStorage.getItem("Unite SSWtoken");
     if (token) {
       try {
         setSessionData(jwtDecode<SessionData>(token));

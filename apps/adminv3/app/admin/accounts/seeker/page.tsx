@@ -1,2 +1,2 @@
-import { ModuleSeekers } from "@/modules/admin/seekers";
-export default ModuleSeekers.List;
+import { ModuleAccountSeeker } from "@/modules/admin/accounts/seeker";
+export default ModuleAccountSeeker.List;

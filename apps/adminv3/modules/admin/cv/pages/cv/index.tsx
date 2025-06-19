@@ -32,6 +32,7 @@ import { CV5 } from "./templates/cv5";
 import { CV6 } from "./templates/cv6";
 
 import { useReactToPrint } from "react-to-print";
+import { CVCorp } from "./templates/cv-corp";
 
 const bread = [
   {
@@ -243,6 +244,7 @@ export function _CV() {
               <Group justify="flex-end" gap="xs">
                 <Group gap={0}>
                   <Select
+                    leftSection={<Text size="xs">T:</Text>}
                     w={150}
                     value={cvType}
                     onChange={(e: any) => setCvType(e)}
@@ -254,6 +256,7 @@ export function _CV() {
                       { value: "4", label: "CV-4" },
                       { value: "5", label: "CV-5" },
                       { value: "6", label: "CV-6" },
+                      { value: "7", label: "CV-Corporate" },
                     ]}
                   />
 
@@ -420,6 +423,15 @@ export function _CV() {
 
             {cvType == "6" && (
               <CV6
+                color={cvColor}
+                data={demoData}
+                language={language}
+                printSt={printSt}
+              />
+            )}
+
+            {cvType == "7" && (
+              <CVCorp
                 color={cvColor}
                 data={demoData}
                 language={language}

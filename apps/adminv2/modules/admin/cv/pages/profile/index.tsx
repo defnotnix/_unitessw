@@ -65,7 +65,7 @@ import { RBACCheck } from "@/components/RBACCheck";
 
 const bread = [
   {
-    label: "KCA Admin",
+    label: "Unite SSW Admin",
   },
   {
     label: "Players Management",

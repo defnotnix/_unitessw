@@ -70,7 +70,7 @@ import { ModuleStudentInvoice } from "./invoice";
 
 const bread = [
   {
-    label: "KCA Admin",
+    label: "Unite SSW Admin",
   },
   {
     label: "Players Management",

@@ -74,11 +74,7 @@ export function _List() {
             apiDelete={deleteRecord}
             columns={columns}
             // * TABS
-            tabs={[
-              { label: "All Records", count: 3344 },
-              { label: "Active", count: 2233 },
-              { label: "Inactive" },
-            ]}
+
             // * TABLE PROPS
             //tableprops={{ height: "calc(100vh - 200px)" }}
             // * ROW COLORS

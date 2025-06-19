@@ -13,6 +13,8 @@ import {
 } from "@mantine/core";
 import React, { useEffect } from "react";
 
+import classes from "./cv-cord.module.css";
+
 const personalDetails = [
   {
     label: "Furigana",
@@ -145,7 +147,7 @@ const additionalDetails = [
   },
 ];
 
-export function CV6({
+export function CVCorp({
   color = "brand",
   data,
   language,
@@ -158,228 +160,509 @@ export function CV6({
 }) {
   useEffect(() => {}, [color]);
 
+  const highlightColor = `var(--mantine-color-${color}-1)`;
+
   return (
-    <Paper h={"11.7in"} w={"8.5in"} pos="relative" p="md">
-      <Grid gutter={0}>
-        <Grid.Col
-          span={12}
-          p="xl"
-          mb="-2in"
-          bg={`
-                linear-gradient(to bottom, var(--mantine-color-${color}-1) 0%,white 50%)
-            `}
-          style={{
-            borderRadius: ".1in",
-          }}
-        >
-          <SimpleGrid cols={2}>
-            <Text size="2.5rem" fw={800}>
-              {language === "en" ? data?.full_name : data?.furigana}
-            </Text>
-            <Text size="xs">
-              {language === "en"
-                ? "Looking for jobs on"
-                : "求職者が探している職業"}
-              <br />{" "}
-              <b>{language === "en" ? "Hospitality" : "ホスピタリティ"}</b>
-            </Text>
-          </SimpleGrid>
-        </Grid.Col>
-        <Grid.Col span={8} p="xl" pt="1in">
-          <Divider my="md" />
+    <Paper h={"11.7in"} w={"8.5in"} p="1in">
+      <table className={classes.cvtable}>
+        <tbody>
+          <tr>
+            <td
+              style={{
+                height: ".5in",
+              }}
+            >
+              <b>MT307</b>
+            </td>
+            <td></td>
+            <td colSpan={5}>
+              <b>履歴書</b>
+            </td>
+            <td colSpan={2}>2025年5月27日 現在</td>
+            <td colSpan={2} rowSpan={3}>
+              <img src="https://r2.erweima.ai/imgcompressed/compressed_37c94e20cb613116de36841ba02309d2.webp" />
+            </td>
+          </tr>
 
-          <Text size="xs" fw={800}>
-            {language === "en" ? "About Me" : "自己紹介"}
-          </Text>
+          <tr>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+            >
+              フリガナ
+            </td>
+            <td colSpan={8}> サリップ　ヒダヤットゥラ－</td>
+          </tr>
 
-          <Text size="xs" mt="md">
-            {language === "en"
-              ? "I am Ram Prasad Shrestha, a dedicated professional from Lalitpur, Nepal, with a strong background in hospitality. With a warm personality and excellent teamwork skills, I strive to provide the best service in every role. I am adaptable, eager to learn, and passionate about working in Japan to expand my skills and contribute meaningfully."
-              : "私はネパール・ラリトプル出身のラム・プラサード・シュレスタです。ホスピタリティ分野での経験があり、明るい性格と優れたチームワークを活かして、常に最高のサービスを提供することを目指しています。日本で働きながら自分のスキルをさらに伸ばし、社会に貢献したいと考えています。"}
-          </Text>
+          <tr>
+            <td
+              style={{
+                height: ".4in",
+                background: highlightColor,
+              }}
+              className={classes.tdHighlight}
+            >
+              氏名{" "}
+            </td>
+            <td colSpan={8}>{`SARIP HIDAYATULLAH`}</td>
+          </tr>
 
-          <Divider my="md" />
+          <tr>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+            >
+              生年月日{" "}
+            </td>
+            <td colSpan={2}>2000年08月06日</td>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+            >
+              年齢
+            </td>
+            <td>24</td>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+            >
+              性別
+            </td>
+            <td>男</td>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+            >
+              国籍
+            </td>
+            <td colSpan={2}>インドネシア</td>
+          </tr>
 
-          <SimpleGrid cols={2} spacing="xs">
-            <div>
-              <Text size="xs" fw={800}>
-                My Personal Traits
-              </Text>
-              <Text size="xs" mt="sm">
-                {language === "en"
-                  ? data?.personal_traits
-                  : data?.jp_personal_traits}
-              </Text>
-            </div>
+          <tr>
+            <td
+              style={{
+                width: "10%",
+                background: highlightColor,
+              }}
+              className={classes.tdHighlight}
+            >
+              視力{" "}
+            </td>
+            <td
+              style={{
+                width: "9%",
+                background: highlightColor,
+              }}
+              className={classes.tdHighlight}
+            >
+              左{" "}
+            </td>
+            <td
+              style={{
+                width: "9%",
+              }}
+            >
+              正常
+            </td>
+            <td
+              style={{
+                width: "9%",
+                background: highlightColor,
+              }}
+              className={classes.tdHighlight}
+            >
+              右
+            </td>
+            <td
+              style={{
+                width: "9%",
+              }}
+            >
+              正常
+            </td>
+            <td
+              style={{
+                width: "9%",
+                background: highlightColor,
+              }}
+              className={classes.tdHighlight}
+            >
+              身長
+            </td>
+            <td
+              style={{
+                width: "9%",
+              }}
+            >
+              167
+            </td>
+            <td
+              style={{
+                width: "10%",
+                background: highlightColor,
+              }}
+              className={classes.tdHighlight}
+            >
+              体重
+            </td>
+            <td colSpan={2}>80</td>
+          </tr>
 
-            <div>
-              <Text size="xs" fw={800}>
-                What motivates me.
-              </Text>
-              <Text size="xs" mt="sm">
-                {language === "en"
-                  ? data?.motivation_statement
-                  : data?.jp_motivation_statement}
-              </Text>
-            </div>
-          </SimpleGrid>
+          <tr>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+            >
+              洋服サイズ
+            </td>
+            <td colSpan={2}>XL</td>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+            >
+              靴サイズ
+            </td>
+            <td>27.5</td>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+            >
+              飲酒
+            </td>
+            <td>飲まない</td>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+            >
+              喫煙
+            </td>
+            <td
+              style={{
+                width: "11%",
+              }}
+            >
+              吸わない
+            </td>
+            <td
+              style={{
+                width: "13%",
+                background: highlightColor,
+              }}
+              className={classes.tdHighlight}
+            >
+              在留資格
+            </td>
+          </tr>
 
-          <Divider my="md" />
+          <tr>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+              rowSpan={2}
+            >
+              現在地
+            </td>
+            <td colSpan={2}>〒45166</td>
+            <td colSpan={4}>西ジャワ インドネシア</td>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+            >
+              利き手{" "}
+            </td>
+            <td>右</td>
+            <td></td>
+          </tr>
 
-          <Text size="xs" fw={800}>
-            Academics
-          </Text>
+          <tr>
+            <td colSpan={6}>JAWA BARAT INDONESIA</td>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+            >
+              血液型
+            </td>
+            <td>AB型</td>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+            >
+              在留期限
+            </td>
+          </tr>
 
-          <Table
-            withColumnBorders
-            striped
-            withTableBorder
-            mt="sm"
-            style={{
-              fontSize: "10px",
-            }}
-          >
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th w={50}>#</Table.Th>
-                <Table.Th w={120}>
-                  {language === "en" ? "Period" : "期間"}
-                </Table.Th>
-                <Table.Th w={150}>
-                  {language === "en" ? "Institution" : "学校名"}
-                </Table.Th>
-                <Table.Th>
-                  {language === "en" ? "Major / Notes" : "専攻・備考"}
-                </Table.Th>
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              {data?.education?.map((item: any, index: any) => (
-                <Table.Tr key={index}>
-                  <Table.Td>{index + 1}</Table.Td>
-                  <Table.Td>
-                    {item.start_date && item.end_date
-                      ? `${item.start_date} - ${item.end_date}`
-                      : "-"}
-                  </Table.Td>
-                  <Table.Td>
-                    <b>
-                      {language === "en"
-                        ? item.institution || "-"
-                        : item.jp_institution || "-"}
-                    </b>
-                  </Table.Td>
-                  <Table.Td>
-                    {language === "en"
-                      ? item.major_or_notes || "-"
-                      : item.jp_major_or_notes || "-"}
-                  </Table.Td>
-                </Table.Tr>
-              ))}
-            </Table.Tbody>
-          </Table>
+          <tr>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+            >
+              日本語レベル：
+            </td>
+            <td colSpan={3}>JFT A2</td>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+            >
+              宗教{" "}
+            </td>
+            <td colSpan={2}>イスラム</td>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+            >
+              既婚状況{" "}
+            </td>
+            <td>未婚</td>
+            <td></td>
+          </tr>
 
-          <Divider my="md" />
-          <Text size="xs" fw={800}>
-            Work History
-          </Text>
+          <tr>
+            <td
+              className={classes.tdHighlight}
+              colSpan={2}
+              style={{
+                textAlign: "left",
+                background: highlightColor,
+              }}
+            >
+              緊急連絡先
+            </td>
+            <td colSpan={3}></td>
+            <td
+              colSpan={3}
+              className={classes.tdHighlight}
+              style={{
+                textAlign: "left",
+                background: highlightColor,
+              }}
+            >
+              EMAIL
+            </td>
+            <td
+              colSpan={2}
+              className={classes.tdHighlight}
+              style={{
+                textAlign: "left",
+              }}
+            >
+              連絡先
+            </td>
+          </tr>
 
-          <Table
-            withColumnBorders
-            striped
-            withTableBorder
-            mt="sm"
-            style={{
-              fontSize: "10px",
-            }}
-          >
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th w={50}>#</Table.Th>
-                <Table.Th w={120}>
-                  {language === "en" ? "Period" : "期間"}
-                </Table.Th>
-                <Table.Th w={150}>
-                  {language === "en" ? "Company" : "会社名"}
-                </Table.Th>
-                <Table.Th>
-                  {language === "en" ? "Role / Notes" : "職種・備考"}
-                </Table.Th>
-              </Table.Tr>
-            </Table.Thead>
+          <tr>
+            <td
+              className={classes.tdHighlight}
+              colSpan={2}
+              style={{
+                textAlign: "left",
+                background: highlightColor,
+              }}
+            >
+              名前
+            </td>
+            <td
+              colSpan={3}
+              style={{
+                textAlign: "left",
+              }}
+            >
+              NUR AZIZAH
+            </td>
+            <td
+              colSpan={3}
+              rowSpan={2}
+              style={{
+                textAlign: "left",
+              }}
+            ></td>
+            <td
+              colSpan={2}
+              rowSpan={2}
+              style={{
+                textAlign: "left",
+              }}
+            ></td>
+          </tr>
 
-            <Table.Tbody>
-              {data?.work_experience?.map((item: any, index: number) => (
-                <Table.Tr key={index}>
-                  <Table.Td>{index + 1}</Table.Td>
-                  <Table.Td>
-                    {item.start_date && item.end_date
-                      ? `${item.start_date} - ${item.end_date}`
-                      : "-"}
-                  </Table.Td>
-                  <Table.Td>
-                    <b>{language === "en" ? item.company : item.jp_company}</b>
-                  </Table.Td>
-                  <Table.Td>
-                    {language === "en"
-                      ? `${item.role || "-"} / ${item.notes || "-"}`
-                      : `${item.jp_role || "-"} / ${item.jp_notes || "-"}`}
-                  </Table.Td>
-                </Table.Tr>
-              ))}
-            </Table.Tbody>
-          </Table>
-        </Grid.Col>
+          <tr>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+              colSpan={2}
+            >
+              続柄
+            </td>
+            <td colSpan={3}>姉</td>
+          </tr>
 
-        <Grid.Col
-          style={{
-            borderRadius: ".1in",
-          }}
-          span={4}
-          p="xl"
-          bg={`linear-gradient(to bottom, var(--mantine-color-${color}-6) 0%, var(--mantine-color-${color}-9) 100%)`}
-          h="11.7in"
-        >
-          <Stack gap="xl">
-            <Image
-              src={
-                "https://r2.erweima.ai/imgcompressed/compressed_37c94e20cb613116de36841ba02309d2.webp"
-              }
-            />
+          {/* Academics */}
 
-            {!printSt && (
-              <AspectRatio ratio={16 / 9} mt={-16}>
-                <iframe
-                  src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"
-                  title="YouTube video player"
-                  style={{ border: 0 }}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </AspectRatio>
-            )}
+          <tr>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+              colSpan={10}
+            >
+              学歴
+            </td>
+          </tr>
 
-            <div>
-              <Text size="xs" fw={800} c="gray.0">
-                {language === "en" ? "PROFILE" : "プロフィール"}
-              </Text>
+          <tr>
+            <td>2015</td>
+            <td>7</td>
+            <td
+              colSpan={7}
+              style={{
+                textAlign: "left",
+              }}
+            >
+              【インドネシア】ススカン第 1国立職業高等学校
+            </td>
+            <td>入学</td>
+          </tr>
 
-              <SimpleGrid cols={2} spacing="xs" mt="xl">
-                {personalDetails.map((item, index) => (
-                  <React.Fragment key={index}>
-                    <Text size="xs" fw={800} c="gray.0">
-                      {language === "jp" ? item.label_jp : item.label}
-                    </Text>
-                    <Text size="xs" c="gray.0">
-                      {language === "jp" ? data[item.jpKey] : data[item.enKey]}
-                    </Text>
-                  </React.Fragment>
-                ))}
-              </SimpleGrid>
-            </div>
-          </Stack>
-        </Grid.Col>
-      </Grid>
+          <tr>
+            <td></td>
+            <td></td>
+            <td
+              colSpan={8}
+              style={{
+                borderRight: "none!important",
+                textAlign: "right",
+                paddingRight: ".9in",
+              }}
+            >
+              以上
+            </td>
+          </tr>
+
+          {/* Work */}
+
+          <tr className={classes.hidden}>
+            <td>-</td>
+          </tr>
+
+          <tr>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+              colSpan={10}
+            >
+              学歴
+            </td>
+          </tr>
+
+          <tr>
+            <td>2015</td>
+            <td>7</td>
+            <td
+              colSpan={7}
+              style={{
+                textAlign: "left",
+              }}
+            >
+              【インドネシア】ススカン第 1国立職業高等学校
+            </td>
+            <td>入学</td>
+          </tr>
+
+          <tr>
+            <td></td>
+            <td></td>
+            <td
+              colSpan={8}
+              style={{
+                borderRight: "none!important",
+                textAlign: "right",
+                paddingRight: ".9in",
+              }}
+            >
+              以上
+            </td>
+          </tr>
+
+          {/* Work */}
+
+          <tr className={classes.hidden}>
+            <td>-</td>
+          </tr>
+
+          <tr>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+              colSpan={10}
+            >
+              学歴
+            </td>
+          </tr>
+
+          <tr>
+            <td>2015</td>
+            <td>7</td>
+            <td
+              colSpan={8}
+              style={{
+                textAlign: "left",
+              }}
+            >
+              【インドネシア】ススカン第 1国立職業高等学校
+            </td>
+          </tr>
+
+          <tr className={classes.hidden}>
+            <td>-</td>
+          </tr>
+
+          <tr>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+              colSpan={10}
+            >
+              学歴
+            </td>
+          </tr>
+
+          <tr>
+            <td
+              colSpan={10}
+              style={{
+                textAlign: "left",
+                padding: ".1in 4px",
+              }}
+            >
+              <p>
+                私は責任感が強く、さまざまな仕事に柔軟に対応できる性格です。大学卒業後は銀行でカスタマーサービスとして勤務し、お客様への丁寧な対応や対人スキルを身に
+                つけました。その後、日本に来てからはスシローのキッチンでアルバイトを経験し、初めての現場でも積極的に学ぶ姿勢を大切にしながら、日本語の環境にもスムーズに
+                適応することができました。
+                <br />
+                <br />
+                私の姉は日本で介護の仕事をしており、彼女から仕事内容や大変さ、やりがいについて多くの話を聞きました。その話を通じて、私も人の役に立つ仕事に魅力を感じ、
+                介護の仕事に興味を持つようになりました。現在は介護について勉強しており、将来的には介護福祉士の資格を取得したいと考えています。高齢者の方々が安心して
+                暮らせるよう、心のこもった支援ができる介護職員を目指しています。
+              </p>
+            </td>
+          </tr>
+
+          <tr className={classes.hidden}>
+            <td>-</td>
+          </tr>
+
+          <tr>
+            <td
+              className={classes.tdHighlight}
+              style={{ background: highlightColor }}
+              colSpan={10}
+            >
+              学歴
+            </td>
+          </tr>
+          <tr>
+            <td colSpan={10}></td>
+          </tr>
+        </tbody>
+      </table>
     </Paper>
   );
 }

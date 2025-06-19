@@ -31,7 +31,7 @@ import { CV6 } from "./templates/cv6";
 
 const bread = [
   {
-    label: "KCA Admin",
+    label: "Unite SSW Admin",
   },
   {
     label: "Players Management",

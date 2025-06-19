@@ -95,7 +95,7 @@ export function ModuleAuthSignUp() {
     },
     onSuccess: (res) => {
       setCompleted(true);
-      //sessionStorage.setItem("kcatoken", res?.data?.access_token || "");
+      //sessionStorage.setItem("Unite SSWtoken", res?.data?.access_token || "");
 
       // if (form.values.remember) {
       //   handleRememberMe();

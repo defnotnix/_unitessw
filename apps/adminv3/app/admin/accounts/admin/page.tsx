@@ -1,2 +1,2 @@
-import { ModuleAccounts } from "@/modules/admin/accounts";
-export default ModuleAccounts.List;
+import { ModuleAccountAdmin } from "@/modules/admin/accounts/admin";
+export default ModuleAccountAdmin.List;

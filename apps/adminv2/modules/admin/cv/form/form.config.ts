@@ -38,7 +38,7 @@ export const formProps: any = {
   //   fav_team: "T101",
   //   level_exp: "1",
   //   time_for_training: "1",
-  //   previous_academy: "KCAv2",
+  //   previous_academy: "Unite SSWv2",
   // },
 
   // > STEPS
