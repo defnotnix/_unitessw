@@ -41,6 +41,7 @@ import {
   IdentificationBadge,
   PlugsConnected,
   Plus,
+  ScrollIcon,
   Star,
 } from "@phosphor-icons/react";
 import { moduleConfig } from "../../module.config";
@@ -130,11 +131,11 @@ export function _List() {
           <>
             <Menu.Item
               onClick={() => {
-                Router.push(`/players/${row.id}`);
+                Router.push(`/admin/applicants/all/${row.id}`);
               }}
-              leftSection={<IdentificationBadge />}
+              leftSection={<ScrollIcon />}
             >
-              Player Profile
+              Generate CV
             </Menu.Item>
           </>
         )}

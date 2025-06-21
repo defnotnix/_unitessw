@@ -54,14 +54,14 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                 }}
               />
               <Text size="xs" c="white" fw={600}>
-                UNITE SSW
+                Unite SSW
                 <span
                   style={{
                     opacity: 0.5,
                   }}
                 >
                   {" "}
-                  | {language == "en" ? "APPLICANT PORTAL" : "応募者ポータル"}
+                  | {language == "en" ? "Applicant Portal" : "応募者ポータル"}
                 </span>
               </Text>
             </Group>
@@ -73,7 +73,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
           >
             <Paper
               radius="lg"
-              bg="dark.8"
+              bg="linear-gradient(to bottom, rgba(0,0,0,.7), rgba(0,0,0,.9))"
               h={{
                 base: "auto",
                 lg: "calc(100vh -   var(--mantine-spacing-xl))",
@@ -84,6 +84,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
+                backdropFilter: "blur(32px)",
               }}
             >
               <Group justify="space-between">
@@ -97,7 +98,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                     }}
                   />
                   <Text size="xs" c="white" fw={600}>
-                    UNITE SSW
+                    Unite SSW
                     <span
                       style={{
                         opacity: 0.5,
@@ -105,7 +106,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                     >
                       {" "}
                       |{" "}
-                      {language == "en" ? "APPLICANT PORTAL" : "応募者ポータル"}
+                      {language == "en" ? "Applicant Portal" : "応募者ポータル"}
                     </span>
                   </Text>
                 </Group>
@@ -145,7 +146,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                   )}{" "}
                 </Text>
 
-                <Paper p="xl" radius="lg" bg="dark.9" mt="xl">
+                <Paper p="xl" radius="lg" bg="gray.9" mt="xl">
                   <SimpleGrid cols={4}>
                     <Text size="xs" c="gray.0" opacity={0.5}>
                       {language === "en"
@@ -200,7 +201,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
 
                   <Group justify="space-between">
                     <Text size="xs" c="gray.0" fw={600}>
-                      UNITE SSW
+                      Unite SSW Pvt. Ltd.
                     </Text>
 
                     <Text size="xs" c="gray.0">
@@ -245,7 +246,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
             >
               <div>
                 <Text size="xs" ta="center">
-                  <b> UNITE SSW</b>
+                  <b> Unite SSW</b>
                   <span
                     style={{
                       opacity: 0.5,

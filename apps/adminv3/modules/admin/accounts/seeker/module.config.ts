@@ -7,17 +7,18 @@ export const moduleConfig: PropModuleConfig = {
       label: "Unite SSW Admin",
     },
     {
-      label: "Accounts",
+      label: "Seeker Accounts",
     },
     {
-      label: "Manage Accounts",
+      label: "Manage Seeker Accounts",
     },
   ],
-  moduleKey: "vauth.Accounts".split("."),
-  endpoint: "/players/accounts/",
+  moduleKey: "vauth.Seeker Accounts".split("."),
+  endpoint: "/players/Seeker Accounts/",
   //
-  moduleTerm: "Account",
-  moduleTermPlural: "Accounts",
-  moduleName: "Accounts",
-  moduleDescription: "Manage all Unite SSW Admins/Staffs & their accounts.",
+  moduleTerm: "Seeker Account",
+  moduleTermPlural: "Seeker Accounts",
+  moduleName: "Seeker Accounts",
+  moduleDescription:
+    "Manage all Unite SSW Admins/Staffs & their Seeker Accounts.",
 };

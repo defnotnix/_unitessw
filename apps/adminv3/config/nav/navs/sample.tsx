@@ -81,5 +81,15 @@ export const navItems: PropAdminNavItems[] = [
     label: "CV",
     icon: PaperPlaneTiltIcon,
     value: "/admin/cv",
+    children: [
+      {
+        label: "Active CV",
+        value: "/admin/cv/active",
+      },
+      {
+        label: "Deleted CV",
+        value: "/admin/cv/deleted",
+      },
+    ],
   },
 ];

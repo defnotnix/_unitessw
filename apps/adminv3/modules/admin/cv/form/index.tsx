@@ -99,6 +99,8 @@ export function _Form() {
           ...res?.data?.physical,
           ...res?.data?.story,
 
+          education: res?.data?.education,
+          work_experience: res?.data?.work_experience,
           licenses: res?.data?.license_qualification,
         };
       } else {
@@ -120,7 +122,6 @@ export function _Form() {
     "Academics",
     "Work History",
     "Certifications",
-    "Completed",
   ];
 
   const InitiateStep = () => (
@@ -178,7 +179,9 @@ export function _Form() {
           return e.id;
         });
 
-        await apiEducation.create(_forCreate);
+        if (_forCreate.length > 0) {
+          await apiEducation.create(_forCreate);
+        }
         _forEdit.map((e: any) => apiEducation.update(e, e.id));
       },
       transform: (e: any) =>
@@ -200,7 +203,9 @@ export function _Form() {
           return e.id;
         });
 
-        await apiWork.create(_forCreate);
+        if (_forCreate.length > 0) {
+          await apiWork.create(_forCreate);
+        }
         _forEdit.map((e: any) => apiWork.update(e, e.id));
       },
       transform: (e: any) =>
@@ -222,7 +227,9 @@ export function _Form() {
           return e.id;
         });
 
-        await apiLicense.create(_forCreate);
+        if (_forCreate.length > 0) {
+          await apiLicense.create(_forCreate);
+        }
         _forEdit.map((e: any) => apiLicense.update(e, e.id));
       },
       transform: (e: any) =>
@@ -296,7 +303,17 @@ export function _Form() {
               <ArrowRightIcon />
             </ActionIcon>
           ) : (
-            <ActionIcon color="teal" size="xl">
+            <ActionIcon
+              color="teal"
+              size="xl"
+              onClick={
+                apiSubmit
+                  ? handleSubmit
+                  : () => {
+                      setCurrent(current + 1);
+                    }
+              }
+            >
               <CheckIcon />
             </ActionIcon>
           )}
@@ -466,11 +483,15 @@ export function _Form() {
             <FormHandler
               {...formProps}
               formType={isCompleted ? "edit" : "new"}
-              initial={data}
+              initial={data ? data : formProps.initial}
               apiSubmit={apiSubmit}
               submitFormData={submitFormData}
               transformDataOnSubmit={transformData}
               onSubmitSuccess={(res) => {
+                if (!Params?.id && current == 7) {
+                  Router.push("/admin/cv/active");
+                }
+
                 if (!res?.err && res?.data?.id && current === 1) {
                   setPersonId(res.data.id);
                 }

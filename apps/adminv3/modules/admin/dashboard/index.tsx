@@ -209,7 +209,7 @@ export function ModuleAdminDashboard() {
 
           <Space h="xl" />
 
-          <SimpleGrid cols={5} spacing="xs" mb={-100}>
+          <SimpleGrid cols={{ base: 1, lg: 5 }} spacing="xs" mb={-100}>
             <StatCard
               icon={UsersIcon}
               label="Applicants"

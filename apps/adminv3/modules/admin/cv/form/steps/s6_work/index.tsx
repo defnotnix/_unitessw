@@ -134,12 +134,26 @@ export function StepWork() {
             <ActionIcon
               onClick={() => {
                 if (_.id) {
-                  modals.openConfirmModal({
-                    title: "Are you sure?",
+                 modals.openConfirmModal({
+                    title: (
+                      <Group>
+                        <Text
+                          size="sm"
+                          style={{
+                            fontWeight: 600,
+                          }}
+                        >
+                          Are you sure you want to delete this record?
+                        </Text>
+                      </Group>
+                    ),
                     children: (
-                      <Text size="sm">
-                        Are you sure you want to delete this record?
-                      </Text>
+                      <>
+                        <Text size="xs" my="md">
+                          This will completely remove this record from this
+                          section.{" "}
+                        </Text>
+                      </>
                     ),
                     labels: {
                       confirm: "Delete",
@@ -152,6 +166,12 @@ export function StepWork() {
                       apiWork.delete(_.id);
                       form.removeListItem("work_experience", index);
                     },
+                    styles: {
+                      header: {
+                        background: "var(--mantine-color-brand-0)",
+                      },
+                    },
+                    size: "sm",
                   });
                 } else {
                   form.removeListItem("work_experience", index);
@@ -240,12 +260,12 @@ export function StepWork() {
               </Stack>
 
               <Stack gap={0}>
-                <YearPickerInput
+                <DateInput
                   placeholder="e.g. 2015"
                   {...form.getInputProps(`work_experience.${index}.start_date`)}
                   styles={styles.top}
                 />
-                <YearPickerInput
+                <DateInput
                   minDate={form.getValues().work_experience[index].start_date}
                   placeholder=" e.g. 2018"
                   {...form.getInputProps(`work_experience.${index}.end_date`)}

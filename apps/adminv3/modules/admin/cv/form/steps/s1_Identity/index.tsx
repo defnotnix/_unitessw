@@ -209,12 +209,20 @@ export function StepIdentity() {
           />
         </Stack>
 
-        <TextInput
-          label="Email"
-          placeholder="e.g. user@example.com"
-          description="A valid email address"
-          {...form.getInputProps("email")}
-        />
+        <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="xs">
+          <TextInput
+            label="Email"
+            placeholder="e.g. user@example.com"
+            description="A valid email address"
+            {...form.getInputProps("email")}
+          />
+          <TextInput
+            label="Contact Number"
+            placeholder="e.g. +977 9813512312"
+            description="Phone number of the person."
+            {...form.getInputProps("contact")}
+          />
+        </SimpleGrid>
 
         <Text size="sm" fw={800} my="md">
           Parent's Details

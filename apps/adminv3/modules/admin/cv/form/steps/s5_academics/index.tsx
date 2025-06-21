@@ -86,9 +86,7 @@ export function StepAcademics() {
             <b>Academics Details</b>
             <br />
           </Text>
-          <Text size="xs">
-            Next add academic history of the person.
-          </Text>
+          <Text size="xs">Next add academic history of the person.</Text>
         </div>
 
         <FormElement.SectionTitle
@@ -134,12 +132,31 @@ export function StepAcademics() {
               onClick={() => {
                 if (_.id) {
                   modals.openConfirmModal({
-                    title: "Are you sure?",
-                    children: (
-                      <Text size="sm">
-                        Are you sure you want to delete this record?
-                      </Text>
+                    title: (
+                      <Group>
+                        <Text
+                          size="sm"
+                          style={{
+                            fontWeight: 600,
+                          }}
+                        >
+                          Are you sure you want to delete this record?
+                        </Text>
+                      </Group>
                     ),
+                    children: (
+                      <>
+                        <Text size="xs" my="md">
+                          This will completely remove this record from this
+                          section.{" "}
+                        </Text>
+                      </>
+                    ),
+                    styles: {
+                      header: {
+                        background: "var(--mantine-color-brand-0)",
+                      },
+                    },
                     labels: {
                       confirm: "Delete",
                       cancel: "Cancel",
@@ -218,12 +235,12 @@ export function StepAcademics() {
               </Stack>
 
               <Stack gap={0}>
-                <YearPickerInput
+                <DateInput
                   placeholder="Select start date e.g. 2015"
                   {...form.getInputProps(`education.${index}.start_date`)}
                   styles={styles.top}
                 />
-                <YearPickerInput
+                <DateInput
                   disabled={!form.getValues().education[index].start_date}
                   minDate={form.getValues().education[index].start_date}
                   placeholder="Select end date e.g. 2018"

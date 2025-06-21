@@ -68,7 +68,7 @@ import { FormHandler, useListHandlerContext } from "@vframework/core";
 import sortBy from "lodash/sortBy";
 //type
 import { PropModuleTableLayout } from "./ModuleTableLayout.type";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { triggerNotification } from "@vframework/ui";
 import { ModuleModalFormLayout } from "../ModuleModalFormLayout";
 
@@ -177,6 +177,7 @@ export function ModuleTableLayout({
   withAddExtra = false,
   disableAdd = false,
   disableDelete = false,
+  disableEdit = false,
   customRender,
   withBackButton,
   customCreateText,
@@ -193,11 +194,13 @@ export function ModuleTableLayout({
     endpoint: "",
     moduleTerm,
     moduleTermPlural,
+    moduleKey: [],
   };
 
   // * DEFINITIONS
   const Router = useRouter();
   const Pathname = usePathname();
+  const QueryClient = useQueryClient();
 
   // * CONTEXT
   const {
@@ -382,14 +385,16 @@ export function ModuleTableLayout({
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <RenderEdit row={row}>
-              <Menu.Item leftSection={<Pen />}>Edit</Menu.Item>
-            </RenderEdit>
+            {!disableEdit && (
+              <RenderEdit row={row}>
+                <Menu.Item leftSection={<Pen />}>Edit</Menu.Item>
+              </RenderEdit>
+            )}
 
             {extraActions && (
               <>
                 <Menu.Divider />
-                {extraActions({ row })}
+                {extraActions({ row, refetch })}
                 <Menu.Divider />
               </>
             )}
@@ -481,6 +486,17 @@ export function ModuleTableLayout({
                                   type: "SET_TAB_ACTIVE",
                                   payload: index,
                                 });
+
+                                QueryClient.setQueryData(
+                                  moduleConfig?.moduleKey || [],
+                                  async () => {
+                                    return tab.getApi({
+                                      searchValue: searchVal,
+                                      page: page,
+                                      pageSize: pageSize,
+                                    });
+                                  }
+                                );
                               }}
                             >
                               {tab.label}

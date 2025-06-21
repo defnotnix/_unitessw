@@ -33,6 +33,7 @@ import imgLogo from "@/assets/img/sswmini.png";
 import {
   apiBackground,
   apiEducation,
+  apiIdentification,
   apiLicense,
   apiPersonalInformation,
   apiPhysical,
@@ -60,7 +61,7 @@ export function _Form() {
 
   const Router = useRouter();
 
-  const [current, setCurrent] = useState(4);
+  const [current, setCurrent] = useState(0);
   const [personId, setPersonId] = useState(null);
   const [holder, setHolder] = useState({});
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
@@ -71,7 +72,7 @@ export function _Form() {
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["admin", "cv", "edit"],
+    queryKey: ["admin", "applicants", "edit"],
     queryFn: async () => {
       if (Params?.id) {
         const id = Params.id;
@@ -83,24 +84,27 @@ export function _Form() {
         setPersonId(data.id);
         setHolder((prev) => ({ ...prev, ...data }));
 
-        const step = Array.from({ length: 7 }, (_, i) => i + 1).find(
+        const step = Array.from({ length: 8 }, (_, i) => i + 1).find(
           (i) => data[`is_step${i}`] === false
         );
         if (step) setCurrent(step);
 
-        const completed = Array.from({ length: 7 }, (_, i) => i + 1).filter(
+        const completed = Array.from({ length: 8 }, (_, i) => i + 1).filter(
           (i) => data[`is_step${i}`] === true
         );
         setCompletedSteps(completed);
 
         return {
           ...res?.data,
-          ...res?.data?.background,
+          ...res?.data?.a_background,
 
-          ...res?.data?.physical,
-          ...res?.data?.story,
-
-          licenses: res?.data?.license_qualification,
+          ...res?.data?.a_physical,
+          ...res?.data?.a_story,
+          ...res?.data?.a_identification,
+          category: String(res?.data?.category),
+          education: res?.data?.a_education,
+          work_experience: res?.data?.a_work_experience,
+          licenses: res?.data?.a_license_qualification,
         };
       } else {
         return {
@@ -122,7 +126,6 @@ export function _Form() {
     "Work History",
     "Certifications",
     "Identifications",
-    "Completed",
   ];
 
   const InitiateStep = () => (
@@ -153,21 +156,21 @@ export function _Form() {
       component: <StepBackground />,
       apiCreate: apiBackground.create,
       apiUpdate: (body: any) =>
-        apiBackground.update(body, data?.background?.id),
-      transform: (e: any) => ({ person: personId, ...e }),
+        apiBackground.update(body, data?.a_background?.id),
+      transform: (e: any) => ({ applicant: personId, ...e }),
     },
     {
       component: <StepPhysical />,
       apiCreate: apiPhysical.create,
-      apiUpdate: (body: any) => apiPhysical.update(body, data?.physical?.id),
+      apiUpdate: (body: any) => apiPhysical.update(body, data?.a_physical?.id),
 
-      transform: (e: any) => ({ person: personId, ...e }),
+      transform: (e: any) => ({ applicant: personId, ...e }),
     },
     {
       component: <StepStory />,
       apiCreate: apiStory.create,
-      apiUpdate: (body: any) => apiStory.update(body, data?.story?.id),
-      transform: (e: any) => ({ person: personId, ...e }),
+      apiUpdate: (body: any) => apiStory.update(body, data?.a_story?.id),
+      transform: (e: any) => ({ applicant: personId, ...e }),
     },
     {
       component: <StepAcademics />,
@@ -185,7 +188,7 @@ export function _Form() {
       },
       transform: (e: any) =>
         e.education.map((item: any) => ({
-          person: personId,
+          applicant: personId,
           ...item,
           from_year: item.year?.[0]?.substring(0, 4),
           to_year: item.year?.[1]?.substring(0, 4),
@@ -207,7 +210,7 @@ export function _Form() {
       },
       transform: (e: any) =>
         e.work_experience.map((item: any) => ({
-          person: personId,
+          applicant: personId,
           ...item,
           from_year: item.year?.[0]?.substring(0, 4),
           end_year: item.year?.[1]?.substring(0, 4),
@@ -229,21 +232,31 @@ export function _Form() {
       },
       transform: (e: any) =>
         e.licenses.map((item: any) => ({
-          person: personId,
+          applicant: personId,
           ...item,
         })),
     },
 
     {
       component: <StepIdentification />,
-      apiCreate: apiLicense.create,
+      apiCreate: apiIdentification.create,
       isFormData: true,
+      apiUpdate: (body: any) =>
+        apiIdentification.update(body, data?.a_identification?.id),
+
       transform: (formdata: any) => {
-        const { image, ...res } = formdata;
+        const { passport, l_cert_image, ssw_cert_image, ...res } = formdata;
 
         return {
+          applicant: personId,
           ...res,
-          ...(formdata.image instanceof File ? { image: formdata.image } : {}),
+          ...(passport instanceof File ? { passport: passport } : {}),
+          ...(l_cert_image instanceof File
+            ? { l_cert_image: l_cert_image }
+            : {}),
+          ...(ssw_cert_image instanceof File
+            ? { ssw_cert_image: ssw_cert_image }
+            : {}),
         };
       },
     },
@@ -312,7 +325,17 @@ export function _Form() {
               <ArrowRightIcon />
             </ActionIcon>
           ) : (
-            <ActionIcon color="teal" size="xl">
+            <ActionIcon
+              color="teal"
+              size="xl"
+              onClick={
+                apiSubmit
+                  ? handleSubmit
+                  : () => {
+                      setCurrent(current + 1);
+                    }
+              }
+            >
               <CheckIcon />
             </ActionIcon>
           )}
@@ -482,11 +505,15 @@ export function _Form() {
             <FormHandler
               {...formProps}
               formType={isCompleted ? "edit" : "new"}
-              initial={data}
+              initial={Params.id ? data : formProps.initial}
               apiSubmit={apiSubmit}
               submitFormData={submitFormData}
               transformDataOnSubmit={transformData}
               onSubmitSuccess={(res) => {
+                if (!Params?.id && current == 8) {
+                  Router.push("/admin/applicants/all");
+                }
+
                 if (!res?.err && res?.data?.id && current === 1) {
                   setPersonId(res.data.id);
                 }

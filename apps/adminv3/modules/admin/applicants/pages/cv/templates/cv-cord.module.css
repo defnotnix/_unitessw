@@ -1,0 +1,35 @@
+.cvtable {
+  font-size: 0.085in;
+  font-family: "Times New Roman";
+  border-collapse: collapse;
+  width: 100%;
+
+  td {
+    border: 1px solid #000;
+    text-align: center;
+    min-height: 0.5in;
+  }
+
+  td p {
+    font-size: 7px;
+  }
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+.tdHighlight {
+ 
+  font-weight: bold;
+}
+
+.hidden {
+  opacity: 0;
+
+  td {
+    border: none;
+  }
+}

@@ -9,10 +9,13 @@ import {
   Badge,
   Box,
   Breadcrumbs,
+  Burger,
   Button,
+  ButtonGroupSection,
   CheckIcon,
   Container,
   Divider,
+  Drawer,
   Grid,
   Group,
   Image,
@@ -25,11 +28,15 @@ import {
   Stack,
   Switch,
   Text,
+  TextInput,
+  ThemeIcon,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import {
   ArrowClockwiseIcon,
   CaretDownIcon,
   CheckCircleIcon,
+  MagnifyingGlassIcon,
 } from "@phosphor-icons/react";
 
 const data = [
@@ -954,22 +961,130 @@ const data = [
   // ... 27 more entries like this up to "image": "https://avatar.iran.liara.run/public/43"
 ];
 
+const inputStyle = {
+  label: {
+    fontSize: "var(--mantine-font-size-xs)",
+    fontWeight: 700,
+  },
+  input: {
+    background: "white",
+    padding: "16px 0",
+    border: "none",
+  },
+};
+
 export function ModuleSeekerApplicants() {
   const { language } = useLanguage();
 
+  const [opened, handleOpen] = useDisclosure();
+
+  function RenderFilter() {
+    return (
+      <>
+        <Stack>
+          <Text size="xs" opacity={0.5} fw={700}>
+            {language === "en" ? "Search Filters" : "フィルターパラメーター"}
+          </Text>
+          <Stack gap="xs">
+            <TextInput
+              placeholder="Search by anything"
+              rightSection={<MagnifyingGlassIcon />}
+            />
+            <Select
+              data={[]}
+              styles={inputStyle}
+              variant="filled"
+              label={language === "en" ? "Job Category" : "職種"}
+              placeholder={
+                language === "en"
+                  ? "Select Job Category"
+                  : "職種を選択してください"
+              }
+            />
+            <Select
+              data={[]}
+              styles={inputStyle}
+              variant="filled"
+              label={language === "en" ? "Gender" : "性別"}
+              placeholder={
+                language === "en" ? "Select Gender" : "性別を選択してください"
+              }
+            />
+
+            <SimpleGrid spacing="xs" cols={2}>
+              <NumberInput
+                hideControls
+                styles={inputStyle}
+                variant="filled"
+                label={language === "en" ? "Min Age" : "最低年齢"}
+                placeholder={
+                  language === "en" ? "Minimum Age" : "最低年齢を入力"
+                }
+              />
+              <NumberInput
+                hideControls
+                styles={inputStyle}
+                variant="filled"
+                label={language === "en" ? "Max Age" : "最高年齢"}
+                placeholder={
+                  language === "en" ? "Maximum Age" : "最高年齢を入力"
+                }
+              />
+            </SimpleGrid>
+
+            <Divider my="xs" />
+
+            <Group justify="space-between" wrap="nowrap">
+              <Text size="xs">
+                {language === "en"
+                  ? "Has Language Certificate"
+                  : "言語証明書を持っている"}
+              </Text>
+              <Switch />
+            </Group>
+
+            <Group justify="space-between" wrap="nowrap">
+              <Text size="xs" fw={700}>
+                {language === "en"
+                  ? "Has Driving License"
+                  : "運転免許証を持っている"}
+              </Text>
+              <Switch />
+            </Group>
+
+            <Group justify="space-between" wrap="nowrap">
+              <Text size="xs" fw={700}>
+                {language === "en" ? "Has Passport" : "パスポートを持っている"}
+              </Text>
+              <Switch />
+            </Group>
+
+            <Group justify="space-between" wrap="nowrap">
+              <Text size="xs" fw={700}>
+                {language === "en" ? "Married" : "Married"}
+              </Text>
+              <Switch />
+            </Group>
+
+            <Divider my="xs" />
+
+            <Button variant="light">
+              {language === "en" ? "Apply Filter" : "フィルターを適用"}
+            </Button>
+          </Stack>
+        </Stack>
+      </>
+    );
+  }
+
   return (
-    <Container size="xl" py="xl">
-      <Grid gutter="xs">
-        <Grid.Col span={{ base: 12, lg: 3.5 }}>
-          <Group justify="space-between">
-            <Breadcrumbs separator={<Text size="xs">/</Text>}>
-              <Anchor size="xs" c="black">
-                Seeker Home
-              </Anchor>
-              <Anchor size="xs" c="black">
-                Applicant Search
-              </Anchor>
-            </Breadcrumbs>
+    <Container size="xl" py="md">
+      <Grid gutter="4px">
+        <Grid.Col span={{ base: 12, lg: 3.5 }} visibleFrom="lg">
+          <Group justify="space-between" visibleFrom="lg">
+            <Text size="xs" fw={800}>
+              Candidate Finder
+            </Text>
             <ActionIcon variant="light">
               <ArrowClockwiseIcon />
             </ActionIcon>
@@ -985,157 +1100,47 @@ export function ModuleSeekerApplicants() {
               top: "1rem",
             }}
           >
-            <Stack>
-              <Text size="xs" tt="uppercase" opacity={0.5}>
-                {language === "en"
-                  ? "Filter Parameters"
-                  : "フィルターパラメーター"}
-              </Text>
-              <Stack gap="xs">
-                <Select
-                  data={[]}
-                  styles={{
-                    input: {
-                      background: "white",
-                      padding: "16px 0",
-                      border: "none",
-                    },
-                  }}
-                  variant="filled"
-                  label={language === "en" ? "Job Category" : "職種"}
-                  placeholder={
-                    language === "en"
-                      ? "Select Job Category"
-                      : "職種を選択してください"
-                  }
-                />
-                <Select
-                  data={[]}
-                  styles={{
-                    input: {
-                      background: "white",
-                      padding: "16px 0",
-                      border: "none",
-                    },
-                  }}
-                  variant="filled"
-                  label={language === "en" ? "Gender" : "性別"}
-                  placeholder={
-                    language === "en"
-                      ? "Select Gender"
-                      : "性別を選択してください"
-                  }
-                />
-
-                <SimpleGrid spacing="xs" cols={2}>
-                  <NumberInput
-                    hideControls
-                    styles={{
-                      input: {
-                        background: "white",
-                        padding: "16px 0",
-                        border: "none",
-                      },
-                    }}
-                    variant="filled"
-                    label={language === "en" ? "Min Age" : "最低年齢"}
-                    placeholder={
-                      language === "en" ? "Minimum Age" : "最低年齢を入力"
-                    }
-                  />
-                  <NumberInput
-                    hideControls
-                    styles={{
-                      input: {
-                        background: "white",
-                        padding: "16px 0",
-                        border: "none",
-                      },
-                    }}
-                    variant="filled"
-                    label={language === "en" ? "Max Age" : "最高年齢"}
-                    placeholder={
-                      language === "en" ? "Maximum Age" : "最高年齢を入力"
-                    }
-                  />
-                </SimpleGrid>
-
-                <Divider my="xs" />
-
-                <Group justify="space-between" wrap="nowrap">
-                  <Text size="sm">
-                    {language === "en"
-                      ? "Has Language Certificate"
-                      : "言語証明書を持っている"}
-                  </Text>
-                  <Switch />
-                </Group>
-
-                <Group justify="space-between" wrap="nowrap">
-                  <Text size="sm">
-                    {language === "en"
-                      ? "Has Driving License"
-                      : "運転免許証を持っている"}
-                  </Text>
-                  <Switch />
-                </Group>
-
-                <Group justify="space-between" wrap="nowrap">
-                  <Text size="sm">
-                    {language === "en"
-                      ? "Has Passport"
-                      : "パスポートを持っている"}
-                  </Text>
-                  <Switch />
-                </Group>
-
-                <Group justify="space-between" wrap="nowrap">
-                  <Text size="sm">
-                    {language === "en" ? "Married" : "Married"}
-                  </Text>
-                  <Switch />
-                </Group>
-
-                <Divider my="xs" />
-
-                <Button variant="light">
-                  {language === "en" ? "Apply Filter" : "フィルターを適用"}
-                </Button>
-              </Stack>
-            </Stack>
+            <RenderFilter />{" "}
           </Paper>
         </Grid.Col>
 
-        <Grid.Col span={{ base: 12, lg: 7.5 }}>
+        <Grid.Col span={{ base: 12, lg: 8.5 }}>
           <Group justify="space-between">
-            <Text size="xs">
-              {language === "en"
-                ? "Showing 50 of 3345 Applicants"
-                : "応募者 50 名中 3345 名を表示中"}
+            <Text size="xs" pl={{ base: 0, lg: "xl" }}>
+              {language === "en" ? "Showing 50 of 3345" : "応募者 50 名中 3345"}
             </Text>
-            <Menu withArrow>
-              <Menu.Target>
-                <Button
-                  variant="white"
-                  rightSection={<CaretDownIcon size={12} />}
+            <Group gap={2}>
+              <Menu withArrow>
+                <Menu.Target>
+                  <Button
+                    variant="white"
+                    rightSection={<CaretDownIcon size={12} />}
+                    size="xs"
+                  >
+                    {language === "en"
+                      ? "Sort By : Registered Date"
+                      : "並び替え：登録日"}
+                  </Button>
+                </Menu.Target>
+                <Menu.Dropdown w={200}>
+                  <Menu.Item leftSection={<CheckIcon size={10} />}>
+                    Sort by Registered Date
+                  </Menu.Item>
+                  <Menu.Item>Sort by Name</Menu.Item>
+                  <Menu.Item>Sort by Age</Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+              <ThemeIcon>
+                <Burger
                   size="xs"
-                >
-                  {language === "en"
-                    ? "Sort By : Registered Date"
-                    : "並び替え：登録日"}
-                </Button>
-              </Menu.Target>
-              <Menu.Dropdown w={200}>
-                <Menu.Item leftSection={<CheckIcon size={10} />}>
-                  Sort by Registered Date
-                </Menu.Item>
-                <Menu.Item>Sort by Name</Menu.Item>
-                <Menu.Item>Sort by Age</Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
+                  color="white"
+                  onClick={() => handleOpen.open()}
+                />
+              </ThemeIcon>
+            </Group>
           </Group>
 
-          <Stack mt="lg" gap="xs">
+          <Stack mt="lg" gap="4px">
             {data.map((item, index) => (
               <UserCard applicant={item} key={index} />
             ))}
@@ -1146,6 +1151,19 @@ export function ModuleSeekerApplicants() {
           </Group>
         </Grid.Col>
       </Grid>
+
+      <Drawer
+        opened={opened}
+        onClose={() => handleOpen.close()}
+        title={
+          <Text tt="uppercase" size="xs" fw={700}>
+            {" "}
+            Candidate Finder
+          </Text>
+        }
+      >
+        <RenderFilter />
+      </Drawer>
     </Container>
   );
 }

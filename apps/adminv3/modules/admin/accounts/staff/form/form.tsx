@@ -94,13 +94,63 @@ export function _Form() {
               {...form.getInputProps("recovery_email")}
             />
 
-            <Select
-              label="Account Type"
-              data={["Staff", "Admin"]}
-              description="Type of this account"
-              placeholder="Select Account Type"
-              {...form.getInputProps("account_type")}
-            />
+            <Divider my="sm" />
+
+            <Text size="xs" c="brand.6" fw={600}>
+              Account Permissions
+            </Text>
+
+            <SimpleGrid cols={2} spacing="xs">
+              <Checkbox.Card
+                px="xs"
+                py="md"
+                bg={
+                  form.getValues().perm_applicant == true ? "brand.0" : "white"
+                }
+                onChange={(e) => form.setFieldValue("perm_applicant", e)}
+              >
+                <Group wrap="nowrap" align="flex-start">
+                  <Checkbox.Indicator size="xs" />
+                  <div>
+                    <Text size="xs" className={classes.label} fw={600}>
+                      Can manage Applicants
+                    </Text>
+                    <Text
+                      className={classes.description}
+                      size="xs"
+                      opacity={0.5}
+                    >
+                      Can list, create and review applicants.
+                    </Text>
+                  </div>
+                </Group>
+              </Checkbox.Card>
+
+              <Checkbox.Card
+                p="xs"
+                bg={form.getValues().perm_cv == true ? "brand.0" : "white"}
+                onChange={(e) => form.setFieldValue("perm_cv", e)}
+              >
+                <Group wrap="nowrap" align="flex-start">
+                  <Checkbox.Indicator
+                    size="xs"
+                    {...form.getInputProps("perm_cv")}
+                  />
+                  <div>
+                    <Text size="xs" className={classes.label} fw={600}>
+                      Can manage CVs
+                    </Text>
+                    <Text
+                      className={classes.description}
+                      size="xs"
+                      opacity={0.5}
+                    >
+                      Can list, create and review CV.
+                    </Text>
+                  </div>
+                </Group>
+              </Checkbox.Card>
+            </SimpleGrid>
           </Stack>
         </>
       );

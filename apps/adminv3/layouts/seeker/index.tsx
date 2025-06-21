@@ -48,7 +48,7 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
                         opacity: 0.5,
                       }}
                     >
-                      | SEEKER PORTAL
+                      | Seeker Portal
                     </span>
                   </Text>
                 </Group>

@@ -134,12 +134,31 @@ export function StepCertificates() {
               onClick={() => {
                 if (_.id) {
                   modals.openConfirmModal({
-                    title: "Are you sure?",
-                    children: (
-                      <Text size="sm">
-                        Are you sure you want to delete this record?
-                      </Text>
+                    title: (
+                      <Group>
+                        <Text
+                          size="sm"
+                          style={{
+                            fontWeight: 600,
+                          }}
+                        >
+                          Are you sure you want to delete this record?
+                        </Text>
+                      </Group>
                     ),
+                    children: (
+                      <>
+                        <Text size="xs" my="md">
+                          This will completely remove this record from this
+                          section.{" "}
+                        </Text>
+                      </>
+                    ),
+                    styles: {
+                      header: {
+                        background: "var(--mantine-color-brand-0)",
+                      },
+                    },
                     labels: {
                       confirm: "Delete",
                       cancel: "Cancel",

@@ -1,16 +1,19 @@
 "use client";
 
 import {
+  ActionIcon,
   Avatar,
   Badge,
   Button,
+  Grid,
   Group,
   Paper,
   SimpleGrid,
   Stack,
   Text,
+  Tooltip,
 } from "@mantine/core";
-import { CheckCircleIcon } from "@phosphor-icons/react";
+import { BagIcon, BookmarkIcon, CheckCircleIcon } from "@phosphor-icons/react";
 import dayjs from "dayjs";
 import { useLanguage } from "@/layouts/app/app.context";
 import { useRouter } from "next/navigation";
@@ -26,6 +29,8 @@ type Applicant = any;
 const getTranslation = (lang: "en" | "jp") => ({
   verified: lang === "en" ? "Verified Applicant" : "認証済み応募者",
   viewProfile: lang === "en" ? "View Profile" : "プロフィールを見る",
+  bookCandidate: lang === "en" ? "Book Candidate" : "候補者を予約",
+  saveCandidate: lang === "en" ? "Save Candidate" : "候補者を保存",
   height: lang === "en" ? "Height" : "身長",
   weight: lang === "en" ? "Weight" : "体重",
   dob: lang === "en" ? "Date of Birth" : "生年月日",
@@ -66,109 +71,157 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
   const age = dayjs().diff(applicant.dob, "year");
 
   return (
-    <Paper
-      withBorder
-      radius="md"
-      style={{
-        overflow: "hidden",
-      }}
-    >
-      <Stack gap="lg" p="lg">
-        {/* Top Section */}
-        <Group justify="space-between">
-          <Group>
-            <Avatar size="xl" src={applicant.image} />
-            <Stack gap={0}>
+    <>
+      <Paper
+        withBorder
+        radius="md"
+        style={{
+          overflow: "hidden",
+        }}
+      >
+        <Stack gap="lg" p="lg">
+          {/* Top Section */}
+
+          <Stack gap={0}>
+            <Group justify="space-between">
               <Group gap="xs" mb="xs">
-                <Text size="xs">
-                  {getLangValue(applicant.address, applicant.jp_address, lang)}
-                </Text>
                 <Badge
                   color="teal"
                   variant="light"
                   tt="none"
-                  leftSection={<CheckCircleIcon />}
+                  leftSection={<CheckCircleIcon weight="fill" />}
                 >
                   {t.verified}
                 </Badge>
+                <Badge
+                  color="indigo"
+                  variant="light"
+                  tt="none"
+                  leftSection={<BagIcon weight="fill" />}
+                >
+                  Looing for jobs in Hospitality
+                </Badge>
               </Group>
 
-              <Text size="1.3rem" mb={4}>
-                {getLangValue(applicant.name, applicant.jp_name, lang)}
-              </Text>
-              <Text size="xs" opacity={0.5}>
-                {`${age} ${t.dob} | ${genderLabel[applicant.gender]} / ${
-                  applicant.is_married ? t.married : t.unmarried
-                }`}
-              </Text>
-            </Stack>
+              <Group gap={"4px"} mt={-16} visibleFrom="lg">
+                <Button
+                  size="xs"
+                  variant="light"
+                  onClick={() => {
+                    Router.push("/applicants/" + applicant.id);
+                  }}
+                >
+                  {t.viewProfile}
+                </Button>
+                <Tooltip label={t.saveCandidate}>
+                  <ActionIcon color="indigo">
+                    <BookmarkIcon />
+                  </ActionIcon>
+                </Tooltip>
+              </Group>
+            </Group>
+
+            <Grid align="center" py="xs">
+              <Grid.Col span={{ base: 12, lg: 4 }}>
+                <Group gap="xs" wrap="nowrap" mb="sm">
+                  <Avatar size="md" src={applicant.image} color="brand">
+                    XD
+                  </Avatar>
+                  <div>
+                    <Text size="1.3rem" mb={4} fw={800}>
+                      {getLangValue(applicant.name, applicant.jp_name, lang)}
+                    </Text>
+                    <Text size="xs" opacity={0.8} fw={600}>
+                      {`${age} ${t.dob} / ${genderLabel[applicant.gender]} / ${
+                        applicant.is_married ? t.married : t.unmarried
+                      }`}
+                    </Text>
+                  </div>
+                </Group>
+              </Grid.Col>
+
+              <Grid.Col span={{ base: 12, lg: 8 }}>
+                <Text size="xs">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Voluptatibus delectus soluta placeat, veritatis eos blanditiis
+                  consectetur fugiat et in. Labore ullam, iste enim nam aliquam
+                  omnis fugit molestiae sapiente temporibus!
+                </Text>
+              </Grid.Col>
+            </Grid>
+          </Stack>
+
+          <Group gap={"4px"} justify="space-between" hiddenFrom="lg">
+            <Badge variant="dot" size="xs" color="teal">
+              Available
+            </Badge>
+
+            <Group gap={"4px"}>
+              <Button
+                size="xs"
+                variant="light"
+                onClick={() => {
+                  Router.push("/applicants/" + applicant.id);
+                }}
+              >
+                {t.viewProfile}
+              </Button>
+              <Tooltip label={t.saveCandidate}>
+                <ActionIcon color="indigo">
+                  <BookmarkIcon />
+                </ActionIcon>
+              </Tooltip>
+            </Group>
           </Group>
+        </Stack>
 
-          <Button
-            size="md"
-            radius="md"
-            variant="light"
-            onClick={() => {
-              Router.push("/applicants/" + applicant.id);
-            }}
-          >
-            {t.viewProfile}
-          </Button>
-        </Group>
-      </Stack>
-
-      {/* Detail Section */}
-      {/* <SimpleGrid cols={3} bg="brand.0" px="xl" py="sm">
-        <Text size="sm" opacity={0.6} fw={600}>
-          {`${t.height}: ${applicant.height} cm`}
-        </Text>
-        <Text size="sm" opacity={0.6} fw={600}>
-          {`${t.weight}: ${applicant.weight} kg`}
-        </Text>
-        <Text size="sm" opacity={0.6} fw={600}>
-          {`${t.skill}: ${getLangValue(
-            applicant.certified_skill,
-            applicant.jp_certified_skill,
-            lang
-          )}`}
-        </Text>
-      </SimpleGrid> */}
-
-      <SimpleGrid cols={3} bg="gray.0" px="xl" py="sm">
-        <Text size="sm" opacity={0.6} fw={600}>
-          {`${t.langCert}: ${getLangValue(
-            applicant.language_certification,
-            applicant.jp_language_certification,
-            lang
-          )}`}
-        </Text>
-        <Text size="sm" opacity={0.6} fw={600}>
-          {`${t.strongPoint}: ${getLangValue(
-            applicant.strong_point,
-            applicant.jp_strong_point,
-            lang
-          )}`}
-        </Text>
-        <Text size="sm" opacity={0.6} fw={600}>
-          {`${t.negativePoint}: ${getLangValue(
-            applicant.negative_point,
-            applicant.jp_negative_point,
-            lang
-          )}`}
-        </Text>
-      </SimpleGrid>
-      {/* <SimpleGrid cols={3} bg="brand.0" px="xl" py="sm">
-        {applicant.has_driving_license && (
-          <Text size="sm" opacity={0.6} fw={600}>
-            {t.driving}
+        {/* Detail Section */}
+        <SimpleGrid cols={3} bg="gray.2" px="xl" py="sm" visibleFrom="lg">
+          <Text size="xs" opacity={0.6} fw={600}>
+            {`${t.height}`} : <b>{`${applicant.height} cm`}</b>
           </Text>
-        )}
-        {applicant.has_passport && (
-          <Text size="sm" opacity={0.6} fw={600}>
-            {t.passport}
+          <Text size="xs" opacity={0.6} fw={600}>
+            {`${t.weight}`} : <b>{`${applicant.weight} kg`}</b>
           </Text>
-        )}
-      </SimpleGrid> */}
-    </Paper>
+          <Text size="xs" opacity={0.6} fw={600}>
+            {`${t.skill} : `}{" "}
+            <b>
+              {`${getLangValue(
+                applicant.certified_skill,
+                applicant.jp_certified_skill,
+                lang
+              )}`}
+            </b>
+          </Text>
+        </SimpleGrid>
+
+        <SimpleGrid cols={3} bg="gray.0" px="xl" py="sm" visibleFrom="lg">
+          <Text size="xs" opacity={0.6} fw={600}>
+            {`${t.langCert}: `}{" "}
+            <b>{`${getLangValue(
+              applicant.language_certification,
+              applicant.jp_language_certification,
+              lang
+            )}`}</b>
+          </Text>
+          <Text size="xs" opacity={0.6} fw={600}>
+            {`${t.strongPoint}: `}{" "}
+            <b>{`${getLangValue(
+              applicant.strong_point,
+              applicant.jp_strong_point,
+              lang
+            )}`}</b>
+          </Text>
+          <Text size="xs" opacity={0.6} fw={600}>
+            {`${t.negativePoint}: `}{" "}
+            <b>{`${getLangValue(
+              applicant.negative_point,
+              applicant.jp_negative_point,
+              lang
+            )}`}</b>
+          </Text>
+        </SimpleGrid>
+      </Paper>
+    </>
   );
 }

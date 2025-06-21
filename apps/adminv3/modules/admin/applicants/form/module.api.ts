@@ -10,133 +10,159 @@ export async function apiCategory() {
 export const apiPersonalInformation = {
   get: async (id: any) => {
     return await apiDispatch.get({
-      endpoint: `/cvmake/personal/info/${id}/`,
+      endpoint: `/applicant/info/${id}/`,
     });
   },
 
   create: async (body: any) => {
     return await apiDispatch.post({
-      endpoint: "/cvmake/personal/info/",
+      endpoint: "/applicant/info/",
       body,
     });
   },
   update: async (body: any, id: any) => {
-    return await moduleApiCall.editRecord("/cvmake/personal/info/", body, id);
+    return await moduleApiCall.editRecord("/applicant/info/", body, id);
+  },
+};
+
+export const apiIdentification = {
+  get: async (id: any) => {
+    return await apiDispatch.get({
+      endpoint: `/applicant/identification/${id}/`,
+    });
+  },
+
+  create: async (body: any) => {
+    return await apiDispatch.post({
+      endpoint: "/applicant/identification/",
+      body,
+    });
+  },
+  update: async (body: any, id: any) => {
+    return await moduleApiCall.editRecord(
+      "/applicant/identification/",
+      body,
+      id
+    );
   },
 };
 
 export const apiBackground = {
   get: async (id: any) => {
     return await apiDispatch.get({
-      endpoint: `/cvmake/background/${id}/`,
+      endpoint: `/applicant/background/${id}/`,
     });
   },
   create: async (body: any) => {
     return await apiDispatch.post({
-      endpoint: "/cvmake/background/",
+      endpoint: "/applicant/background/",
       body,
     });
   },
   update: async (body: any, id: any) => {
-    return await moduleApiCall.editRecord("/cvmake/background/", body, id);
+    return await moduleApiCall.editRecord("/applicant/background/", body, id);
   },
 };
 
 export const apiPhysical = {
   get: async (id: any) => {
     return await apiDispatch.get({
-      endpoint: `/cvmake/physical/${id}/`,
+      endpoint: `/applicant/physical/${id}/`,
     });
   },
   create: async (body: any) => {
     return await apiDispatch.post({
-      endpoint: "/cvmake/physical/",
+      endpoint: "/applicant/physical/",
       body,
     });
   },
   update: async (body: any, id: any) => {
-    return await moduleApiCall.editRecord("/cvmake/physical/", body, id);
+    return await moduleApiCall.editRecord("/applicant/physical/", body, id);
   },
 };
 
 export const apiStory = {
   get: async (id: any) => {
     return await apiDispatch.get({
-      endpoint: `/cvmake/story/${id}/`,
+      endpoint: `/applicant/story/${id}/`,
     });
   },
   create: async (body: any) => {
     return await apiDispatch.post({
-      endpoint: "/cvmake/story/",
+      endpoint: "/applicant/story/",
       body,
     });
   },
   update: async (body: any, id: any) => {
-    return await moduleApiCall.editRecord("/cvmake/story/", body, id);
+    return await moduleApiCall.editRecord("/applicant/story/", body, id);
   },
 };
 
 export const apiEducation = {
   delete: async (id: any) => {
-    return await moduleApiCall.deleteRecord("/cvmake/education/", id);
+    return await moduleApiCall.deleteRecord("/applicant/education/", id);
   },
   get: async (id: any) => {
     return await apiDispatch.get({
-      endpoint: `/cvmake/education/${id}/`,
+      endpoint: `/applicant/education/${id}/`,
     });
   },
   create: async (body: any) => {
     return await apiDispatch.post({
-      endpoint: "/cvmake/education/",
+      endpoint: "/applicant/education/",
       body,
     });
   },
   update: async (body: any, id: any) => {
-    return await moduleApiCall.editRecord("/cvmake/education/", body, id);
+    return await moduleApiCall.editRecord("/applicant/education/", body, id);
   },
 };
 
 export const apiWork = {
   delete: async (id: any) => {
-    return await moduleApiCall.deleteRecord("/cvmake/work/experience/", id);
+    return await moduleApiCall.deleteRecord("/applicant/work/experience/", id);
   },
   get: async (id: any) => {
     return await apiDispatch.get({
-      endpoint: `/cvmake/work/experience/${id}/`,
+      endpoint: `/applicant/work/experience/${id}/`,
     });
   },
   create: async (body: any) => {
     return await apiDispatch.post({
-      endpoint: "/cvmake/work/experience/",
+      endpoint: "/applicant/work/experience/",
       body,
     });
   },
   update: async (body: any, id: any) => {
-    return await moduleApiCall.editRecord("/cvmake/work/experience/", body, id);
+    return await moduleApiCall.editRecord(
+      "/applicant/work/experience/",
+      body,
+      id
+    );
   },
 };
 
 export const apiLicense = {
   delete: async (id: any) => {
     return await moduleApiCall.deleteRecord(
-      "/cvmake/license/qualification/",
+      "/applicant/license/qualification/",
       id
     );
   },
   get: async (id: any) => {
     return await apiDispatch.get({
-      endpoint: `/cvmake/license/qualification/${id}/`,
+      endpoint: `/applicant/license/qualification/${id}/`,
     });
   },
   create: async (body: any) => {
     return await apiDispatch.post({
-      endpoint: "/cvmake/license/qualification/",
+      endpoint: "/applicant/license/qualification/",
       body,
     });
   },
   update: async (body: any, id: any) => {
     return await moduleApiCall.editRecord(
-      "/cvmake/license/qualification/",
+      "/applicant/license/qualification/",
       body,
       id
     );

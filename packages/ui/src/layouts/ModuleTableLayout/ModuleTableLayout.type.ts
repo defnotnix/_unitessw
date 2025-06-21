@@ -91,12 +91,12 @@ type TableStyle = {
  */
 export type PropModuleTableLayout = {
   bread?: { label?: string; url?: string }[];
-
+  moduleKey?: string[];
   moduleName?: string;
   moduleDescription?: string;
   moduleTerm?: string;
   moduleTermPlural?: string;
-  extraActions?: ({ row }: { row: any }) => JSX.Element;
+  extraActions?: ({ row, refetch }: { row: any; refetch?: any }) => JSX.Element;
   enableTabs?: boolean;
   tabs?: PropTabs[];
   hasServerSearch?: boolean;

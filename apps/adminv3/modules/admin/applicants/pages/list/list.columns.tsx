@@ -10,10 +10,10 @@ export const columns = [
         <Avatar size="md" src={record.image} />
         <div>
           <Text size="xs" fw={600}>
-            {record.name}
+            {record.full_name}
           </Text>
           <Text size="xs" opacity={0.5}>
-            {record.jp_name}
+            {record.furigana}
           </Text>
         </div>
       </Group>
@@ -39,15 +39,20 @@ export const columns = [
   },
 
   {
+    accessor: "email",
+    title: "Email",
+  },
+
+  {
     accessor: "Address",
     title: "Address",
     render: (record: any) => (
       <div>
         <Text size="xs" fw={600}>
-          {record.address}
+          {record.current_address}
         </Text>
         <Text size="xs" opacity={0.5}>
-          {record.jp_address}
+          {record.jp_current_address}
         </Text>
       </div>
     ),
@@ -79,11 +84,11 @@ export const columns = [
   },
 
   {
-    accessor: "dob",
+    accessor: "date_of_birth",
     title: "DOB",
   },
   {
-    accessor: "date_of_passport_availability",
-    title: "Date of Passport Availability",
+    accessor: "nationality",
+    title: "Nationality",
   },
 ];

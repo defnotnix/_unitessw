@@ -31,7 +31,7 @@ import { columns } from "./list.columns";
 //components
 
 //api
-import { deleteRecord, getRecords } from "../../module.api";
+import { deleteRecord, getDeletedRecords, getRecords } from "../../module.api";
 import {
   ArrowLeft,
   Atom,
@@ -41,6 +41,7 @@ import {
   IdentificationBadge,
   PlugsConnected,
   Plus,
+  ScrollIcon,
   Star,
 } from "@phosphor-icons/react";
 import { moduleConfig } from "../../module.config";
@@ -76,19 +77,6 @@ export function _List() {
     return (
       <ModuleTableLayout
         {...moduleConfig}
-        tabs={[
-          {
-            label: "All CV",
-          },
-          {
-            label: "Completed",
-            getApi: getRecords,
-          },
-          {
-            label: "In Process",
-            getApi: getRecords,
-          },
-        ]}
         apiDelete={deleteRecord}
         //Data
         columns={columns}
@@ -109,11 +97,11 @@ export function _List() {
           <>
             <Menu.Item
               onClick={() => {
-                Router.push(`/players/${row.id}`);
+                Router.push(`/admin/cv/active/${row.id}`);
               }}
-              leftSection={<IdentificationBadge />}
+              leftSection={<ScrollIcon />}
             >
-              Player Profile
+              Generate CV
             </Menu.Item>
           </>
         )}

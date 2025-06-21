@@ -192,9 +192,7 @@ export function CV3({
           </Text>
 
           <Text size="xs" mt="md">
-            {language === "en"
-              ? "I am Ram Prasad Shrestha, a dedicated professional from Lalitpur, Nepal, with a strong background in hospitality. With a warm personality and excellent teamwork skills, I strive to provide the best service in every role. I am adaptable, eager to learn, and passionate about working in Japan to expand my skills and contribute meaningfully."
-              : "私はネパール・ラリトプル出身のラム・プラサード・シュレスタです。ホスピタリティ分野での経験があり、明るい性格と優れたチームワークを活かして、常に最高のサービスを提供することを目指しています。日本で働きながら自分のスキルをさらに伸ばし、社会に貢献したいと考えています。"}
+                        {language === "en" ? data?.remark : data?.jp_remark}
           </Text>
 
           <Divider my="md" />
@@ -351,7 +349,7 @@ export function CV3({
 
             <Divider color={color + ".4"} />
 
-            {!printSt && (
+            {false && (
               <AspectRatio ratio={16 / 9} mt={-16}>
                 <iframe
                   src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"

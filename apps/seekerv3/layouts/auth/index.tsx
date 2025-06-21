@@ -73,7 +73,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
           >
             <Paper
               radius="lg"
-              bg="dark.8"
+              bg="linear-gradient(to bottom, rgba(0,0,0,.7), rgba(0,0,0,.9))"
               h={{
                 base: "auto",
                 lg: "calc(100vh -   var(--mantine-spacing-xl))",

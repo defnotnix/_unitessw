@@ -13,12 +13,12 @@ export const moduleConfig: PropModuleConfig = {
       label: "Manage Seeker Staff Accounts",
     },
   ],
-  moduleKey: "vauth.Seeker Staff Accounts".split("."),
-  endpoint: "/players/Seeker Staff Accounts/",
+  moduleKey: "vauth.staff.account".split("."),
+  endpoint: "/players/staff/",
   //
-  moduleTerm: "Seeker Staff Account",
-  moduleTermPlural: "Seeker Staff Accounts",
-  moduleName: "Seeker Staff Accounts",
+  moduleTerm: "Staff Account",
+  moduleTermPlural: "Staff Accounts",
+  moduleName: "Staff Accounts",
   moduleDescription:
-    "Manage all Unite SSW Admins/Staffs & their Seeker Staff Accounts.",
+    "Manage all Unite SSW Admins/Staffs & their Staff Accounts.",
 };
