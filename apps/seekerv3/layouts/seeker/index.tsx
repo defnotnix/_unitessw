@@ -13,7 +13,9 @@ import {
   Grid,
   Group,
   Image,
+  Menu,
   Paper,
+  ScrollArea,
   SimpleGrid,
   Space,
   Stack,
@@ -24,7 +26,12 @@ import { PropsWithChildren } from "react";
 
 //assets
 import imgLogo from "@/assets/img/sswmini.png";
-import { ArrowRightIcon, DoorOpenIcon } from "@phosphor-icons/react";
+import {
+  ArrowRightIcon,
+  BellIcon,
+  DoorOpenIcon,
+  MegaphoneSimpleIcon,
+} from "@phosphor-icons/react";
 import { useLanguage } from "../app/app.context";
 import { usePathname, useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
@@ -45,7 +52,7 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
         }}
       >
         <Paper radius={0} bg="dark.9">
-          <Container>
+          <Container size="xl">
             <Group gap="xs" hiddenFrom="lg" justify="space-between" py="md">
               <Group gap={4}>
                 <Image
@@ -139,6 +146,18 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
                           ? "Booked Candidates"
                           : "予約済み候補者"}
                       </Button>
+                      <Button
+                        size="xs"
+                        variant={Pathname == "/wishlist" ? "filled" : "subtle"}
+                        color={Pathname == "/wishlist" ? "brand" : "gray"}
+                        onClick={() => {
+                          Router.push("/wishlist");
+                        }}
+                      >
+                        {language === "en"
+                          ? "Candidate Wishlist"
+                          : "候補者ウィッシュリスト"}
+                      </Button>
                     </Group>
                   </Group>
                 </div>
@@ -146,10 +165,111 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
 
               <Grid.Col span={{ base: 12, lg: 3 }}>
                 <Group justify="flex-end" gap="xs">
+                  <Menu withArrow shadow="xl">
+                    <Menu.Target>
+                      <ActionIcon color="gray" variant="subtle">
+                        <MegaphoneSimpleIcon />
+                      </ActionIcon>
+                    </Menu.Target>
+                    <Menu.Dropdown w={400}>
+                      <Box p="sm" fw={600}>
+                        <Text size="sm">Announcements</Text>
+                      </Box>
+                      <ScrollArea h={500}>
+                        <Stack>
+                          <Paper withBorder p="sm">
+                            <Group justify="space-between">
+                              <Text size="xs" c="brand.6" fw={700}>
+                                Today (21 June, 2025)
+                              </Text>
+                              <Text size="xs" opacity={0.5}>
+                                General Notice
+                              </Text>
+                            </Group>
+
+                            <Text size="sm" my="md">
+                              Hello Seekers, there will be changes to the Terms
+                              and Conditions governing our services on the [Job
+                              Portal Name] platform. These updates are part of
+                              our ongoing efforts to enhance transparency,
+                              improve service quality, and ensure a more
+                              seamless experience for both recruiters and
+                              candidates.
+                            </Text>
+
+                            <Text size="xs" opacity={0.5}>
+                              Administration, Unite SSW.
+                            </Text>
+                          </Paper>
+
+                          <Paper withBorder p="sm">
+                            <Group justify="space-between">
+                              <Text size="xs" c="brand.6" fw={700}>
+                                Today (21 June, 2025)
+                              </Text>
+                              <Text size="xs" opacity={0.5}>
+                                General Notice
+                              </Text>
+                            </Group>
+
+                            <Text size="sm" my="md">
+                              Hello Seekers, there will be changes to the Terms
+                              and Conditions governing our services on the [Job
+                              Portal Name] platform. These updates are part of
+                              our ongoing efforts to enhance transparency,
+                              improve service quality, and ensure a more
+                              seamless experience for both recruiters and
+                              candidates.
+                            </Text>
+
+                            <Text size="xs" opacity={0.5}>
+                              Administration, Unite SSW.
+                            </Text>
+                          </Paper>
+
+                          <Paper withBorder p="sm">
+                            <Group justify="space-between">
+                              <Text size="xs" c="brand.6" fw={700}>
+                                Today (21 June, 2025)
+                              </Text>
+                              <Text size="xs" opacity={0.5}>
+                                General Notice
+                              </Text>
+                            </Group>
+
+                            <Text size="sm" my="md">
+                              Hello Seekers, there will be changes to the Terms
+                              and Conditions governing our services on the [Job
+                              Portal Name] platform. These updates are part of
+                              our ongoing efforts to enhance transparency,
+                              improve service quality, and ensure a more
+                              seamless experience for both recruiters and
+                              candidates.
+                            </Text>
+
+                            <Text size="xs" opacity={0.5}>
+                              Administration, Unite SSW.
+                            </Text>
+                          </Paper>
+                        </Stack>
+                      </ScrollArea>
+                    </Menu.Dropdown>
+                  </Menu>
+
+                  <Menu>
+                    <Menu.Target>
+                      <ActionIcon color="gray" variant="subtle">
+                        <BellIcon />
+                      </ActionIcon>
+                    </Menu.Target>
+                  </Menu>
+
                   <ButtonGroup>
                     <Button
                       size="xs"
-                      variant={language == "en" ? "white" : "subtle"}
+                      variant={language == "en" ? "white" : "light"}
+                      bg={language == "en" ? "white" : "gray.8"}
+                      c={language == "en" ? "brand" : "gray"}
                       onClick={() => setLanguage("en")}
                     >
                       EN
@@ -157,6 +277,7 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
                     <Button
                       size="xs"
                       variant={language == "jp" ? "white" : "light"}
+                      bg={language == "jp" ? "white" : "gray.8"}
                       c={language == "jp" ? "brand" : "gray"}
                       onClick={() => setLanguage("jp")}
                     >
@@ -243,6 +364,8 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
                 <Button
                   size="xs"
                   variant={language == "en" ? "white" : "subtle"}
+                  bg={language == "en" ? "white" : "gray.7"}
+                  c={language == "en" ? "brand" : "gray"}
                   onClick={() => setLanguage("en")}
                 >
                   EN
@@ -250,6 +373,7 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
                 <Button
                   size="xs"
                   variant={language == "jp" ? "white" : "light"}
+                  bg={language == "jp" ? "white" : "gray.7"}
                   c={language == "jp" ? "brand" : "gray"}
                   onClick={() => setLanguage("jp")}
                 >

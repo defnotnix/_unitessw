@@ -65,6 +65,13 @@ export function _Form() {
       return (
         <>
           <Stack gap="xs" p="md">
+            <ImageUpload
+              {...form.getInputProps("image")}
+              label="Profile Picture"
+              description="Staff's Profile Picture (optional)."
+              onChange={(image: any) => form.setFieldValue("image", image)}
+              value={form.getValues()?.image}
+            />
             <TextInput
               label="Name"
               description="Full name of the user (optional)."
@@ -72,35 +79,22 @@ export function _Form() {
               {...form.getInputProps("name")}
             />
 
-            <TextInput
-              label="Email"
-              description="Primary email address (required)."
-              placeholder="Enter email address"
-              required
-              {...form.getInputProps("email")}
-            />
+            <SimpleGrid cols={2} spacing="xs">
+              <TextInput
+                label="Email"
+                description="Primary email address (required)."
+                placeholder="Enter email address"
+                required
+                {...form.getInputProps("email")}
+              />
 
-            <PasswordInput
-              label="Password"
-              description="Set a secure password (optional)."
-              placeholder="Enter password"
-              {...form.getInputProps("password")}
-            />
-
-            <TextInput
-              label="Recovery Email"
-              description="Optional recovery email address."
-              placeholder="Enter recovery email"
-              {...form.getInputProps("recovery_email")}
-            />
-
-            <Select
-              label="Account Type"
-              data={["Staff", "Admin"]}
-              description="Type of this account"
-              placeholder="Select Account Type"
-              {...form.getInputProps("account_type")}
-            />
+              <PasswordInput
+                label="Password"
+                description="Set a secure password (optional)."
+                placeholder="Enter password"
+                {...form.getInputProps("password")}
+              />
+            </SimpleGrid>
           </Stack>
         </>
       );

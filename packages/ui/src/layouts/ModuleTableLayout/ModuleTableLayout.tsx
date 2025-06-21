@@ -455,8 +455,8 @@ export function ModuleTableLayout({
                     </ActionIcon>
                   )}
 
-                  <Text size="xs" fw={700}>
-                    Manage {moduleName}
+                  <Text size="xs" fw={700} tt="capitalize">
+                    {moduleName}
                   </Text>
                   <Text size="xs" fw={700} opacity={0.6} c="gray.9">
                     {moduleDescription.substring(0, 30)}

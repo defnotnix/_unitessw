@@ -9,6 +9,7 @@ export type PropListHandler = {
   endpoint?: string;
   moduleKey?: string[];
   //search
+  transformOnGet?: (data: any) => any;
   enableServerSearch?: boolean;
   enableServerPagination?: boolean;
   //(children

@@ -45,7 +45,6 @@ import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
 import { RBACCheck } from "@/components/RBACCheck";
-import { endpoint } from "@/layouts/app";
 
 export function _List() {
   const router = useRouter();
@@ -66,16 +65,13 @@ export function _List() {
           endpoint={moduleConfig.endpoint}
           moduleKey={moduleConfig.moduleKey}
           getRecords={getRecords}
-          transformOnGet={(data) => {
-            return {
-              ...data,
-              image: data?.image ? endpoint + data.image : null,
-            };
-          }}
         >
           <ModuleTableLayout
             {...moduleConfig}
             idAccessor="id"
+            disableAdd
+            disableDelete
+            disableEdit
             apiEdit={updateRecord}
             apiCreate={createRecord}
             apiDelete={deleteRecord}

@@ -13,8 +13,8 @@ export const moduleConfig: PropModuleConfig = {
       label: "Manage Admin Accounts",
     },
   ],
-  moduleKey: "vauth.Admin Accounts".split("."),
-  endpoint: "/players/Admin Accounts/",
+  moduleKey: "vauth.admin.accounts".split("."),
+  endpoint: "/authenticate/admin/accounts/",
   //
   moduleTerm: "Admin Account",
   moduleTermPlural: "Admin Accounts",

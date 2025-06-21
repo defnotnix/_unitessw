@@ -49,6 +49,10 @@ export const navItems: PropAdminNavItems[] = [
         label: "Account Roles & Permissions",
         value: "/admin/accounts/role",
       },
+      {
+        label: "Disabled Accounts",
+        value: "/admin/accounts/disabled",
+      },
     ],
   },
 

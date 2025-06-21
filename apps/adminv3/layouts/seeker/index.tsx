@@ -15,8 +15,8 @@ import {
 import { PropsWithChildren } from "react";
 
 //assets
-import imgLogo from "@/assets/img/sswmini.png";
 import { DoorOpenIcon } from "@phosphor-icons/react";
+import { images } from "@/assets/images";
 
 export function LayoutSeeker({ children }: PropsWithChildren) {
   return (
@@ -34,7 +34,7 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
               <div>
                 <Group gap="xs">
                   <Image
-                    src={imgLogo.src}
+                    src={images.brand.adminIcon}
                     h={24}
                     w={32}
                     style={{

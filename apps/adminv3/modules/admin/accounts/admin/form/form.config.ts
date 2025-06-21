@@ -23,7 +23,16 @@ export const formProps: any = {
 
   // > SUBMIT
   transformDataOnSubmit: (formdata: any) => {
-    return formdata;
+    const { image, perm_cv, perm_applicant, ...rest } = formdata;
+
+    return {
+      ...rest,
+      is_admin: true,
+      is_staff1: false,
+      is_staff2: false,
+      is_staff3: false,
+      ...(image instanceof File ? { image } : {}),
+    };
   },
   submitFormData: false,
 

@@ -171,8 +171,8 @@ export function FormHandler({
         onSubmitError(formType == "edit" ? form.getValues() : err);
       }
 
-      switch (errObject.error_alias) {
-        case "ValidationError":
+      switch (errObject.type) {
+        case "Validation Error":
           form.setErrors(errObject.details);
           triggerNotification.form.isError({
             title: "Whoops! Hold on a Moment 🖐️",
@@ -199,7 +199,9 @@ export function FormHandler({
           }
           break;
         default:
-          triggerNotification.form.isError({});
+          triggerNotification.form.isError({
+            message: errObject?.detail || null,
+          });
       }
     },
   });

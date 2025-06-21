@@ -63,7 +63,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
             <Grid.Col span={{ base: 12, lg: 8 }} visibleFrom="lg">
               <Paper
                 radius="lg"
-                bg="dark.8"
+                bg="linear-gradient(to bottom, rgba(0,0,0,.3), rgba(0,0,0,.9))"
                 h={{
                   base: "auto",
                   lg: "calc(100vh -   var(--mantine-spacing-xl))",
@@ -114,7 +114,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                     in Japan
                   </Text>
 
-                  <Paper p="xl" radius="lg" bg="dark.9" mt="xl">
+                  <Paper p="xl" radius="lg" bg="gray.9" mt="xl">
                     <SimpleGrid cols={4}>
                       <Text size="xs" c="gray.0" opacity={0.5}>
                         OFFICE - NEPAL
@@ -171,7 +171,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                 radius="lg"
                 h={{
                   base: "auto",
-                  lg: "calc(100vh -   var(--mantine-spacing-xl))",
+                  lg: "calc(100vh - var(--mantine-spacing-xl))",
                 }}
                 py={{ base: "xl" }}
                 px={{ base: "xl", lg: "4rem" }}

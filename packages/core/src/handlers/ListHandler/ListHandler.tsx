@@ -108,6 +108,7 @@ export function ListHandler({
   //server
   enableServerSearch = false,
   enableServerPagination = false,
+  transformOnGet,
   //
   children,
 }: PropListHandler) {
@@ -139,7 +140,7 @@ export function ListHandler({
           ...(getParams || {}),
         },
       });
-      console.log(res);
+
       const _data = enableServerSearch
         ? res.results
         : dataKey
@@ -158,7 +159,7 @@ export function ListHandler({
         return [];
       }
 
-      return _data;
+      return transformOnGet ? transformOnGet(_data) : _data;
     },
     initialData: [],
     enabled: !enableServerPagination,

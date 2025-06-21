@@ -16,10 +16,12 @@ import "@/public/styles/global.css";
 
 //oauthF
 
+export const endpoint = "http://192.168.101.8:8000";
+
 export function LayoutApp({ children }: PropsWithChildren) {
   return (
     <QueryWrapper
-      apiProvider={"http://10.0.0.3:8000"}
+      apiProvider={endpoint}
       //apiProvider="http://192.168.30.12:8000/"
       queryProps={{
         defaultOptions: {

@@ -132,7 +132,7 @@ export function _Form() {
     </Stack>
   );
 
-  const stepConfig = [
+  const stepConfig: any = [
     { component: <InitiateStep />, apiCreate: null, apiUpdate: null },
     {
       component: <StepIdentity />,
@@ -245,7 +245,7 @@ export function _Form() {
   const apiSubmit = isCompleted
     ? currentStepConfig.apiUpdate
     : currentStepConfig.apiCreate;
-  const transformData = currentStepConfig.transform ?? ((e) => e);
+  const transformData = currentStepConfig.transform ?? ((e: any) => e);
   const submitFormData = currentStepConfig?.isFormData ?? false;
 
   const FormLayout = ({ children }: PropsWithChildren) => {

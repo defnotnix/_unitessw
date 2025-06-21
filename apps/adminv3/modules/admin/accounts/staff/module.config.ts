@@ -14,7 +14,7 @@ export const moduleConfig: PropModuleConfig = {
     },
   ],
   moduleKey: "vauth.staff.account".split("."),
-  endpoint: "/players/staff/",
+  endpoint: "/authenticate/staff/accounts/",
   //
   moduleTerm: "Staff Account",
   moduleTermPlural: "Staff Accounts",
