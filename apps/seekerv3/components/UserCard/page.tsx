@@ -431,13 +431,17 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
           },
         }}
       >
-        <Paper bg={"brand.2"}>
-          <Stack py="2rem">
+        <Paper
+          bg={
+            "linear-gradient(90deg, var(--mantine-color-brand-5),var(--mantine-color-red-6), var(--mantine-color-grape-6))"
+          }
+        >
+          <Stack py="3rem">
             <Center>
               <Avatar size="100" src={info.image} name={info.full_name} />
             </Center>
 
-            <Text ta="center" size="xl" fw={800}>
+            <Text ta="center" size="2rem" fw={800} c="white">
               {lang === "en" ? info.full_name : info.furigana}
             </Text>
           </Stack>
@@ -448,14 +452,7 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
             <Stack gap="xs">
               {/* About Me */}
               <Paper withBorder>
-                <Text
-                  px="lg"
-                  py="xs"
-                  bg="brand.2"
-                  opacity={0.5}
-                  fw={800}
-                  size="xs"
-                >
+                <Text px="lg" py="xs" bg="gray.0" fw={800} size="xs">
                   {lang === "en" ? "About Me" : "プロフィール"}
                 </Text>
 
@@ -500,14 +497,7 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
                   { label: "Hobbies", jp: "趣味", key: "hobbies" },
                 ].map((section, idx) => (
                   <React.Fragment key={idx}>
-                    <Text
-                      opacity={0.5}
-                      fw={800}
-                      size="xs"
-                      bg="brand.2"
-                      px="lg"
-                      py="xs"
-                    >
+                    <Text fw={800} size="xs" bg="gray.0" px="lg" py="xs">
                       {lang === "en" ? section.label : section.jp}
                     </Text>
                     <Text size="xs" px="lg" py="md">
@@ -521,28 +511,14 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
 
               {/* Strength & Weakness */}
               <Paper withBorder>
-                <Text
-                  opacity={0.5}
-                  fw={800}
-                  size="xs"
-                  px="lg"
-                  py="xs"
-                  bg="brand.2"
-                >
+                <Text fw={800} size="xs" px="lg" py="xs" bg="gray.0">
                   {lang === "en" ? "Strong Point" : "長所"}
                 </Text>
                 <Text size="xs" px="lg" py="md">
                   {lang === "en" ? info.strong_point : info.jp_strong_point}
                 </Text>
 
-                <Text
-                  opacity={0.5}
-                  fw={800}
-                  size="xs"
-                  px="lg"
-                  py="xs"
-                  bg="brand.2"
-                >
+                <Text fw={800} size="xs" px="lg" py="xs" bg="gray.0">
                   {lang === "en" ? "Negative Point" : "短所"}
                 </Text>
                 <Text size="xs" px="lg" py="md">
@@ -553,12 +529,12 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
 
             {/* Right Side */}
             <Stack gap="xs">
-              <Paper withBorder p="lg">
+              <Paper withBorder>
                 {/* Personal Details */}
-                <Text fw={800} size="xs" opacity={0.5} mb="md">
+                <Text fw={800} size="xs" px="lg" py="xs" bg="gray.0">
                   {lang === "en" ? "Personal Details" : "基本情報"}
                 </Text>
-                <SimpleGrid cols={2} spacing="xs">
+                <SimpleGrid cols={2} spacing="xs" px="lg" py="sm">
                   {personalDetails.basicInfo.map((item, index) => (
                     <React.Fragment key={index}>
                       <Text size="xs" fw={800}>
@@ -571,13 +547,11 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
                   ))}
                 </SimpleGrid>
 
-                <Divider my="sm" />
-
                 {/* Background Details */}
-                <Text fw={800} size="xs" opacity={0.5} mb="md">
+                <Text fw={800} size="xs" px="lg" py="xs" bg="gray.0">
                   {lang === "en" ? "Background Details" : "背景"}
                 </Text>
-                <SimpleGrid cols={2} spacing="xs">
+                <SimpleGrid cols={2} spacing="xs" px="lg" py="sm">
                   {personalDetails.backgroundInfo.map((item, index) => (
                     <React.Fragment key={index}>
                       <Text size="xs" fw={800}>
@@ -618,13 +592,11 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
                   </Text>
                 </SimpleGrid>
 
-                <Divider my="sm" />
-
                 {/* Physical Info */}
-                <Text fw={800} size="xs" opacity={0.5} mb="md">
+                <Text fw={800} size="xs" px="lg" py="xs" bg="gray.0">
                   {lang === "en" ? "Physical" : "身体情報"}
                 </Text>
-                <SimpleGrid cols={2} spacing="xs">
+                <SimpleGrid cols={2} spacing="xs" px="lg" py="sm">
                   {personalDetails.physicalInfo.map((item, index) => (
                     <React.Fragment key={index}>
                       <Text size="xs" fw={800}>
