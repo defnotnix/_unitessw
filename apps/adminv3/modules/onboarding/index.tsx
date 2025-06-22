@@ -4,11 +4,13 @@ import {
   ActionIcon,
   Box,
   Button,
+  Center,
   Container,
   Divider,
   Grid,
   Group,
   Image,
+  Loader,
   Paper,
   SimpleGrid,
   Stack,
@@ -23,52 +25,27 @@ import {
   ExclamationMark,
   Hash,
   Info,
+  CheckIcon,
 } from "@phosphor-icons/react";
 import { FormHandler } from "@vframework/core";
 import { PropsWithChildren, useEffect, useState } from "react";
-import { StepDocument } from "./steps/document";
-import { formProps } from "./steps/document/form.config";
-import { StepDetails } from "./steps/details";
-import { StepMedical } from "./steps/medical";
-import { StepOrthodontics } from "./steps/orthodontics";
-import { StepAcademics } from "./steps/academics";
-import { StepWork } from "./steps/work";
-import { StepCompleted } from "./steps/completed";
 
 import imgLogo from "@/assets/img/sswmini.png";
-import {
-  apiAcademics,
-  apiDetails,
-  apiDocument,
-  apiMedical,
-  apiOrthodontics,
-  apiWork,
-} from "./module.api";
 
 import { jwtDecode } from "jwt-decode";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { formProps } from "./form/form.config";
+import { FormOnboarding } from "./form";
+import { updateRecord } from "./module.api";
+import { Router } from "next/router";
 
 export function ModuleOnboarding() {
   const [current, setCurrent] = useState(0);
+  const Router = useRouter();
+  const [complete, setComplete] = useState(false);
 
-  const queryParams: any = useSearchParams();
-
-  useEffect(() => {
-    if (queryParams.get("step")) {
-      Number(setCurrent(queryParams.get("step")));
-    }
-  }, []);
-
-  const steps = [
-    "Welcome",
-    "Official Documents",
-    "General Details",
-    "Medical Details",
-    "Orthodontic Appliances",
-    "Academics",
-    "Work History",
-    "Completed",
-  ];
+  const token: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
+  console.log(token);
 
   const FormLayout = ({ children }: PropsWithChildren) => {
     const { handleSubmit } = FormHandler.usePropContext();
@@ -103,48 +80,16 @@ export function ModuleOnboarding() {
           </Text>
 
           <Group gap="xs">
-            <Text size="xs">Apply</Text>
-            <Text size="xs">Process</Text>
+            <Text size="xs">Account Onboarding</Text>
           </Group>
         </Group>
 
         {children}
 
         <Group justify="space-between" mt="xl">
-          {current >= 0 ? (
-            <Text size="xs">
-              Step {current + 1} of {steps.length}
-              {current !== steps.length && (
-                <span
-                  style={{
-                    opacity: 0.5,
-                  }}
-                >
-                  {" "}
-                  - Upcomming Step: {steps[current + 1]}
-                </span>
-              )}
-            </Text>
-          ) : (
-            <Text size="xs">
-              Ready to start ? Click the button on the right to begin. 😊
-            </Text>
-          )}
-          {current < steps.length - 1 ? (
-            <ActionIcon
-              radius="lg"
-              size="xl"
-              onClick={() => {
-                handleSubmit();
-              }}
-            >
-              <ArrowRight />
-            </ActionIcon>
-          ) : (
-            <ActionIcon color="teal" size="xl" onClick={() => {}}>
-              <Check />
-            </ActionIcon>
-          )}
+          <ActionIcon color="teal" size="xl" onClick={handleSubmit}>
+            <CheckIcon />
+          </ActionIcon>
         </Group>
       </Paper>
     );
@@ -182,6 +127,27 @@ export function ModuleOnboarding() {
       </Stack>
     );
   };
+
+  if (complete) {
+    return (
+      <Center h="100vh">
+        <Stack>
+          <Text size="sm" ta="center" fw={800}>
+            Onboarding Complete!
+            <br /> Sending you over to your portal.
+          </Text>
+
+          <Group justify="center" py="xl">
+            <Loader />
+          </Group>
+
+          <Text size="sm" ta="center" opacity={0.5}>
+            Welcome to Unite SSW Team.
+          </Text>
+        </Stack>
+      </Center>
+    );
+  }
 
   return (
     <>
@@ -245,39 +211,6 @@ export function ModuleOnboarding() {
                       Onboarding
                     </span>
                   </Text>
-
-                  <Stack gap="4" my="xl">
-                    {steps.map((_: string, index: number) => {
-                      return (
-                        <Paper
-                        radius="lg"
-                          opacity={current >= index ? 1 : 0.5}
-                          key={index}
-                          p="md"
-                          bg={current == index ? "brand.5" : "none"}
-                          style={{
-                            color: "var(--mantine-color-gray-0)",
-                          }}
-                        >
-                          <Group justify="space-between">
-                            <Group>
-                              <Hash size={12} />
-                              <Text size="xs" fw={600}>
-                                Step {index + 1} : {_}
-                              </Text>
-                            </Group>
-                            {index < current ? (
-                              <Check size={12} />
-                            ) : index == current ? (
-                              <ArrowRight size={12} />
-                            ) : (
-                              <></>
-                            )}
-                          </Group>
-                        </Paper>
-                      );
-                    })}
-                  </Stack>
                 </Box>
 
                 <Box>
@@ -305,145 +238,27 @@ export function ModuleOnboarding() {
                 base: "auto",
               }}
             >
-              {current == 0 && (
-                <FormHandler
-                  {...formProps}
-                  onSubmitSuccess={() => setCurrent(current + 1)}
-                >
-                  <FormLayout>
-                    <InitiateStep />
-                  </FormLayout>
-                </FormHandler>
-              )}
-
-              {current == 1 && (
-                <FormHandler
-                  {...formProps}
-                  apiSubmit={apiDocument}
-                  onSubmitSuccess={async (body) => {
-                    setCurrent(current + 1);
-                  }}
-                >
-                  <FormLayout>
-                    <StepDocument />
-                  </FormLayout>
-                </FormHandler>
-              )}
-
-              {current == 2 && (
-                <FormHandler
-                  {...formProps}
-                  apiSubmit={apiDetails}
-                  onSubmitSuccess={() => setCurrent(current + 1)}
-                  transformDataOnSubmit={(res) => {
-                    const decoded: any = jwtDecode(
-                      sessionStorage.getItem("sswtoken") || ""
-                    );
-
-                    return {
-                      user: decoded?.user_id,
-                      ...res,
-                    };
-                  }}
-                >
-                  <FormLayout>
-                    <StepDetails />
-                  </FormLayout>
-                </FormHandler>
-              )}
-
-              {current == 3 && (
-                <FormHandler
-                  {...formProps}
-                  apiSubmit={apiMedical}
-                  onSubmitSuccess={() => setCurrent(current + 1)}
-                  formType="edit"
-                >
-                  <FormLayout>
-                    <StepMedical />
-                  </FormLayout>
-                </FormHandler>
-              )}
-
-              {current == 4 && (
-                <FormHandler
-                  {...formProps}
-                  submitFormData={false}
-                  transformDataOnSubmit={(res) => {
-                    return res?.orthodontics?.map((_: any, index: number) => {
-                      return {
-                        applicant: res?.id,
-                        ..._,
-                      };
-                    });
-                  }}
-                  apiSubmit={apiOrthodontics}
-                  onSubmitSuccess={() => setCurrent(current + 1)}
-                >
-                  <FormLayout>
-                    <StepOrthodontics />
-                  </FormLayout>
-                </FormHandler>
-              )}
-
-              {current == 5 && (
-                <FormHandler
-                  {...formProps}
-                  submitFormData={false}
-                  transformDataOnSubmit={(res) => {
-                    console.log(res);
-                    return res?.academics?.map((_: any, index: number) => {
-                      return {
-                        applicant: res?.id,
-                        ..._,
-                        from_year: _?.year?.[0].substring(0, 4),
-                        to_year: _?.year?.[1].substring(0, 4),
-                      };
-                    });
-                  }}
-                  apiSubmit={apiAcademics}
-                  onSubmitSuccess={() => setCurrent(current + 1)}
-                >
-                  <FormLayout>
-                    <StepAcademics />
-                  </FormLayout>
-                </FormHandler>
-              )}
-
-              {current == 6 && (
-                <FormHandler
-                  {...formProps}
-                  submitFormData={false}
-                  transformDataOnSubmit={(res) => {
-                    console.log(res);
-                    return res?.work?.map((_: any, index: number) => {
-                      return {
-                        applicant: res?.id,
-                        ..._,
-                        from_year: _?.year?.[0].substring(0, 4),
-                        to_year: _?.year?.[1].substring(0, 4),
-                      };
-                    });
-                  }}
-                  apiSubmit={apiWork}
-                  onSubmitSuccess={() => setCurrent(current + 1)}
-                >
-                  <FormLayout>
-                    <StepWork />
-                  </FormLayout>
-                </FormHandler>
-              )}
-
-              {current == 7 && (
-                <FormHandler
-                  {...formProps}
-                  onSubmitSuccess={() => setCurrent(current + 1)}
-                >
-                  <FormLayout>
-                    <StepCompleted />
-                  </FormLayout>
-                </FormHandler>
-              )}
+              <FormHandler
+                {...formProps}
+                initial={{
+                  id: token?.user_id,
+                  ...token,
+                }}
+                formType="edit"
+                apiSubmit={(body, id) => {
+                  return updateRecord(body, token.user_id);
+                }}
+                onSubmitSuccess={() => {
+                  setComplete(true);
+                  setTimeout(() => {
+                    Router.push("/admin");
+                  }, 3000);
+                }}
+              >
+                <FormLayout>
+                  <FormOnboarding />
+                </FormLayout>
+              </FormHandler>
             </Grid.Col>
           </Grid>
         </Container>

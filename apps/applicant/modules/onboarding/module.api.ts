@@ -10,7 +10,7 @@ export async function apiCategory() {
 export const apiPersonalInformation = {
   get: async (id: any) => {
     return await apiDispatch.get({
-      endpoint: `/applicant/info/${id}/`,
+      endpoint: `/applicant/info/id/${id}/`,
     });
   },
 

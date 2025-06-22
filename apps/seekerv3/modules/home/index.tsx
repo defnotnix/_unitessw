@@ -12,17 +12,43 @@ import {
   Paper,
   Select,
   SimpleGrid,
+  Spoiler,
   Stack,
   Text,
   TextInput,
   Title,
 } from "@mantine/core";
-import { ArrowRightIcon, CaretDownIcon } from "@phosphor-icons/react";
+import { useDisclosure } from "@mantine/hooks";
+import {
+  ArrowRightIcon,
+  CaretDownIcon,
+  CaretUpIcon,
+} from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
+import { getJobCategory } from "./module.api";
+import { useQuery } from "@tanstack/react-query";
+import { useForm } from "@mantine/form";
 
 export function ModuleSeekerHome() {
   const { language } = useLanguage();
+
+  const form = useForm({
+    mode: "uncontrolled",
+  });
+
+  const [openedAdvanced, handlersAdvance] = useDisclosure();
+
   const Router = useRouter();
+
+  const queryJobCategory = useQuery({
+    queryKey: ["seeker", "category"],
+    queryFn: async () => {
+      const res = await getJobCategory();
+      console.log(res);
+      return res;
+    },
+    initialData: [],
+  });
 
   return (
     <>
@@ -65,6 +91,28 @@ export function ModuleSeekerHome() {
           </Button>
         </Group>
 
+        <Group justify="center" mb="lg">
+          <Text size="xs" fw={600}>
+            There are{" "}
+            <b
+              style={{
+                color: "var(--mantine-color-brand-6)",
+              }}
+            >
+              2,233
+            </b>{" "}
+            applicants available, representing{" "}
+            <b
+              style={{
+                color: "var(--mantine-color-brand-6)",
+              }}
+            >
+              23
+            </b>{" "}
+            distinct job categories.
+          </Text>
+        </Group>
+
         <Paper p="xl" withBorder shadow="md" radius="lg">
           <Group justify="space-between">
             <Text size="sm" fw={800}>
@@ -79,137 +127,230 @@ export function ModuleSeekerHome() {
             </Text>
           </Group>
 
-          <SimpleGrid cols={2} mt="xl">
-            <TextInput
-              label="Job Category"
-              variant="filled"
-              size="xl"
-              placeholder="Select Job Category"
-              radius="md"
-            />
-            <SimpleGrid cols={2}>
+          <Stack gap="xs">
+            <SimpleGrid cols={2} mt="xl">
               <Select
-                label="Gender"
+                data={queryJobCategory.data.map((item: any) => {
+                  return {
+                    label: `${item.name} (${item.jp_name})`,
+                    value: String(item.id),
+                  };
+                })}
+                label="Job Category"
                 variant="filled"
                 size="xl"
-                placeholder="Gender"
+                placeholder="Select Job Category"
                 radius="md"
+                {...form.getInputProps("category")}
               />
-              <div>
-                <Text size="xs" my={4}>
-                  Age Range
-                </Text>
-                <SimpleGrid cols={2} spacing={"xs"}>
-                  <Select
-                    variant="filled"
-                    size="xl"
-                    placeholder="Min"
-                    radius="md"
-                  />
-                  <Select
-                    variant="filled"
-                    size="xl"
-                    placeholder="Maximum Age"
-                    radius="md"
-                  />
-                </SimpleGrid>
-              </div>
+              <SimpleGrid cols={2}>
+                <Select
+                  data={[
+                    { value: "Male", label: "Male" },
+                    { value: "Female", label: "Female" },
+                    { value: "Other", label: "Other" },
+                  ]}
+                  label="Gender"
+                  variant="filled"
+                  size="xl"
+                  placeholder="Gender"
+                  radius="md"
+                  {...form.getInputProps("gender")}
+                />
+                <div>
+                  <Text size="xs" my={4}>
+                    Age Range (Min - Max)
+                  </Text>
+                  <SimpleGrid cols={2} spacing={2}>
+                    <NumberInput
+                      hideControls
+                      variant="filled"
+                      size="xl"
+                      placeholder="Min"
+                      radius="md"
+                      {...form.getInputProps("min_age")}
+                    />
+                    <NumberInput
+                      min={
+                        form.getValues()?.min_age
+                          ? form.getValues()?.min_age + 1
+                          : null
+                      }
+                      hideControls
+                      variant="filled"
+                      size="xl"
+                      placeholder="Max"
+                      radius="md"
+                      {...form.getInputProps("max_age")}
+                    />
+                  </SimpleGrid>
+                </div>
+              </SimpleGrid>
             </SimpleGrid>
-          </SimpleGrid>
 
-          {/* <Divider my="md" />
-
-          <Text size="xs" fw={800} c="brand.6">
-            General Details
-          </Text>
-
-          <SimpleGrid cols={4} mt="xs">
-            <NumberInput
-              label="Weight"
-              variant="filled"
-              size="xl"
-              placeholder="Select"
-              radius="md"
-            />
-            <NumberInput
-              label="Height"
-              variant="filled"
-              size="xl"
-              placeholder="Select"
-              radius="md"
-            />
-            <Select
-              label="Martial Status"
-              variant="filled"
-              size="xl"
-              placeholder="Select"
-              radius="md"
-            />
-          </SimpleGrid>
-
-          <SimpleGrid cols={4} mt="xs">
-            <Select
-              label="Has Driving License"
-              variant="filled"
-              size="xl"
-              placeholder="Select"
-              radius="md"
-            />
-            <Select
-              label="Has Passport"
-              variant="filled"
-              size="xl"
-              placeholder="Select"
-              radius="md"
-            />
-            <Select
-              label="Has Language Certificate"
-              variant="filled"
-              size="xl"
-              placeholder="Select"
-              radius="md"
-            />
-            <Select
-              label=""
-              variant="filled"
-              size="xl"
-              placeholder="Select"
-              radius="md"
-            />
-          </SimpleGrid> */}
+            <div
+              style={{
+                transition: ".3s ease-in-out",
+                maxHeight: openedAdvanced ? 500 : 0,
+                overflow: "hidden",
+              }}
+            >
+              <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="xs">
+                <TextInput
+                  label="Full Name (English)"
+                  variant="filled"
+                  size="xl"
+                  placeholder="Select Job Category"
+                  radius="md"
+                  {...form.getInputProps("full_name")}
+                />
+                <TextInput
+                  label="Full Name (Furigana)"
+                  variant="filled"
+                  size="xl"
+                  placeholder="Select Job Category"
+                  radius="md"
+                  {...form.getInputProps("furigana")}
+                />
+              </SimpleGrid>
+              <SimpleGrid cols={4} mt="xs">
+                <div>
+                  <Text size="xs" my={4}>
+                    Weight (Min - Max)
+                  </Text>
+                  <SimpleGrid cols={2} spacing={2}>
+                    <NumberInput
+                      hideControls
+                      variant="filled"
+                      size="xl"
+                      placeholder="Min"
+                      radius="md"
+                      {...form.getInputProps("min_weight")}
+                      rightSectionWidth={50}
+                      rightSection={<Text size="xs">kg</Text>}
+                    />
+                    <NumberInput
+                      min={
+                        form.getValues()?.min_weight
+                          ? form.getValues()?.min_weight + 1
+                          : null
+                      }
+                      hideControls
+                      variant="filled"
+                      size="xl"
+                      placeholder="Max"
+                      radius="md"
+                      {...form.getInputProps("max_weight")}
+                      rightSectionWidth={50}
+                      rightSection={<Text size="xs">kg</Text>}
+                    />
+                  </SimpleGrid>
+                </div>
+                <div>
+                  <Text size="xs" my={4}>
+                    Height (Min - Max)
+                  </Text>
+                  <SimpleGrid cols={2} spacing={2}>
+                    <NumberInput
+                      hideControls
+                      variant="filled"
+                      size="xl"
+                      placeholder="Min"
+                      radius="md"
+                      {...form.getInputProps("min_height")}
+                      rightSectionWidth={50}
+                      rightSection={<Text size="xs">cm</Text>}
+                    />
+                    <NumberInput
+                      min={
+                        form.getValues()?.min_height
+                          ? form.getValues()?.min_height + 1
+                          : null
+                      }
+                      hideControls
+                      variant="filled"
+                      size="xl"
+                      placeholder="Max"
+                      radius="md"
+                      {...form.getInputProps("max_height")}
+                      rightSectionWidth={50}
+                      rightSection={<Text size="xs">cm</Text>}
+                    />
+                  </SimpleGrid>
+                </div>
+                <Select
+                  data={[
+                    { label: "A+", value: "A+" },
+                    { label: "A-", value: "A-" },
+                    { label: "B+", value: "B+" },
+                    { label: "B-", value: "B-" },
+                    { label: "AB+", value: "AB+" },
+                    { label: "AB-", value: "AB-" },
+                    { label: "O+", value: "O+" },
+                    { label: "O-", value: "O-" },
+                  ]}
+                  label="Blood Group"
+                  variant="filled"
+                  size="xl"
+                  placeholder="Select"
+                  radius="md"
+                  {...form.getInputProps("blood_group")}
+                />
+                <Select
+                  data={[
+                    { value: "Male", label: "Male" },
+                    { value: "Female", label: "Female" },
+                    { value: "Other", label: "Other" },
+                  ]}
+                  label="Martial Status"
+                  variant="filled"
+                  size="xl"
+                  placeholder="Select"
+                  radius="md"
+                  {...form.getInputProps("martial_status")}
+                />
+              </SimpleGrid>
+            </div>
+          </Stack>
 
           <Group justify="space-between" wrap="nowrap" mt="xl">
-            <Group gap="xs">
-              <Text size="xs">Trending Searches</Text>
-              <Badge color="gray" size="md" tt="none" variant="light">
-                Hospitality
-              </Badge>
-              <Badge color="gray" size="md" tt="none" variant="light">
-                Cook
-              </Badge>
-              <Badge color="gray" size="md" tt="none" variant="light">
-                Engineers
-              </Badge>
-              <Badge color="gray" size="md" tt="none" variant="light">
-                Nurse
-              </Badge>
-            </Group>
+            <Button
+              size="xs"
+              radius="xl"
+              leftSection={
+                openedAdvanced ? (
+                  <CaretUpIcon size={12} />
+                ) : (
+                  <CaretDownIcon size={12} />
+                )
+              }
+              variant="light"
+              onClick={() => {
+                handlersAdvance.toggle();
+              }}
+            >
+              EnableAdvanced Search Options
+            </Button>
 
             <Group gap="xs">
-              <Button
-                size="xs"
-                radius="xl"
-                leftSection={<CaretDownIcon size={12} />}
-                variant="light"
-              >
-                EnableAdvanced Search Options
-              </Button>
-
               <ActionIcon
                 size="xl"
                 radius="xl"
                 onClick={() => {
-                  Router.push("/applicants");
+                  const rawValues = form.getValues();
+
+                  // Filter out null, undefined, or empty string values
+                  const filteredValues = Object.fromEntries(
+                    Object.entries(rawValues).filter(
+                      ([, value]) =>
+                        value !== null && value !== undefined && value !== ""
+                    )
+                  );
+
+                  const params = new URLSearchParams(
+                    filteredValues as Record<string, string>
+                  ).toString();
+                  Router.push("/applicants?" + params);
                 }}
               >
                 <ArrowRightIcon />

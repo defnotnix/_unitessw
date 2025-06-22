@@ -17,6 +17,7 @@ import { navItems, navModules } from "@/config/nav";
 import {
   Calendar,
   CaretRight,
+  CaretRightIcon,
   Check,
   Cricket,
   Note,
@@ -89,7 +90,7 @@ export function LayoutAdmin({ children }: PropsWithChildren) {
                 px="xs"
                 justify="space-between"
                 bg="indigo.9"
-                rightSection={<CaretRight />}
+                rightSection={<CaretRightIcon />}
                 onClick={() => Router.push("/takeAttendance")}
               >
                 <UserPlusIcon />{" "}
@@ -105,7 +106,7 @@ export function LayoutAdmin({ children }: PropsWithChildren) {
                 px="xs"
                 justify="space-between"
                 bg="teal.9"
-                rightSection={<CaretRight />}
+                rightSection={<CaretRightIcon />}
                 onClick={() => Router.push("/takePerformance")}
               >
                 <Note />{" "}
@@ -121,7 +122,7 @@ export function LayoutAdmin({ children }: PropsWithChildren) {
                 px="xs"
                 justify="space-between"
                 bg="teal.9"
-                rightSection={<CaretRight />}
+                rightSection={<CaretRightIcon />}
                 onClick={() => Router.push("/takePerformance")}
               >
                 <Check />{" "}

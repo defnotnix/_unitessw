@@ -14,7 +14,7 @@ export const moduleConfig: PropModuleConfig = {
     },
   ],
   moduleKey: "vauth.disabled.account".split("."),
-  endpoint: "/authenticate/inactive/admin/accounts//",
+  endpoint: "/authenticate/inactive/admin/accounts/",
   //
   moduleTerm: "Disabled Account",
   moduleTermPlural: "Disabled Accounts",

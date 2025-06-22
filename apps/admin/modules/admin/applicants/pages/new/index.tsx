@@ -30,17 +30,15 @@ export function _New() {
   // * ANIMATIONS
 
   return (
-    <RBACCheck showStaff>
-      <FormHandler {...formProps} apiSubmit={createRecord}>
-        <ModuleFormLayout
-          {...moduleConfig}
-          size="md"
-          withStepper
-          steps={formProps.steps}
-        >
-          <Form />
-        </ModuleFormLayout>
-      </FormHandler>
-    </RBACCheck>
+    <FormHandler {...formProps} apiSubmit={createRecord}>
+      <ModuleFormLayout
+        {...moduleConfig}
+        size="md"
+        withStepper
+        steps={formProps.steps}
+      >
+        <Form />
+      </ModuleFormLayout>
+    </FormHandler>
   );
 }

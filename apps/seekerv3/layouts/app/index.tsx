@@ -19,10 +19,12 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 
 //oauth
 
+export const endpoint = "http://10.0.0.8:8000/";
+
 export function LayoutApp({ children }: PropsWithChildren) {
   return (
     <QueryWrapper
-      apiProvider={"http://192.168.30.12:8000"}
+      apiProvider={endpoint}
       //apiProvider="http://192.168.30.12:8000/"
       queryProps={{
         defaultOptions: {

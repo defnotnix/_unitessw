@@ -1,6 +1,10 @@
 "use client";
 
-import { ModuleModalFormLayout, ModuleTableLayout } from "@vframework/ui";
+import {
+  ModuleModalFormLayout,
+  ModuleTableLayout,
+  triggerNotification,
+} from "@vframework/ui";
 import { useRouter } from "next/navigation";
 import { FormHandler, ListHandler } from "@vframework/core";
 import {
@@ -8,6 +12,7 @@ import {
   deleteRecord,
   updateRecord,
   getRecords,
+  disableRecord,
 } from "../../module.api";
 
 import { columns } from "./list.columns";
@@ -36,6 +41,8 @@ import {
   Trash,
   UserPlus,
   Users,
+  WarningIcon,
+  XIcon,
 } from "@phosphor-icons/react";
 import { moduleConfig } from "../../module.config";
 
@@ -45,6 +52,8 @@ import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
 import { RBACCheck } from "@/components/RBACCheck";
+import { modals } from "@mantine/modals";
+import { endpoint } from "@/layouts/app";
 
 export function _List() {
   const router = useRouter();
@@ -60,11 +69,20 @@ export function _List() {
 
   return (
     <>
-      <RBACCheck showStaff>
+    
         <ListHandler
           endpoint={moduleConfig.endpoint}
           moduleKey={moduleConfig.moduleKey}
           getRecords={getRecords}
+          transformOnGet={(data) => {
+            console.log(data);
+            return data.map((item: any) => {
+              return {
+                ...item,
+                image: item?.image ? endpoint + item.image : null,
+              };
+            });
+          }}
         >
           <ModuleTableLayout
             {...moduleConfig}
@@ -82,15 +100,92 @@ export function _List() {
               background:
                 gender === "male" ? "var(--mantine-color-indigo-0)" : "",
             })}
+            disableDelete
             // * EXTRA ACTIONS
+            extraActions={({ row, refetch }: any) => (
+              <>
+                <Menu.Item
+                  leftSection={<XIcon />}
+                  onClick={() => {
+                    modals.openConfirmModal({
+                      title: (
+                        <Group>
+                          <ActionIcon size="sm" color="red" variant="light">
+                            <WarningIcon size={12} />
+                          </ActionIcon>
+                          <Text
+                            size="sm"
+                            style={{
+                              fontWeight: 600,
+                            }}
+                          >
+                            Please confirm your action
+                          </Text>
+                        </Group>
+                      ),
+                      children: (
+                        <>
+                          <Text size="xs" my="md">
+                            This account will be disabled and cannot be used
+                            until re-activated again.
+                            <br />
+                            <br />
+                            <span
+                              style={{
+                                fontWeight: 600,
+                              }}
+                            >
+                              Are you sure you want to proceed?
+                            </span>
+                          </Text>
+                          <Space h="6px" />
+                        </>
+                      ),
+                      labels: { confirm: "Confirm", cancel: "Cancel" },
+                      confirmProps: {
+                        color: "red",
+                        size: "xs",
+                      },
+                      cancelProps: {
+                        size: "xs",
+                      },
+                      onCancel: () => {},
+                      onConfirm: async () => {
+                        triggerNotification.form.isLoading({});
 
+                        disableRecord(row.id)
+                          .then((res: any) => {
+                            if (!res.error) {
+                              triggerNotification.form.isSuccess({});
+                              refetch();
+                            } else {
+                              triggerNotification.form.isError({});
+                            }
+                          })
+                          .catch((err) => {
+                            triggerNotification.form.isError({});
+                          });
+                      },
+                      styles: {
+                        header: {
+                          background: "var(--mantine-color-red-1)",
+                        },
+                      },
+                      size: "sm",
+                    });
+                  }}
+                >
+                  Disable Account
+                </Menu.Item>
+              </>
+            )}
             // * MODAL CONFIG
             hasModalForms
             modalFormProps={{ width: "lg", formProps }}
             modalForm={<Form />}
           />
         </ListHandler>
-      </RBACCheck>
+     
     </>
   );
 }

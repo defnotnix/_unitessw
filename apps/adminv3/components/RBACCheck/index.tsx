@@ -1,55 +1,82 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import { jwtDecode } from "jwt-decode";
-import { Center, Text } from "@mantine/core";
+import { Center, Text, Loader, Paper, Group, Stack } from "@mantine/core";
+import { LockIcon } from "@phosphor-icons/react";
 
 interface SessionData {
-  is_admin?: boolean;
-  is_staff?: boolean;
-  is_coach?: boolean;
+  [key: string]: boolean;
 }
 
 export function RBACCheck({
   children,
-  showStaff,
-  showCoach,
+  allowList = [],
+  noRender = false,
+  customRender,
 }: {
   children: React.ReactNode;
-  showStaff?: boolean;
-  showCoach?: boolean;
+  allowList: string[];
+  noRender?: boolean;
+  customRender?: ReactNode;
 }) {
-  const [sessionData, setSessionData] = useState<SessionData | null>(null);
+  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("Unite SSWtoken");
-    if (token) {
-      try {
-        setSessionData(jwtDecode<SessionData>(token));
-      } catch (error) {
-        console.error("Invalid token:", error);
+    try {
+      const token = sessionStorage.getItem("sswtoken");
+
+      if (!token) {
+        setIsAuthorized(false);
+        return;
       }
+
+      const tokenData: any = jwtDecode<SessionData>(token);
+
+      const hasAccess = allowList.some(
+        (role) => tokenData[`is_${role}`] == "True"
+      );
+      setIsAuthorized(hasAccess);
+    } catch (err) {
+      console.error("RBAC token error:", err);
+      setIsAuthorized(false);
     }
-  }, []);
+  }, [allowList]);
 
-  // // Wait for sessionData to load
-  // if (sessionData === null) {
-  //   return null; // Or a loading indicator
-  // }
+  if (isAuthorized === null) {
+    return (
+      <Center h={400}>
+        <Loader size={16} />
+      </Center>
+    );
+  }
 
-  // if (
-  //   sessionData.is_admin ||
-  //   (showStaff && sessionData.is_staff) ||
-  //   (showCoach && sessionData.is_coach)
-  // ) {
-  //   return <>{children}</>;
-  // }
+  if (!isAuthorized) {
+    if (noRender) return <></>;
+    if (customRender) return <>{customRender}</>;
 
-  // return (
-  //   <Center p="xl">
-  //     <Text size="xs">You do not have permissions to view this module</Text>
-  //   </Center>
-  // );
+    return (
+      <Center h={400}>
+        <Stack gap="0">
+          <Group justify="center" opacity={0.2}>
+            <LockIcon
+              size={100}
+              weight="fill"
+              color="var(--mantine-color-brand-6)"
+            />
+          </Group>
 
-   return <>{children}</>;
+          <Text size="xl" fw={800} ta="center" mt="xs">
+            Content Locked
+          </Text>
+
+          <Text size="xs" fw={500} ta="center">
+            You do not have permission to view this content.
+          </Text>
+        </Stack>
+      </Center>
+    );
+  }
+
+  return <>{children}</>;
 }

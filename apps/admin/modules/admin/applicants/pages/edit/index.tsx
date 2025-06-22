@@ -90,7 +90,6 @@ export function _Edit() {
   }
 
   return (
-    <RBACCheck showStaff>
       <FormHandler
         {...formProps}
         initial={data}
@@ -100,6 +99,5 @@ export function _Edit() {
       >
         {!isLoading && <RenderForm />}
       </FormHandler>
-    </RBACCheck>
   );
 }

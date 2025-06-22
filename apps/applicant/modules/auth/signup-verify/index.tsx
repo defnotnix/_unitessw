@@ -41,6 +41,7 @@ import {
   Warning,
   CaretDown,
   Check,
+  CaretDownIcon,
 } from "@phosphor-icons/react";
 
 //styles
@@ -49,7 +50,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 //api
-import { apiLogin } from "./auth.api";
+import { apiLogin, apiResetPassword } from "./auth.api";
 import { apiDispatch } from "@vframework/core";
 
 //components
@@ -79,6 +80,17 @@ export function ModuleAuthOTP() {
     },
     validate: {
       otp: (value) => (value.length < 1 ? "Username Cannot be Empty" : null),
+    },
+  });
+
+  const formRe = useForm({
+    initialValues: {
+      fLoading: false,
+      password: "",
+    },
+    validate: {
+      password: (value) =>
+        value.length < 1 ? "Password Cannot be Empty" : null,
     },
   });
 
@@ -120,6 +132,7 @@ export function ModuleAuthOTP() {
       });
       setCooldown(300); // 5 minutes = 300 seconds
     } catch (err: any) {
+      form.setFieldValue("fLoading", false);
       triggerNotification.form.isError({
         message: err.message || "Failed to resend code.",
       });
@@ -127,8 +140,6 @@ export function ModuleAuthOTP() {
   };
 
   // * FUNCTIONS
-
-  const handleRememberMe = () => {};
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -152,27 +163,61 @@ export function ModuleAuthOTP() {
       triggerNotification.auth.isSuccess({});
     },
     onError: (err: any) => {
-      const { response } = err.object;
+      console.log(err);
+      const { detail } = err.object;
       form.setErrors({
-        otp: response?.data?.otp[0] || "Invalid OTP",
+        otp: detail?.data?.otp[0] || "Invalid OTP",
       });
 
-      console.log("ERROR", response);
-      setErrorType(response?.data?.type || "nan");
+      console.log("ERROR", detail);
+      setErrorType(err?.type || "nan");
       form.setFieldValue("fLoading", false);
       triggerNotification.auth.isError({
         title: "Cannot verify OTP",
         message:
-          response?.data?.otp[0] ||
+          detail?.data?.otp[0] ||
           "Invalid OTP" ||
           "Cannot Reach Server, Try Again!",
       });
     },
   });
 
+  const mutationPassword = useMutation({
+    mutationFn: async () => {
+      formRe.setFieldValue("fLoading", true);
+      triggerNotification.form.isLoading({});
+
+      return apiResetPassword({
+        email: Params.get("id"),
+        password: formRe.getValues()?.password,
+      });
+    },
+    onSuccess: (res) => {
+      Router.push("/");
+    },
+    onError: (err: any) => {
+      console.log(err);
+      const { detail } = err.object;
+      formRe.setErrors({
+        password:
+          "Password has to be at least 8 characters long with Capitals & Symbols",
+      });
+
+      setErrorType(err?.type || "nan");
+      form.setFieldValue("fLoading", false);
+      triggerNotification.form.isError({});
+    },
+  });
+
   function handleSignIn() {
     if (!form.validate().hasErrors) {
       mutation.mutate();
+    }
+  }
+
+  function handleReset() {
+    if (!form.validate().hasErrors) {
+      mutationPassword.mutate();
     }
   }
 
@@ -223,7 +268,7 @@ export function ModuleAuthOTP() {
     }
   };
 
-  if (completed) {
+  if (completed && Params.get("type") !== "forgot") {
     return (
       <>
         <div>
@@ -275,7 +320,7 @@ export function ModuleAuthOTP() {
                     <Text fw={500} size="11" lh={5} tt="none">
                       English (United States)
                     </Text>
-                    <CaretDown size="11" />
+                    <CaretDownIcon size="11" />
                   </Group>
                 </Badge>
               </UnstyledButton>
@@ -291,6 +336,41 @@ export function ModuleAuthOTP() {
           </Menu>
         </Group>
       </>
+    );
+  }
+
+  if (completed && Params.get("type") == "forgot") {
+    return (
+      <Stack>
+        <div>
+          <Text size="2rem" lh="2.3rem" ta="center">
+            Renew-Password
+          </Text>
+        </div>
+        <Text size="xs" ta="center" opacity={0.5}>
+          Enter new password for your account.
+        </Text>
+
+        <TextInput
+          radius="lg"
+          size="lg"
+          label="New Password"
+          placeholder="Enter new password"
+          disabled={form.getValues()?.fLoading}
+          {...formRe.getInputProps("password")}
+        />
+
+        <Button
+          radius="lg"
+          size="lg"
+          loading={formRe.getValues()?.fLoading}
+          onClick={() => {
+            handleReset();
+          }}
+        >
+          Reset
+        </Button>
+      </Stack>
     );
   }
 
@@ -372,7 +452,7 @@ export function ModuleAuthOTP() {
                     <Text fw={500} size="11" lh={5} tt="none">
                       English (United States)
                     </Text>
-                    <CaretDown size="11" />
+                    <CaretDownIcon size="11" />
                   </Group>
                 </Badge>
               </UnstyledButton>

@@ -102,7 +102,7 @@ export function _Profile() {
   // * COMPONENTS
 
   return (
-    <RBACCheck showStaff>
+  
       <Grid p="md" gutter="xs">
         <Grid.Col span={12}>
           <Group gap="xs">
@@ -453,6 +453,6 @@ export function _Profile() {
           </Paper>
         </Grid.Col>
       </Grid>
-    </RBACCheck>
+   
   );
 }

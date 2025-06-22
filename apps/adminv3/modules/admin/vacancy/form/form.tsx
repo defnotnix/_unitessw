@@ -37,6 +37,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import classes from "./form.module.css";
 import { Plus, Trash } from "@phosphor-icons/react";
+import { getRecords as getCategories } from "../../vacancy-category/module.api";
 
 // Assuming you have these defined elsewhere
 
@@ -55,6 +56,16 @@ export function _Form() {
 
   // * PRELOADING
 
+  const queryCategory = useQuery({
+    queryKey: ["vacancy", "category"],
+    queryFn: async () => {
+      const res = await getCategories();
+      console.log(res);
+      return res;
+    },
+    initialData: [],
+  });
+
   // * FUNCTIONS
 
   // * COMPONENTS
@@ -64,12 +75,23 @@ export function _Form() {
       return (
         <>
           <Stack gap="xs" p="md">
-            <TextInput
-              label="Session Name"
-              description="Enter the name of the training session."
-              placeholder="Enter session name"
-              required
-              {...form.getInputProps("name")}
+            <Select
+              label="Vacancy Category"
+              placeholder="Select a category"
+              data={queryCategory.data.map((item: any) => {
+                return {
+                  label: `${item.name} (${item.jp_name})`,
+                  value: String(item.id),
+                };
+              })}
+              {...form.getInputProps("category")}
+            />
+            <ImageUpload
+              {...form.getInputProps("image")}
+              label="Vacancy Post"
+              description="Upload a photo of the vacancy"
+              onChange={(image: any) => form.setFieldValue("image", image)}
+              value={form.getValues()?.image}
             />
           </Stack>
         </>

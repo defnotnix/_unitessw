@@ -30,7 +30,7 @@ export function _New() {
   // * ANIMATIONS
 
   return (
-    <RBACCheck showStaff>
+  
       <FormHandler {...formProps} apiSubmit={createRecord}>
         <ModuleFormLayout
           {...moduleConfig}
@@ -41,6 +41,6 @@ export function _New() {
           <Form />
         </ModuleFormLayout>
       </FormHandler>
-    </RBACCheck>
+   
   );
 }

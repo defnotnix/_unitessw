@@ -195,19 +195,17 @@ export function _ListBooked() {
 
   return (
     <>
-      <RBACCheck showStaff>
-        <ListHandler
-          endpoint={"/applicant/get/booked/"}
-          moduleKey={moduleConfig.moduleKey}
-          enableServerPagination
-          enableServerSearch
-          getRecords={getRecords}
-        >
-          <Tabs value={tab} onChange={(e: any) => setTab(e)}>
-            <RenderTable />
-          </Tabs>
-        </ListHandler>
-      </RBACCheck>
+      <ListHandler
+        endpoint={"/applicant/get/booked/"}
+        moduleKey={moduleConfig.moduleKey}
+        enableServerPagination
+        enableServerSearch
+        getRecords={getRecords}
+      >
+        <Tabs value={tab} onChange={(e: any) => setTab(e)}>
+          <RenderTable />
+        </Tabs>
+      </ListHandler>
     </>
   );
 }

@@ -55,6 +55,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForceUpdate } from "@mantine/hooks";
 import _ from "lodash";
 import { StepIdentification } from "./steps/s8_identification";
+import { jwtDecode } from "jwt-decode";
+import { endpoint } from "@/layouts/app";
 
 export function ModuleOnboarding() {
   const forceUpdate = useForceUpdate();
@@ -65,6 +67,9 @@ export function ModuleOnboarding() {
   const [personId, setPersonId] = useState(null);
   const [holder, setHolder] = useState({});
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+  const [published, setPublished] = useState(false);
+
+  const [reEdit, setReEdit] = useState(false);
 
   const Params = useParams();
   const queryParams = useSearchParams();
@@ -74,11 +79,12 @@ export function ModuleOnboarding() {
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "applicants", "edit"],
     queryFn: async () => {
-      if (Params?.id) {
-        const id = Params.id;
-        const res = await apiPersonalInformation.get(Params.id);
-        console.log("THIS", res);
+      const token: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
 
+      console.log("TOKEN", token);
+
+      if (token.user_id) {
+        const res = await apiPersonalInformation.get(token.user_id);
         const data = res?.data || {};
 
         setPersonId(data.id);
@@ -87,12 +93,21 @@ export function ModuleOnboarding() {
         const step = Array.from({ length: 8 }, (_, i) => i + 1).find(
           (i) => data[`is_step${i}`] === false
         );
+
         if (step) setCurrent(step);
 
         const completed = Array.from({ length: 8 }, (_, i) => i + 1).filter(
           (i) => data[`is_step${i}`] === true
         );
-        setCompletedSteps(completed);
+
+        if (completed.length == 8) {
+          setReEdit(true);
+        }
+
+        if (res?.data?.is_published) {
+          alert("Seems like your account is already published.");
+          Router.push("/myprofile");
+        }
 
         return {
           ...res?.data,
@@ -101,17 +116,25 @@ export function ModuleOnboarding() {
           ...res?.data?.a_physical,
           ...res?.data?.a_story,
           ...res?.data?.a_identification,
+
           category: String(res?.data?.category),
           education: res?.data?.a_education,
           work_experience: res?.data?.a_work_experience,
           licenses: res?.data?.a_license_qualification,
+
+          image: res?.data?.image ? endpoint + res?.data?.image : null,
+          passport: res?.data?.a_identification?.passport
+            ? endpoint + res?.data?.a_identification?.passport
+            : null,
+          l_cert_image: res?.data?.a_identification?.l_cert_image
+            ? endpoint + res?.data?.a_identification?.l_cert_image
+            : null,
+          ssw_cert_image: res?.data?.a_identification?.ssw_cert_image
+            ? endpoint + res?.data?.a_identification?.ssw_cert_image
+            : null,
         };
       } else {
-        return {
-          education: [],
-          work_experience: [],
-          licenses: [],
-        };
+        return formProps.initial;
       }
     },
   });
@@ -126,11 +149,12 @@ export function ModuleOnboarding() {
     "Work History",
     "Certifications",
     "Identifications",
+    "Completed",
   ];
 
   const InitiateStep = () => {
     return (
-      <Stack>
+      <Stack py={100} maw={550}>
         <Text size="2rem" lh="2.3rem" fw={800}>
           We're glad you've decided to join us.
           <br /> Welcome aboard!
@@ -162,6 +186,23 @@ export function ModuleOnboarding() {
     );
   };
 
+  const CompletedStep = () => {
+    return (
+      <Stack py={100} maw={500}>
+        <Text size="2rem" lh="2.3rem" fw={800}>
+          Hey there! You have successfully completed the onboarding application
+          process.
+        </Text>
+
+        <Text size="xs" fw={600} mb="xl" maw={700}>
+          Your details are now sent for further verification from our team. You
+          will be notified via email once your account is verified & active.
+          We're looking forward to having you with us.
+        </Text>
+      </Stack>
+    );
+  };
+
   const stepConfig = [
     { component: <InitiateStep />, apiCreate: null, apiUpdate: null },
     {
@@ -172,8 +213,20 @@ export function ModuleOnboarding() {
       transform: (formdata: any) => {
         const { image, ...res } = formdata;
 
+        var applicantId: any = "";
+
+        try {
+          var tokenDecoded: any = jwtDecode(
+            sessionStorage.getItem("sswtoken") || ""
+          );
+          applicantId = tokenDecoded?.user_id;
+        } catch (err) {
+          applicantId = "";
+        }
+
         return {
           ...res,
+          user: applicantId,
           ...(formdata.image instanceof File ? { image: formdata.image } : {}),
         };
       },
@@ -286,6 +339,7 @@ export function ModuleOnboarding() {
         };
       },
     },
+    { component: <CompletedStep />, apiCreate: null, apiUpdate: null },
   ];
 
   const currentStepConfig = stepConfig[current];
@@ -354,13 +408,8 @@ export function ModuleOnboarding() {
             <ActionIcon
               color="teal"
               size="xl"
-              onClick={
-                apiSubmit
-                  ? handleSubmit
-                  : () => {
-                      setCurrent(current + 1);
-                    }
-              }
+              onClick={() => Router.push("/myprofile")}
+              disabled={completedSteps.length !== steps.length - 2}
             >
               <CheckIcon />
             </ActionIcon>
@@ -370,11 +419,13 @@ export function ModuleOnboarding() {
     );
   };
 
-  if (Params.id && !data) {
+  if (!data) {
     return (
       <>
         <Center h={500}>
-          <Loader size="xs" />
+          <Paper withBorder p="md">
+            <Loader size="xs" />
+          </Paper>
         </Center>
       </>
     );
@@ -407,13 +458,14 @@ export function ModuleOnboarding() {
           <Grid.Col visibleFrom="lg" span={{ base: 12, lg: 4 }}>
             <Paper
               radius="lg"
-              bg="dark.9"
+              bg="linear-gradient(to bottom, rgba(0,0,0,.7), rgba(0,0,0,.9))"
               py="xl"
               px={{ base: "xs", lg: "xl" }}
               style={{
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
+                backdropFilter: "blur(32px)",
                 position: "sticky",
                 top: ".8rem",
               }}
@@ -430,14 +482,16 @@ export function ModuleOnboarding() {
                 <Stack gap="4" my="xl">
                   {steps.map((step, index) => (
                     <Paper
-                      className={classes.stepcard}
+                      className={
+                        current !== index ? classes.stepcard : undefined
+                      }
                       key={index}
                       radius="lg"
                       opacity={current >= index ? 1 : 0.5}
                       p="md"
                       bg={current === index ? "gray.0" : "none"}
                       onClick={() => {
-                        Params.id && setCurrent(index);
+                        setCurrent(index);
                       }}
                     >
                       <Group justify="space-between">
@@ -483,14 +537,15 @@ export function ModuleOnboarding() {
           <Grid.Col span={{ base: 12, lg: 8 }}>
             <FormHandler
               {...formProps}
+              resetOnSubmit={false}
               formType={isCompleted ? "edit" : "new"}
-              initial={Params.id ? data : formProps.initial}
+              initial={data}
               apiSubmit={apiSubmit}
               submitFormData={submitFormData}
               transformDataOnSubmit={transformData}
               onSubmitSuccess={(res) => {
-                if (!Params?.id && current == 8) {
-                  Router.push("/admin/applicants/all");
+                if (current == 9) {
+                  Router.push("/myprofile");
                 }
 
                 if (!res?.err && res?.data?.id && current === 1) {

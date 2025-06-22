@@ -25,15 +25,11 @@ import {
   PrinterIcon,
 } from "@phosphor-icons/react";
 import { useRef, useState } from "react";
-import { CV1 } from "./templates/cv1";
-import { CV2 } from "./templates/cv2";
-import { CV3 } from "./templates/cv3";
-import { CV4 } from "./templates/cv4";
-import { CV5 } from "./templates/cv5";
-import { CV6 } from "./templates/cv6";
+
+import { CV } from "@vframework/ui";
 
 import { useReactToPrint } from "react-to-print";
-import { CVCorp } from "./templates/cv-corp";
+
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { apiPersonalInformation } from "../../form/module.api";
@@ -50,6 +46,8 @@ const bread = [
 ];
 
 export function _CV() {
+  const { CV1, CV2, CV3, CV4, CV5, CV6, CVCorp } = CV;
+
   // * DEFINITIONS
   const [language, setLanguage] = useState("en");
   const [cvType, setCvType] = useState("1");

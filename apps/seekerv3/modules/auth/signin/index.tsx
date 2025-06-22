@@ -100,21 +100,7 @@ export function ModuleAuthSignIn() {
     const decoded: any = jwtDecode(res.data?.access_token);
     console.log(decoded);
 
-    if (decoded?.is_applicant == "True" && decoded?.is_completed == "True") {
-      Router.push("/applicant");
-    } else if (decoded?.is_step5 == "True") {
-      Router.push("/onboarding?step=5");
-    } else if (decoded?.is_step4 == "True") {
-      Router.push("/onboarding?step=4");
-    } else if (decoded?.is_step3 == "True") {
-      Router.push("/onboarding?step=3");
-    } else if (decoded?.is_step2 == "True") {
-      Router.push("/onboarding?step=2");
-    } else if (decoded?.is_step1 == "True") {
-      Router.push("/onboarding?step=1");
-    } else {
-      Router.push("/onboarding");
-    }
+    Router.push("/home");
   }
 
   const mutation = useMutation({
@@ -140,7 +126,7 @@ export function ModuleAuthSignIn() {
       const { response } = err.object;
 
       console.log("ERROR", response);
-      setErrorType(response?.data?.type || "nan");
+      setErrorType(response?.data?.alias || "nan");
       form.setFieldValue("fLoading", false);
       triggerNotification.auth.isError({
         message: err.message || "Cannot Reach Server, Try Again!",
@@ -154,41 +140,18 @@ export function ModuleAuthSignIn() {
     }
   }
 
-  async function onGoogleSuccess(tokenResponse: any) {
-    triggerNotification.auth.isLoading({});
-    setProcessingGoogle(true);
-    if (tokenResponse?.credential) {
-      console.log(tokenResponse);
-      await googleLogin({
-        token: tokenResponse.credential,
-      })
-        .then((res) => {
-          triggerNotification.auth.isSuccess({});
-          setCompleted(true);
-
-          handleRedirect(res);
-          setProcessingGoogle(false);
-        })
-        .catch((err) => {
-          triggerNotification.auth.isError({
-            message: "Linked account is not for this portal!",
-          });
-        });
-    } else {
-      setProcessingGoogle(false);
-      triggerNotification.auth.isError({
-        message: "Google Login Failed!",
-      });
-    }
-  }
-
   // * COMPONENTS
 
   const RenderAlert = () => {
     switch (errorType) {
       case "info":
         return (
-          <Alert py="xs" color="blue" icon={<InfoIcon weight="bold" />}>
+          <Alert
+            radius="md"
+            py="xs"
+            color="blue"
+            icon={<InfoIcon weight="bold" />}
+          >
             <Text size="xs" c="blue.8" fw={500} py="2">
               Server under Maintainance, Try Later!
             </Text>
@@ -196,7 +159,12 @@ export function ModuleAuthSignIn() {
         );
       case "pending":
         return (
-          <Alert py="xs" color="indigo" icon={<InfoIcon weight="bold" />}>
+          <Alert
+            radius="md"
+            py="xs"
+            color="indigo"
+            icon={<InfoIcon weight="bold" />}
+          >
             <Text size="xs" c="indigo.8" fw={500} py="2">
               Verification Pending, Try Later!
             </Text>
@@ -204,23 +172,42 @@ export function ModuleAuthSignIn() {
         );
       case "blocked":
         return (
-          <Alert py="xs" color="red" icon={<XIcon weight="bold" />}>
+          <Alert radius="md" py="xs" color="red" icon={<XIcon weight="bold" />}>
             <Text size="xs" c="red.8" fw={500} py="2">
               Account Blocked! Contact Admin
             </Text>
           </Alert>
         );
+      case "expire_account":
+        return (
+          <Alert
+            radius="md"
+            py="xs"
+            color="orange"
+            icon={<XIcon weight="bold" />}
+          >
+            <Text size="xs" c="orange.8" fw={500} py="2">
+              Account Expired! Contact Admin
+            </Text>
+          </Alert>
+        );
       case "nan":
         return (
-          <Alert py="xs" color="red" icon={<XIcon weight="bold" />}>
+          <Alert radius="md" py="xs" color="red" icon={<XIcon weight="bold" />}>
             <Text size="xs" c="red.8" fw={500} py="2">
               Cannot Reach Server, Try Again!
             </Text>
           </Alert>
         );
+
       default:
         return (
-          <Alert py="xs" color="red" icon={<WarningIcon weight="bold" />}>
+          <Alert
+            radius="md"
+            py="xs"
+            color="red"
+            icon={<WarningIcon weight="bold" />}
+          >
             <Text size="xs" c="red.8" fw={500} py="2">
               Invalid Credentials. Try Again!
             </Text>
@@ -280,7 +267,7 @@ export function ModuleAuthSignIn() {
           </Text>
         </div>
 
-        <SimpleGrid my="md" spacing="xs" cols={{ base: 1, lg: 1 }}>
+        {/* <SimpleGrid my="md" spacing="xs" cols={{ base: 1, lg: 1 }}>
           <GoogleLogin
             shape="circle"
             onSuccess={(credentialResponse) => {
@@ -291,9 +278,9 @@ export function ModuleAuthSignIn() {
               console.log("Login Failed");
             }}
           />
-        </SimpleGrid>
+        </SimpleGrid> */}
 
-        <Divider label="or continue with" />
+        {/* <Divider label="or continue with" /> */}
 
         <TextInput
           radius="lg"
@@ -319,7 +306,7 @@ export function ModuleAuthSignIn() {
             size="xs"
             label="Remember me"
           />
-          <Anchor size="xs" c="dark" fw={600}>
+          <Anchor size="xs" c="dark" fw={600} opacity={0.3}>
             {language == "en" ? "Forgot Password?" : "パス"}
           </Anchor>
         </Group>
@@ -327,25 +314,33 @@ export function ModuleAuthSignIn() {
         {mutation.isError && <RenderAlert />}
 
         <Stack gap={0}>
+          {completed ? (
+            <Button radius="lg" size="lg" loading={form.getValues()?.fLoading}>
+              <CheckIcon />
+            </Button>
+          ) : (
+            <Button
+              radius="lg"
+              size="lg"
+              loading={form.getValues()?.fLoading}
+              onClick={() => {
+                if (!mutation.isSuccess) {
+                  handleSignIn();
+                }
+              }}
+            >
+              {language == "en" ? "Sign In" : "サインイン"}
+            </Button>
+          )}
           <Button
-            radius="lg"
-            size="lg"
-            loading={form.getValues()?.fLoading}
-            onClick={() => {
-              if (!mutation.isSuccess) {
-                handleSignIn();
-              }
-            }}
-          >
-            {language == "en" ? "Sign In" : "サインイン"}
-          </Button>
-          <Button
+            mt={2}
             radius="lg"
             size="lg"
             variant="subtle"
             onClick={() => {
               Router.push("/signup");
             }}
+            disabled
           >
             {language == "en"
               ? "Don't have an account? Sign Up Here"

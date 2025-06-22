@@ -303,6 +303,15 @@ export function ModuleAuthSignUp() {
           {...form.getInputProps("email")}
         />
 
+        <TextInput
+          radius="lg"
+          size="lg"
+          label="Full name"
+          placeholder="Your Full Name"
+          disabled={form.getValues()?.fLoading}
+          {...form.getInputProps("name")}
+        />
+
         <PasswordInput
           radius="lg"
           size="lg"

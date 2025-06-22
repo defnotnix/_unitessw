@@ -195,19 +195,17 @@ export function _ListPublished() {
 
   return (
     <>
-      <RBACCheck showStaff>
-        <ListHandler
-          endpoint={"/applicant/get/published/"}
-          moduleKey={moduleConfig.moduleKey}
-          enableServerPagination
-          enableServerSearch
-          getRecords={getRecords}
-        >
-          <Tabs value={tab} onChange={(e: any) => setTab(e)}>
-            <RenderTable />
-          </Tabs>
-        </ListHandler>
-      </RBACCheck>
+      <ListHandler
+        endpoint={"/applicant/get/published/"}
+        moduleKey={moduleConfig.moduleKey}
+        enableServerPagination
+        enableServerSearch
+        getRecords={getRecords}
+      >
+        <Tabs value={tab} onChange={(e: any) => setTab(e)}>
+          <RenderTable />
+        </Tabs>
+      </ListHandler>
     </>
   );
 }

@@ -60,7 +60,7 @@ export function _List() {
 
   return (
     <>
-      <RBACCheck showStaff>
+    
         <ListHandler
           endpoint={moduleConfig.endpoint}
           moduleKey={moduleConfig.moduleKey}
@@ -94,7 +94,7 @@ export function _List() {
             modalForm={<Form />}
           />
         </ListHandler>
-      </RBACCheck>
+     
     </>
   );
 }

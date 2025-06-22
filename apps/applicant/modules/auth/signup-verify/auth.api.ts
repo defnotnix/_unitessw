@@ -8,3 +8,13 @@ export async function apiLogin(body: { email: string; otp: string }) {
     body,
   });
 }
+
+export async function apiResetPassword(body: {
+  email: string;
+  password: string;
+}) {
+  return await apiDispatch.post({
+    endpoint: "/authenticate/reset/password/",
+    body,
+  });
+}

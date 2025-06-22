@@ -23,9 +23,14 @@ export const formProps: any = {
 
   // > SUBMIT
   transformDataOnSubmit: (formdata: any) => {
-    return formdata;
+    const { image, ...res } = formdata;
+
+    return {
+      ...res,
+      ...(formdata.image instanceof File ? { image: formdata.image } : {}),
+    };
   },
-  submitFormData: false,
+  submitFormData: true,
 
   // > API
 

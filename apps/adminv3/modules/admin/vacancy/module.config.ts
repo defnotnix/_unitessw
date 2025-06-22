@@ -14,7 +14,7 @@ export const moduleConfig: PropModuleConfig = {
     },
   ],
   moduleKey: "admin.cv".split("."),
-  endpoint: "/vacancy/",
+  endpoint: "/vacancy/info/",
   //
   moduleTerm: "Vacancy",
   moduleTermPlural: "Vacancies",

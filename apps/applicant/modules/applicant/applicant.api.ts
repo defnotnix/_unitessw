@@ -11,3 +11,21 @@ export const updateRecord = (body: any, id: any) =>
   moduleApiCall.editRecord(endpoint, body, id);
 export const deleteRecord = (id: any) =>
   moduleApiCall.deleteRecord(endpoint, id);
+
+export const apiPersonalInformation = {
+  get: async (id: any) => {
+    return await apiDispatch.get({
+      endpoint: `/applicant/info/id/${id}/`,
+    });
+  },
+
+  create: async (body: any) => {
+    return await apiDispatch.post({
+      endpoint: "/applicant/info/",
+      body,
+    });
+  },
+  update: async (body: any, id: any) => {
+    return await moduleApiCall.editRecord("/applicant/info/", body, id);
+  },
+};

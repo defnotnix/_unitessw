@@ -71,18 +71,18 @@ const personalDetails = [
     enKey: "current_address",
     jpKey: "jp_current_address",
   },
-  {
-    label: "Residence Status",
-    label_jp: "在留資格",
-    enKey: "residence_status",
-    jpKey: "jp_residence_status",
-  },
-  {
-    label: "Residence Expiry",
-    label_jp: "在留期限",
-    enKey: "residence_expiry",
-    jpKey: "jp_residence_expiry",
-  },
+  // {
+  //   label: "Residence Status",
+  //   label_jp: "在留資格",
+  //   enKey: "residence_status",
+  //   jpKey: "jp_residence_status",
+  // },
+  // {
+  //   label: "Residence Expiry",
+  //   label_jp: "在留期限",
+  //   enKey: "residence_expiry",
+  //   jpKey: "jp_residence_expiry",
+  // },
   {
     label: "Height",
     label_jp: "身長",
@@ -215,7 +215,7 @@ export function CV4({
               <Grid.Col span={3} offset={1}>
                 <Image
                   src={
-                    "https://r2.erweima.ai/imgcompressed/compressed_37c94e20cb613116de36841ba02309d2.webp"
+data?.image
                   }
                 />
               </Grid.Col>
@@ -358,7 +358,7 @@ export function CV4({
 
             <AspectRatio ratio={16 / 9}>
               <iframe
-                src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"
+                src={data?.youtube_link}
                 title="YouTube video player"
                 style={{ border: 0 }}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

@@ -20,10 +20,12 @@ import { LanguageContext, LanguageProvider } from "./app.context";
 
 //oauth
 
+export const endpoint = "http://10.0.0.8:8000";
+
 export function LayoutApp({ children }: PropsWithChildren) {
   return (
     <QueryWrapper
-      apiProvider={"http://10.0.0.5:8000"}
+      apiProvider={endpoint}
       //apiProvider="http://192.168.30.12:8000/"
       queryProps={{
         defaultOptions: {

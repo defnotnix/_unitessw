@@ -1,4 +1,4 @@
-import { Avatar, Group } from "@mantine/core";
+import { Avatar, Badge, Group } from "@mantine/core";
 
 export const columns = [
   {
@@ -14,13 +14,35 @@ export const columns = [
   },
 
   {
-    accessor: "roles",
+    accessor: "Account Type",
     width: 150,
     title: "Permissions",
     render: (record: any) => {
-      if (record.is_staff_1) return "CVs";
-      if (record.is_staff_2) return "Applicants";
-      if (record.is_staff_3) return "CVs & Applicants";
+      if (record.is_admin) return <Badge size="xs">Admin</Badge>;
+      if (record.is_staff1)
+        return (
+          <Badge color="teal" size="xs">
+            Staff
+          </Badge>
+        );
+      if (record.is_staff2)
+        return (
+          <Badge color="teal" size="xs">
+            Staff
+          </Badge>
+        );
+      if (record.is_staff3)
+        return (
+          <Badge color="teal" size="xs">
+            Staff
+          </Badge>
+        );
+      if (record.is_seeker)
+        return (
+          <Badge color="pink" size="xs">
+            Seeker
+          </Badge>
+        );
       return "—";
     },
     sortable: false,

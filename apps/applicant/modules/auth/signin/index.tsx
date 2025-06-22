@@ -337,7 +337,9 @@ export function ModuleAuthSignIn() {
             size="xs"
             label="Remember me"
           />
-          <Anchor size="xs" c="dark" fw={600}>
+          <Anchor size="xs" c="dark" fw={600} onClick={()=>{
+            Router.push("/forgot-password");
+          }}>
             {language == "en" ? "Forgot Password?" : "パス"}
           </Anchor>
         </Group>

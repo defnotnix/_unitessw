@@ -69,18 +69,18 @@ const personalDetails = [
     enKey: "current_address",
     jpKey: "jp_current_address",
   },
-  {
-    label: "Residence Status",
-    label_jp: "在留資格",
-    enKey: "residence_status",
-    jpKey: "jp_residence_status",
-  },
-  {
-    label: "Residence Expiry",
-    label_jp: "在留期限",
-    enKey: "residence_expiry",
-    jpKey: "jp_residence_expiry",
-  },
+  // {
+  //   label: "Residence Status",
+  //   label_jp: "在留資格",
+  //   enKey: "residence_status",
+  //   jpKey: "jp_residence_status",
+  // },
+  // {
+  //   label: "Residence Expiry",
+  //   label_jp: "在留期限",
+  //   enKey: "residence_expiry",
+  //   jpKey: "jp_residence_expiry",
+  // },
   {
     label: "Height",
     label_jp: "身長",
@@ -189,10 +189,10 @@ export function CV2({
 
           <SimpleGrid cols={2} spacing="xs">
             <div>
-              <Text size="xs" fw={800}>
-                My Personal Traits
+             <Text size="xs" fw={800}>
+                {language === "en" ? "My Personal Traits" : "個人特徴"}
               </Text>
-              <Text size="xs" mt="sm">
+              <Text size="10px" lh="13px" mt="sm">
                 {language === "en"
                   ? data?.personal_traits
                   : data?.jp_personal_traits}
@@ -200,10 +200,10 @@ export function CV2({
             </div>
 
             <div>
-              <Text size="xs" fw={800}>
-                What motivates me.
+             <Text size="xs" fw={800}>
+                {language === "en" ? "What motivates me." : "動機とは"}
               </Text>
-              <Text size="xs" mt="sm">
+              <Text size="10px" lh="13px" mt="sm">
                 {language === "en"
                   ? data?.motivation_statement
                   : data?.jp_motivation_statement}
@@ -333,7 +333,7 @@ data?.image
 
             <AspectRatio ratio={16 / 9} mt={-16}>
               <iframe
-                src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"
+                src={data?.youtube_link}
                 title="YouTube video player"
                 style={{ border: 0 }}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

@@ -38,8 +38,29 @@ import {
 import classes from "./_.module.css";
 import { useState } from "react";
 import { BarChart, DonutChart } from "@mantine/charts";
+import { jwtDecode } from "jwt-decode";
+import { useQuery } from "@tanstack/react-query";
+import { apiDispatch, moduleApiCall } from "@vframework/core";
 
 export function ModuleAdminDashboard() {
+  const tokenData: any = jwtDecode<any>(
+    sessionStorage.getItem("sswtoken") || ""
+  );
+
+  const queryDashboard = useQuery({
+    queryKey: ["admin", "dashboard"],
+    queryFn: async () => {
+      const res = await moduleApiCall.getRecords({
+        endpoint: "/dashboard/admin/",
+      });
+      console.log(res);
+      return res;
+    },
+    initialData: {
+      applicant_per_category: [],
+    },
+  });
+
   const StatCard = ({
     icon,
     label,
@@ -89,34 +110,10 @@ export function ModuleAdminDashboard() {
         <Paper>
           <Paper withBorder>
             <Paper px="sm" py={5}>
-              <Group justify="space-between">
+              <Group justify="space-between" my="4px">
                 <Text size="xs" fw={700}>
                   Applicants Feed
                 </Text>
-
-                <ButtonGroup>
-                  <Button
-                    color="gray.9"
-                    size="xs"
-                    variant={activeTab == 0 ? "filled" : "light"}
-                  >
-                    Recently Added
-                  </Button>
-                  <Button
-                    color="gray.9"
-                    size="xs"
-                    variant={activeTab == 1 ? "filled" : "light"}
-                  >
-                    New Requests
-                  </Button>
-                  <Button
-                    color="gray.9"
-                    size="xs"
-                    variant={activeTab == 2 ? "filled" : "light"}
-                  >
-                    Bookmarked
-                  </Button>
-                </ButtonGroup>
               </Group>
             </Paper>
             <Divider />
@@ -196,12 +193,12 @@ export function ModuleAdminDashboard() {
   return (
     <div>
       <Paper
-        bg="linear-gradient(to bottom, var(--mantine-color-dark-9),var(--mantine-color-gray-7))"
+        bg="linear-gradient(to bottom, var(--mantine-color-dark-9),var(--mantine-color-gray-9))"
         radius={0}
       >
         <Container py="3rem">
           <Text size="2rem" c="gray.0">
-            Welcome back Anamol!
+            Welcome back {tokenData?.name || "User"}!
           </Text>
           <Text size="sm" c="gray.5">
             Here is an overview for you.
@@ -209,48 +206,48 @@ export function ModuleAdminDashboard() {
 
           <Space h="xl" />
 
-          <SimpleGrid cols={{ base: 1, lg: 5 }} spacing="xs" mb={-100}>
+          <SimpleGrid cols={{ base: 1, lg: 5 }} spacing="4px" mb={-100}>
             <StatCard
               icon={UsersIcon}
               label="Applicants"
               description="Total applicants registered till date."
               url="/applicants"
-              number="12,344"
+              number={queryDashboard.data?.total_published_applicant || "0"}
             />
             <StatCard
               icon={ScrollIcon}
               label="New Requests"
               description="Total applicants registered till date."
               url="/applicants"
-              number="297"
+              number={queryDashboard.data?.total_unpublished_count || "0"}
             />
             <StatCard
               icon={CheckIcon}
               label="Booked Applicants"
               description="Total applicants registered till date."
               url="/applicants"
-              number="334"
+              number={queryDashboard.data?.total_booked_count || "0"}
             />
             <StatCard
               icon={ArticleIcon}
               label="CV"
               description="Total applicants registered till date."
               url="/applicants"
-              number="5,344"
+              number={queryDashboard.data?.total_cv_count || "0"}
             />
             <StatCard
               icon={EyeIcon}
               label="Seekers"
               description="Total applicants registered till date."
               url="/applicants"
-              number="45"
+              number={queryDashboard.data?.inactive_seekers || "0"}
             />
           </SimpleGrid>
         </Container>
       </Paper>
 
-      <Container mt={32}>
-        <Grid py="2rem" gutter="xs">
+      <Container mt={24}>
+        <Grid py="2rem" gutter="4px">
           <Grid.Col span={{ base: 12, lg: 7.2 }}>
             <Paper withBorder mb="xs" pb="md">
               <Paper p="sm" mb="md">
@@ -262,49 +259,35 @@ export function ModuleAdminDashboard() {
               <BarChart
                 px="md"
                 h={300}
-                data={[
-                  {
-                    month: "January",
-                    Smartphones: 1200,
-                    Laptops: 900,
-                    Tablets: 200,
-                  },
-                  {
-                    month: "February",
-                    Smartphones: 1900,
-                    Laptops: 1200,
-                    Tablets: 400,
-                  },
-                  {
-                    month: "March",
-                    Smartphones: 400,
-                    Laptops: 1000,
-                    Tablets: 200,
-                  },
-                  {
-                    month: "April",
-                    Smartphones: 1000,
-                    Laptops: 200,
-                    Tablets: 800,
-                  },
-                  {
-                    month: "May",
-                    Smartphones: 800,
-                    Laptops: 1400,
-                    Tablets: 1200,
-                  },
-                  {
-                    month: "June",
-                    Smartphones: 750,
-                    Laptops: 600,
-                    Tablets: 1000,
-                  },
-                ]}
-                dataKey="month"
+                data={queryDashboard.data?.applicant_per_category.map(
+                  (item: any) => {
+                    return {
+                      category: item.category__name,
+                      total: item.total,
+                      booked: item.booked,
+                      published: item.published,
+                      unpublished: item.unpublished,
+                    };
+                  }
+                )}
+                dataKey="category"
                 series={[
-                  { name: "Smartphones", color: "violet.6" },
-                  { name: "Laptops", color: "blue.6" },
-                  { name: "Tablets", color: "teal.6" },
+                  {
+                    name: "total",
+                    label: "Total Applicants",
+                    color: "violet.6",
+                  },
+                  { name: "published", label: "Published", color: "blue.6" },
+                  {
+                    name: "unpublished",
+                    label: "Pending",
+                    color: "teal.6",
+                  },
+                  {
+                    name: "booked",
+                    label: "Booked",
+                    color: "orange.6",
+                  },
                 ]}
                 tickLine="y"
               />

@@ -14,7 +14,7 @@ export const moduleConfig: PropModuleConfig = {
     },
   ],
   moduleKey: "vauth.seeker.account".split("."),
-  endpoint: "/players/Seeker Accounts/",
+  endpoint: "/authenticate/seeker/accounts/",
   //
   moduleTerm: "Seeker Account",
   moduleTermPlural: "Seeker Accounts",

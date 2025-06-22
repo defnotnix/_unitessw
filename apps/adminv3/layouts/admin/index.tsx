@@ -54,6 +54,7 @@ import {
   UserIcon,
   UserPlus,
   UserPlusIcon,
+  LockIcon,
 } from "@phosphor-icons/react";
 import { usePathname, useRouter } from "next/navigation";
 import { FormHandler, moduleApiCall } from "@vframework/core";
@@ -66,6 +67,8 @@ import { FormHandler, moduleApiCall } from "@vframework/core";
 import classes from "./admin.module.css";
 import { images } from "@/assets/images";
 import { useDisclosure } from "@mantine/hooks";
+import { jwtDecode } from "jwt-decode";
+import { RBACCheck } from "@/components/RBACCheck";
 
 //components
 
@@ -78,6 +81,8 @@ export function LayoutAdmin({ children }: PropsWithChildren) {
   const [openedAbout, handlerAbout] = useDisclosure();
   const [openedPassword, handlePassword] = useDisclosure();
   const [openedDrawer, handleDrawer] = useDisclosure();
+
+  const tokenData: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
 
   // * CONTEXT
 
@@ -187,61 +192,110 @@ export function LayoutAdmin({ children }: PropsWithChildren) {
                 {navItems.map((item, index) => {
                   if (item.children) {
                     return (
-                      <Menu
-                        trigger="hover"
-                        openDelay={100}
-                        closeDelay={400}
+                      <RBACCheck
                         key={index}
-                      >
-                        <Menu.Target>
+                        customRender={
                           <Button
-                            color={
-                              Pathname.includes(item.value) ? "brand" : "gray"
-                            }
-                            className={classes.navButton}
-                            key={index}
+                            disabled
+                            bg="none"
                             size="xs"
-                            variant={
-                              Pathname.includes(item.value)
-                                ? "filled"
-                                : "subtle"
-                            }
-                            rightSection={<CaretDownIcon />}
+                            opacity={0.3}
+                            rightSection={<LockIcon weight="fill" />}
                           >
                             {item.label}
                           </Button>
-                        </Menu.Target>
-                        <Menu.Dropdown w={200}>
-                          {item.children.map((child, index) => {
-                            return (
-                              <Menu.Item
-                                key={index}
-                                onClick={() => {
-                                  Router.push(child.value);
-                                }}
-                                color={Pathname === child.value ? "brand" : ""}
-                              >
-                                <Text size="xs">{child.label}</Text>
-                              </Menu.Item>
-                            );
-                          })}
-                        </Menu.Dropdown>
-                      </Menu>
+                        }
+                        allowList={item.roles || ["admin"]}
+                      >
+                        <Menu trigger="hover" openDelay={100} closeDelay={400}>
+                          <Menu.Target>
+                            <Button
+                              color={
+                                Pathname.includes(item.value || "zzz")
+                                  ? "brand"
+                                  : "gray"
+                              }
+                              className={classes.navButton}
+                              key={index}
+                              size="xs"
+                              variant={
+                                Pathname.includes(item.value || "zzz")
+                                  ? "filled"
+                                  : "subtle"
+                              }
+                              rightSection={<CaretDownIcon />}
+                            >
+                              {item.label}
+                            </Button>
+                          </Menu.Target>
+                          <Menu.Dropdown w={200}>
+                            {item.children.map((child, index) => {
+                              if (!child.value) {
+                                if (child.divider) {
+                                  return <Menu.Divider key={index} />;
+                                } else {
+                                  return (
+                                    <Menu.Label key={index}>
+                                      <Text size="10px">{child.label}</Text>
+                                    </Menu.Label>
+                                  );
+                                }
+                              } else {
+                                return (
+                                  <Menu.Item
+                                    key={index}
+                                    onClick={() => {
+                                      if (child.value) {
+                                        Router.push(child.value);
+                                      }
+                                    }}
+                                    color={
+                                      Pathname === child.value ? "brand" : ""
+                                    }
+                                  >
+                                    <Text size="xs">{child.label}</Text>
+                                  </Menu.Item>
+                                );
+                              }
+                            })}
+                          </Menu.Dropdown>
+                        </Menu>
+                      </RBACCheck>
                     );
                   } else {
                     return (
-                      <Button
-                        color={Pathname === item.value ? "brand" : "gray"}
-                        className={classes.navButton}
+                      <RBACCheck
+                        customRender={
+                          <Button
+                            disabled
+                            bg="none"
+                            size="xs"
+                            opacity={0.3}
+                            rightSection={<LockIcon weight="fill" />}
+                          >
+                            {item.label}
+                          </Button>
+                        }
                         key={index}
-                        size="xs"
-                        variant={Pathname === item.value ? "filled" : "subtle"}
-                        onClick={() => {
-                          Router.push(item.value);
-                        }}
+                        allowList={item.roles || ["admin"]}
                       >
-                        {item.label}
-                      </Button>
+                        <Button
+                          color={Pathname === item.value ? "brand" : "gray"}
+                          className={classes.navButton}
+                          key={index}
+                          size="xs"
+                          variant={
+                            Pathname === item.value ? "filled" : "subtle"
+                          }
+                          onClick={() => {
+                            if (item.value) {
+                              Router.push(item.value);
+                            }
+                          }}
+                        >
+                          {item.label}
+                        </Button>
+                      </RBACCheck>
                     );
                   }
                 })}
@@ -537,20 +591,23 @@ export function LayoutAdmin({ children }: PropsWithChildren) {
                       c="white"
                       rightSection={<CaretDownIcon size={12} />}
                     >
-                      Anamol
+                      {tokenData?.name || "User"}
                     </Button>
                   </Menu.Target>
 
                   <Menu.Dropdown w={250}>
-                    <Paper p="md" bg="brand.0">
+                    <Paper p="md" bg="brand.0" radius={0} mb="md">
                       <Group gap="xs" wrap="nowrap">
-                        <Avatar radius="md" color="brand" size="md">
-                          AM
-                        </Avatar>
+                        <Avatar
+                          radius="md"
+                          color="brand"
+                          name={tokenData?.name}
+                          size="md"
+                        />
                         <div>
-                          <Text size="sm">Anamol Maharjan</Text>
+                          <Text size="sm">{tokenData?.name || "User"}</Text>
                           <Text size="10px" opacity={0.5}>
-                            anamol.maharjan@gmail.com
+                            Admin Account
                           </Text>
                         </div>
                       </Group>

@@ -195,7 +195,7 @@ export function _ListPublished() {
 
   return (
     <>
-      <RBACCheck showStaff>
+    
         <ListHandler
           endpoint={"/applicant/get/published/"}
           moduleKey={moduleConfig.moduleKey}
@@ -207,7 +207,7 @@ export function _ListPublished() {
             <RenderTable />
           </Tabs>
         </ListHandler>
-      </RBACCheck>
+     
     </>
   );
 }

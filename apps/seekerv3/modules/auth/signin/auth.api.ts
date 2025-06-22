@@ -1,6 +1,6 @@
 import { apiDispatch } from "@vframework/core";
 
-const endpoint = "/authenticate/login/";
+const endpoint = "/authenticate/seeker/login/";
 
 export async function apiLogin(body: { email: string; password: string }) {
   return await apiDispatch.post({

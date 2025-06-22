@@ -195,7 +195,7 @@ export function _ListRequest() {
 
   return (
     <>
-      <RBACCheck showStaff>
+    
         <ListHandler
           endpoint={"/applicant/get/pending/"}
           moduleKey={moduleConfig.moduleKey}
@@ -207,7 +207,7 @@ export function _ListRequest() {
             <RenderTable />
           </Tabs>
         </ListHandler>
-      </RBACCheck>
+     
     </>
   );
 }

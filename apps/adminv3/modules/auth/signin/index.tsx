@@ -112,7 +112,9 @@ export function ModuleAuthSignIn() {
       console.log(decoded);
 
       setTimeout(() => {
-        Router.push("/admin");
+        Router.push(
+          decoded?.is_first_login == "True" ? "/onboarding" : "/admin"
+        );
       }, 1000);
     },
     onError: (err: any) => {
@@ -295,8 +297,7 @@ export function ModuleAuthSignIn() {
           </Anchor>
         </Group>
 
-                <Space h={"xs"} />
-
+        <Space h={"xs"} />
 
         {mutation.isError && <RenderAlert />}
 
