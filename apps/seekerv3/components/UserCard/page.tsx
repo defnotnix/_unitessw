@@ -12,14 +12,21 @@ import {
   Drawer,
   Grid,
   Group,
+  Image,
   Paper,
   SimpleGrid,
   Space,
   Stack,
+  Table,
   Text,
   Tooltip,
 } from "@mantine/core";
-import { BagIcon, BookmarkIcon, CheckCircleIcon } from "@phosphor-icons/react";
+import {
+  BagIcon,
+  BookmarkIcon,
+  CheckCircleIcon,
+  HeartIcon,
+} from "@phosphor-icons/react";
 import dayjs from "dayjs";
 import { useLanguage } from "@/layouts/app/app.context";
 import { useRouter } from "next/navigation";
@@ -27,6 +34,9 @@ import { useDisclosure } from "@mantine/hooks";
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { apiPersonalInformation } from "@/modules/applicantProfile/module.api";
+import { moduleApiCall } from "@vframework/core";
+import { triggerNotification } from "@vframework/ui";
+import { jwtDecode } from "jwt-decode";
 
 // --------------------
 // Type
@@ -68,6 +78,8 @@ const getLangValue = (primary: string, alt?: string, lang?: string) =>
 // Component
 // --------------------
 export function UserCard({ applicant }: { applicant: Applicant }) {
+  const tokenData: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
+
   const { language } = useLanguage();
   const lang = language === "jp" ? "jp" : "en";
   const t = getTranslation(lang);
@@ -303,11 +315,9 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
             </Group>
 
             <Grid align="center" py="xs">
-              <Grid.Col span={{ base: 12, lg: 4 }}>
-                <Group gap="xs" wrap="nowrap" mb="sm">
-                  <Avatar size="md" src={applicant.image} color="brand">
-                    XD
-                  </Avatar>
+              <Grid.Col span={{ base: 12, lg: 5 }}>
+                <Group gap="md" wrap="nowrap" mb="sm">
+                  <Image h={120} w={100} src={applicant.image} />
                   <div>
                     <Text size="1.3rem" mb={4} fw={800}>
                       {getLangValue(
@@ -317,7 +327,9 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
                       )}
                     </Text>
                     <Text size="xs" opacity={0.8} fw={600}>
-                      {`${age} ${applicant.date_of_birth} / ${genderLabel[applicant.gender]} / ${
+                      {`${age} ${applicant.date_of_birth}`}
+                      <br />
+                      {`  ${lang == "en" ? applicant.gender : applicant.gender == "Male" ? "男" : "女性"} / ${
                         applicant.is_married ? t.married : t.unmarried
                       }`}
                     </Text>
@@ -325,7 +337,7 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
                 </Group>
               </Grid.Col>
 
-              <Grid.Col span={{ base: 12, lg: 8 }}>
+              <Grid.Col span={{ base: 12, lg: 7 }}>
                 <Text size="xs">
                   {getLangValue(applicant.remark, applicant.jp_remark, lang)}
                 </Text>
@@ -365,53 +377,6 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
             </Group>
           </Group>
         </Stack>
-
-        {/* Detail Section */}
-        <SimpleGrid cols={3} bg="gray.2" px="xl" py="sm" visibleFrom="lg">
-          <Text size="xs" opacity={0.6} fw={600}>
-            {`${t.height}`} : <b>{`${applicant.height} cm`}</b>
-          </Text>
-          <Text size="xs" opacity={0.6} fw={600}>
-            {`${t.weight}`} : <b>{`${applicant.weight} kg`}</b>
-          </Text>
-          <Text size="xs" opacity={0.6} fw={600}>
-            {`${t.skill} : `}{" "}
-            <b>
-              {`${getLangValue(
-                applicant.certified_skill,
-                applicant.jp_certified_skill,
-                lang
-              )}`}
-            </b>
-          </Text>
-        </SimpleGrid>
-
-        <SimpleGrid cols={3} bg="gray.0" px="xl" py="sm" visibleFrom="lg">
-          <Text size="xs" opacity={0.6} fw={600}>
-            {`${t.langCert}: `}{" "}
-            <b>{`${getLangValue(
-              applicant.language_certification,
-              applicant.jp_language_certification,
-              lang
-            )}`}</b>
-          </Text>
-          <Text size="xs" opacity={0.6} fw={600}>
-            {`${t.strongPoint}: `}{" "}
-            <b>{`${getLangValue(
-              applicant.strong_point,
-              applicant.jp_strong_point,
-              lang
-            )}`}</b>
-          </Text>
-          <Text size="xs" opacity={0.6} fw={600}>
-            {`${t.negativePoint}: `}{" "}
-            <b>{`${getLangValue(
-              applicant.negative_point,
-              applicant.jp_negative_point,
-              lang
-            )}`}</b>
-          </Text>
-        </SimpleGrid>
       </Paper>
 
       <Drawer
@@ -433,18 +398,66 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
       >
         <Paper
           bg={
-            "linear-gradient(90deg, var(--mantine-color-brand-5),var(--mantine-color-red-6), var(--mantine-color-grape-6))"
+            "linear-gradient(90deg, var(--mantine-color-dark-9), var(--mantine-color-gray-9))"
           }
+          py="3rem"
+          px="xl"
         >
-          <Stack py="3rem">
-            <Center>
-              <Avatar size="100" src={info.image} name={info.full_name} />
-            </Center>
+          <SimpleGrid cols={{ base: 1, lg: 2 }}>
+            <Stack>
+              <Avatar size="120" src={info.image} name={info.full_name} />
 
-            <Text ta="center" size="2rem" fw={800} c="white">
-              {lang === "en" ? info.full_name : info.furigana}
-            </Text>
-          </Stack>
+              <Text size="2rem" fw={800} c="white">
+                {lang === "en" ? info.full_name : info.furigana}
+              </Text>
+
+              <Group gap="xs">
+                <Button size="xs">Book for Interview</Button>
+                <Button
+                  leftSection={<HeartIcon weight="duotone" size={12} />}
+                  size="xs"
+                  variant="light"
+                  color="pink"
+                  onClick={() => {
+                    triggerNotification.form.isLoading({
+                      message: "Adding to Wishlist",
+                    });
+
+                    moduleApiCall
+                      .createRecord(
+                        "/logs/seeker/wishlist/",
+                        {
+                          seeker: tokenData?.user_id,
+                          app;icant:info?.id
+                        },
+                       
+                      )
+                      .then((res) => {
+                        triggerNotification.form.isSuccess({
+                          message: "Added to Wishlist",
+                        });
+                      })
+                      .catch((err) => {
+                        triggerNotification.form.isError({
+                          message: err.message,
+                        });
+                      });
+                  }}
+                >Bookmark</Button>
+              </Group>
+            </Stack>
+
+            {/* YouTube Video */}
+            <AspectRatio ratio={16 / 9} mb={-16}>
+              <iframe
+                src={info.youtube_link}
+                title="YouTube video player"
+                style={{ border: 0 }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </AspectRatio>
+          </SimpleGrid>
         </Paper>
         <Stack p="sm">
           <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="xs">
@@ -452,7 +465,7 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
             <Stack gap="xs">
               {/* About Me */}
               <Paper withBorder>
-                <Text px="lg" py="xs" bg="gray.0" fw={800} size="xs">
+                <Text px="lg" py="xs" bg="gray.1" fw={800} size="xs">
                   {lang === "en" ? "About Me" : "プロフィール"}
                 </Text>
 
@@ -461,19 +474,6 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
                     {lang === "en" ? info.remark : info.jp_remark}
                   </Text>
                 </Box>
-              </Paper>
-
-              {/* YouTube Video */}
-              <Paper withBorder style={{ overflow: "hidden" }}>
-                <AspectRatio ratio={16 / 9} mb={-16}>
-                  <iframe
-                    src={info.youtube_link}
-                    title="YouTube video player"
-                    style={{ border: 0 }}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                </AspectRatio>
               </Paper>
 
               {/* Traits, Goals, Motivation, Hobbies */}
@@ -497,7 +497,7 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
                   { label: "Hobbies", jp: "趣味", key: "hobbies" },
                 ].map((section, idx) => (
                   <React.Fragment key={idx}>
-                    <Text fw={800} size="xs" bg="gray.0" px="lg" py="xs">
+                    <Text fw={800} size="xs" bg="gray.1" px="lg" py="xs">
                       {lang === "en" ? section.label : section.jp}
                     </Text>
                     <Text size="xs" px="lg" py="md">
@@ -507,18 +507,15 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
                     </Text>
                   </React.Fragment>
                 ))}
-              </Paper>
 
-              {/* Strength & Weakness */}
-              <Paper withBorder>
-                <Text fw={800} size="xs" px="lg" py="xs" bg="gray.0">
+                <Text fw={800} size="xs" px="lg" py="xs" bg="gray.1">
                   {lang === "en" ? "Strong Point" : "長所"}
                 </Text>
                 <Text size="xs" px="lg" py="md">
                   {lang === "en" ? info.strong_point : info.jp_strong_point}
                 </Text>
 
-                <Text fw={800} size="xs" px="lg" py="xs" bg="gray.0">
+                <Text fw={800} size="xs" px="lg" py="xs" bg="gray.1">
                   {lang === "en" ? "Negative Point" : "短所"}
                 </Text>
                 <Text size="xs" px="lg" py="md">
@@ -531,7 +528,7 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
             <Stack gap="xs">
               <Paper withBorder>
                 {/* Personal Details */}
-                <Text fw={800} size="xs" px="lg" py="xs" bg="gray.0">
+                <Text fw={800} size="xs" px="lg" py="xs" bg="gray.1">
                   {lang === "en" ? "Personal Details" : "基本情報"}
                 </Text>
                 <SimpleGrid cols={2} spacing="xs" px="lg" py="sm">
@@ -548,7 +545,7 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
                 </SimpleGrid>
 
                 {/* Background Details */}
-                <Text fw={800} size="xs" px="lg" py="xs" bg="gray.0">
+                <Text fw={800} size="xs" px="lg" py="xs" bg="gray.1">
                   {lang === "en" ? "Background Details" : "背景"}
                 </Text>
                 <SimpleGrid cols={2} spacing="xs" px="lg" py="sm">
@@ -593,7 +590,7 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
                 </SimpleGrid>
 
                 {/* Physical Info */}
-                <Text fw={800} size="xs" px="lg" py="xs" bg="gray.0">
+                <Text fw={800} size="xs" px="lg" py="xs" bg="gray.1">
                   {lang === "en" ? "Physical" : "身体情報"}
                 </Text>
                 <SimpleGrid cols={2} spacing="xs" px="lg" py="sm">
@@ -640,7 +637,150 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
             </Stack>
           </SimpleGrid>
 
-          <Divider my="xs" />
+          <Text size="xl" fw={800} px="lg">
+            Academics
+          </Text>
+
+          <Paper withBorder>
+            <Table
+              striped
+              withTableBorder
+              style={{
+                fontSize: "var(--mantine-font-size-xs)",
+              }}
+            >
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th w={50}>#</Table.Th>
+                  <Table.Th w={120}>
+                    {language === "en" ? "Period" : "期間"}
+                  </Table.Th>
+                  <Table.Th w={200}>
+                    {language === "en" ? "Institution" : "学校名"}
+                  </Table.Th>
+                  <Table.Th>
+                    {language === "en" ? "Major / Notes" : "専攻・備考"}
+                  </Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
+                {info?.education?.map((item: any, index: any) => (
+                  <Table.Tr key={index}>
+                    <Table.Td>{index + 1}</Table.Td>
+                    <Table.Td>
+                      {item.start_date && item.end_date
+                        ? `${item.start_date} - ${item.end_date}`
+                        : "-"}
+                    </Table.Td>
+                    <Table.Td>
+                      <b>
+                        {language === "en"
+                          ? item.institution || "-"
+                          : item.jp_institution || "-"}
+                      </b>
+                    </Table.Td>
+                    <Table.Td>
+                      {language === "en"
+                        ? item.major_or_notes || "-"
+                        : item.jp_major_or_notes || "-"}
+                    </Table.Td>
+                  </Table.Tr>
+                ))}
+              </Table.Tbody>
+            </Table>
+          </Paper>
+
+          <Text size="xl" fw={800} px="lg">
+            Work History
+          </Text>
+
+          <Paper withBorder>
+            <Table
+              striped
+              withTableBorder
+              style={{
+                fontSize: "var(--mantine-font-size-xs)",
+              }}
+            >
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th w={50}>#</Table.Th>
+                  <Table.Th w={120}>
+                    {language === "en" ? "Period" : "期間"}
+                  </Table.Th>
+                  <Table.Th w={200}>
+                    {language === "en" ? "Company" : "会社名"}
+                  </Table.Th>
+                  <Table.Th>
+                    {language === "en" ? "Role / Notes" : "職種・備考"}
+                  </Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+
+              <Table.Tbody>
+                {info?.work_experience?.map((item: any, index: number) => (
+                  <Table.Tr key={index}>
+                    <Table.Td>{index + 1}</Table.Td>
+                    <Table.Td>
+                      {item.start_date && item.end_date
+                        ? `${item.start_date} - ${item.end_date}`
+                        : "-"}
+                    </Table.Td>
+                    <Table.Td>
+                      <b>
+                        {language === "en" ? item.company : item.jp_company}
+                      </b>
+                    </Table.Td>
+                    <Table.Td>
+                      {language === "en"
+                        ? `${item.role || "-"} / ${item.notes || "-"}`
+                        : `${item.jp_role || "-"} / ${item.jp_notes || "-"}`}
+                    </Table.Td>
+                  </Table.Tr>
+                ))}
+              </Table.Tbody>
+            </Table>
+          </Paper>
+
+          <Text size="xl" fw={800} px="lg">
+            License Qualification
+          </Text>
+
+          <Paper withBorder>
+            <Table
+              striped
+              withTableBorder
+              style={{
+                fontSize: "var(--mantine-font-size-xs)",
+              }}
+            >
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th w={50}>#</Table.Th>
+                  <Table.Th w={120}>
+                    {language === "en" ? "Date" : "日付"}
+                  </Table.Th>
+                  <Table.Th w={200}>
+                    {language === "en" ? "License/Qualification" : "証明書"}
+                  </Table.Th>
+                  <Table.Th>{language === "en" ? "Status" : "状態"}</Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+
+              <Table.Tbody>
+                {info?.licenses?.map((item: any, index: number) => (
+                  <Table.Tr key={index}>
+                    <Table.Td>{index + 1}</Table.Td>
+                    <Table.Td>{item?.date_received}</Table.Td>
+                    <Table.Td>
+                      <b>{language === "en" ? item.name : item.jp_name}</b>
+                    </Table.Td>
+                    <Table.Td>{item?.status ? "Active" : "Expired"}</Table.Td>
+                  </Table.Tr>
+                ))}
+              </Table.Tbody>
+            </Table>
+          </Paper>
         </Stack>
       </Drawer>
     </>
