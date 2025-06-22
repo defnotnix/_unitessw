@@ -33,6 +33,7 @@ export function FormHandler({
   // * submitProps
   transformDataOnSubmit = (formdata) => formdata,
   submitFormData,
+  resetOnSubmit = true,
   // * APIs
   apiSubmit = () => {},
   submitProps = {},
@@ -151,7 +152,7 @@ export function FormHandler({
       console.log("success");
       if (formType == "new") {
         console.log("Resetting Form");
-        form.reset();
+        if (resetOnSubmit) form.reset();
         form.setValues({});
       }
       triggerNotification.form.isSuccess({});
@@ -173,7 +174,7 @@ export function FormHandler({
 
       switch (errObject.type) {
         case "Validation Error":
-          form.setErrors(errObject.details);
+          form.setErrors(errObject.detail);
           triggerNotification.form.isError({
             title: "Whoops! Hold on a Moment 🖐️",
             message:

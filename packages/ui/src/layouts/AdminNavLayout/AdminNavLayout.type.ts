@@ -2,8 +2,13 @@ import { JSX, ReactNode } from "react";
 import { Icon } from "@phosphor-icons/react";
 import { MantineColor, TreeNodeData } from "@mantine/core";
 
-type PropAdminNavItems = TreeNodeData & {
+type PropAdminNavItems = {
+  label?: string;
+  value?: string;
+  divider?: boolean;
+  roles?: string[];
   icon?: Icon;
+  children?: PropAdminNavItems[];
 };
 
 type PropAdminNavModule = {

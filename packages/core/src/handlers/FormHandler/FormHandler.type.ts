@@ -17,6 +17,7 @@ type FormHandler = {
   stepType?: string;
   stepClickable?: boolean;
   initialStep?: number;
+  resetOnSubmit?: boolean;
 
   // * validation
   validation: any[];
