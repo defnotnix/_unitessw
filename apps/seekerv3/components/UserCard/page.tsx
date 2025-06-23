@@ -23,7 +23,9 @@ import {
 } from "@mantine/core";
 import {
   BagIcon,
+  BellIcon,
   BookmarkIcon,
+  CameraIcon,
   CheckCircleIcon,
   HeartIcon,
 } from "@phosphor-icons/react";
@@ -114,6 +116,7 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
           education: res?.data?.a_education,
           work_experience: res?.data?.a_work_experience,
           licenses: res?.data?.a_license_qualification,
+          mainId: res?.data?.id,
         });
         return {};
       } else {
@@ -306,11 +309,6 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
                 >
                   {t.viewCV}
                 </Button>
-                <Tooltip label={t.saveCandidate}>
-                  <ActionIcon color="indigo">
-                    <BookmarkIcon />
-                  </ActionIcon>
-                </Tooltip>
               </Group>
             </Group>
 
@@ -411,12 +409,17 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
                 {lang === "en" ? info.full_name : info.furigana}
               </Text>
 
-              <Group gap="xs">
-                <Button size="xs">Book for Interview</Button>
+              <Group gap="2px">
+                <Button size="xs" leftSection={<BellIcon />}>
+                  Notify
+                </Button>
+                <Button size="xs" leftSection={<CameraIcon />}>
+                  Book for Interview
+                </Button>
+
                 <Button
                   leftSection={<HeartIcon weight="duotone" size={12} />}
                   size="xs"
-                  variant="light"
                   color="pink"
                   onClick={() => {
                     triggerNotification.form.isLoading({
@@ -424,31 +427,30 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
                     });
 
                     moduleApiCall
-                      .createRecord(
-                        "/logs/seeker/wishlist/",
-                        {
-                          seeker: tokenData?.user_id,
-                          app;icant:info?.id
-                        },
-                       
-                      )
+                      .createRecord("/logs/seeker/wishlist/", {
+                        seeker: tokenData?.user_id,
+                        applicant: info?.mainId,
+                      })
                       .then((res) => {
                         triggerNotification.form.isSuccess({
                           message: "Added to Wishlist",
                         });
                       })
                       .catch((err) => {
-                        triggerNotification.form.isError({
-                          message: err.message,
+                        triggerNotification.form.isInfo({
+                          message:
+                            "This applicant has already been added to your wishlist",
                         });
                       });
                   }}
-                >Bookmark</Button>
+                >
+                  Bookmark
+                </Button>
               </Group>
             </Stack>
 
             {/* YouTube Video */}
-            <AspectRatio ratio={16 / 9} mb={-16}>
+            <AspectRatio ratio={16 / 9}>
               <iframe
                 src={info.youtube_link}
                 title="YouTube video player"

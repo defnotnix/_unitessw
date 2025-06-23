@@ -155,8 +155,8 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
                         }}
                       >
                         {language === "en"
-                          ? "Candidate Wishlist"
-                          : "候補者ウィッシュリスト"}
+                          ? "Saved Candidate"
+                          : "保存済み候補者"}
                       </Button>
                     </Group>
                   </Group>

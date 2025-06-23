@@ -360,7 +360,9 @@ export function ModuleSeekerApplicants() {
         <Grid.Col span={{ base: 12, lg: 8.5 }}>
           <Group justify="space-between">
             <Text size="xs" pl={{ base: 0, lg: "xl" }}>
-              {language === "en" ? "Showing 50 of 3345" : "応募者 50 名中 3345"}
+              {language === "en"
+                ? `Showing X of ${paginationData.total_items}`
+                : `応募者 X 名中 ${paginationData.total_items}`}
             </Text>
             <Group gap={2}>
               <ThemeIcon hiddenFrom="lg">
