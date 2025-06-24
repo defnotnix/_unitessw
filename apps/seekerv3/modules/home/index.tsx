@@ -57,11 +57,24 @@ export function ModuleSeekerHome() {
           <Text size="xs" ta="center">
             UNITE SSW
           </Text>
-          <Title size="4rem" lh="4.3rem" ta="center">
+          <Title size="4rem" lh="4.3rem" ta="center" visibleFrom="lg">
             {language === "en" ? (
               <>
                 Find <i>employees</i> that
                 <br /> meet your <i>standard</i>.
+              </>
+            ) : (
+              <>
+                あなたの<i>基準</i>に合った
+                <br /> <i>従業員</i>を見つけましょう。
+              </>
+            )}
+          </Title>
+
+          <Title size="3rem" lh="3.3rem" ta="center" hiddenFrom="lg">
+            {language === "en" ? (
+              <>
+                Find <i>employees</i> that meet your <i>standard</i>.
               </>
             ) : (
               <>
@@ -128,7 +141,7 @@ export function ModuleSeekerHome() {
           </Group>
 
           <Stack gap="xs">
-            <SimpleGrid cols={2} mt="xl">
+            <SimpleGrid cols={{ base: 1, lg: 2 }} mt="xl">
               <Select
                 data={queryJobCategory.data.map((item: any) => {
                   return {
@@ -143,7 +156,7 @@ export function ModuleSeekerHome() {
                 radius="md"
                 {...form.getInputProps("category")}
               />
-              <SimpleGrid cols={2}>
+              <SimpleGrid cols={{ base: 1, lg: 2 }}>
                 <Select
                   data={[
                     { value: "Male", label: "Male" },
@@ -213,7 +226,7 @@ export function ModuleSeekerHome() {
                   {...form.getInputProps("furigana")}
                 />
               </SimpleGrid>
-              <SimpleGrid cols={4} mt="xs">
+              <SimpleGrid cols={{ base: 1, md: 2, lg: 4 }} mt="xs">
                 <div>
                   <Text size="xs" my={4}>
                     Weight (Min - Max)
