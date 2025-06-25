@@ -57,6 +57,8 @@ import _ from "lodash";
 import { StepIdentification } from "./steps/s8_identification";
 import { jwtDecode } from "jwt-decode";
 import { endpoint } from "@/layouts/app";
+import { StepTatoo } from "./steps/s9_tatoo";
+import { StepVisit } from "./steps/s10_visit";
 
 export function ModuleOnboarding() {
   const forceUpdate = useForceUpdate();
@@ -143,12 +145,14 @@ export function ModuleOnboarding() {
     "Welcome",
     "Identity & Contact",
     "Background & Legal Status",
-    "Physical & Family Info",
+    "Physical & Emergency Contact",
     "Personal Story",
     "Academics",
     "Work History",
     "Certifications",
     "Identifications",
+    "Body Tatoo",
+    "Japan Visit History",
     "Completed",
   ];
 
@@ -339,6 +343,26 @@ export function ModuleOnboarding() {
         };
       },
     },
+
+    {
+      component: <StepTatoo />,
+      apiCreate: apiIdentification.create,
+      isFormData: true,
+      apiUpdate: (body: any) =>
+        apiIdentification.update(body, data?.a_identification?.id),
+
+      transform: (formdata: any) => {},
+    },
+    {
+      component: <StepVisit />,
+      apiCreate: apiIdentification.create,
+      isFormData: true,
+      apiUpdate: (body: any) =>
+        apiIdentification.update(body, data?.a_identification?.id),
+
+      transform: (formdata: any) => {},
+    },
+
     { component: <CompletedStep />, apiCreate: null, apiUpdate: null },
   ];
 
@@ -419,17 +443,17 @@ export function ModuleOnboarding() {
     );
   };
 
-  if (!data) {
-    return (
-      <>
-        <Center h={500}>
-          <Paper withBorder p="md">
-            <Loader size="xs" />
-          </Paper>
-        </Center>
-      </>
-    );
-  }
+  // if (!data) {
+  //   return (
+  //     <>
+  //       <Center h={500}>
+  //         <Paper withBorder p="md">
+  //           <Loader size="xs" />
+  //         </Paper>
+  //       </Center>
+  //     </>
+  //   );
+  // }
 
   return (
     <section>
@@ -539,7 +563,7 @@ export function ModuleOnboarding() {
               {...formProps}
               resetOnSubmit={false}
               formType={isCompleted ? "edit" : "new"}
-              initial={data}
+              initial={data || formProps.initial}
               apiSubmit={apiSubmit}
               submitFormData={submitFormData}
               transformDataOnSubmit={transformData}

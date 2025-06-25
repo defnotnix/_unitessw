@@ -7,11 +7,6 @@ export const formProps: any = {
     orthodontics: [],
     work: [],
     academics: [],
-    education: [],
-    work_experience: [],
-    licenses: [],
-    tatoo: [],
-    visithistory: [],
   },
 
   // > STEPS

@@ -640,7 +640,20 @@ export function LayoutAdmin({ children }: PropsWithChildren) {
                     </Menu.Item>
                     <Menu.Divider />
 
-                    <Menu.Item color="red" leftSection={<PowerIcon />}>
+                    <Menu.Item
+                      color="red"
+                      leftSection={<PowerIcon />}
+                      onClick={() => {
+                        moduleApiCall
+                          .createRecord("/authenticate/logout/", {})
+                          .then((res) => {
+                            if (!res.err) {
+                              sessionStorage.removeItem("sswtoken");
+                              Router.push("/");
+                            }
+                          });
+                      }}
+                    >
                       <Text size="xs">Sign Out</Text>
                     </Menu.Item>
                   </Menu.Dropdown>

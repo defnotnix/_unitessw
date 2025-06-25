@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { PropsWithChildren } from "react";
-import { LayoutSeeker } from "@/layouts/seeker";
 
 export default function TokenCheck({ children }: PropsWithChildren) {
   const router = useRouter();
@@ -39,5 +38,5 @@ export default function TokenCheck({ children }: PropsWithChildren) {
 
   if (!checked) return null; // Show nothing until check is complete
 
-  return <LayoutSeeker>{children}</LayoutSeeker>;
+  return <>{children}</>;
 }

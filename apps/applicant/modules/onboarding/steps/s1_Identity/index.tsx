@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 
 //mantine
 import {
+  Divider,
   Group,
   Paper,
   Select,
@@ -17,7 +18,13 @@ import {
 } from "@mantine/core";
 import { FormHandler } from "@vframework/core";
 import { ImageUpload } from "@vframework/ui";
-import { ExclamationMark } from "@phosphor-icons/react";
+import {
+  ExclamationMark,
+  FacebookLogoIcon,
+  InstagramLogoIcon,
+  LinkedinLogoIcon,
+  WhatsappLogoIcon,
+} from "@phosphor-icons/react";
 import { DatePickerInput } from "@mantine/dates";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
@@ -260,6 +267,43 @@ export function StepIdentity() {
             placeholder="e.g. +977 9813512312"
             description="Phone number of the person."
             {...form.getInputProps("contact")}
+          />
+        </SimpleGrid>
+
+        <Divider />
+
+        <div>
+          <Text size="2rem" lh="2.3rem">
+            <b>Socials</b>
+            <br />
+          </Text>
+          <Text size="xs">Link your socials across different platform.</Text>
+        </div>
+
+        <SimpleGrid cols={{ base: 2, lg: 4 }} spacing="xs">
+          <TextInput
+            leftSection={<InstagramLogoIcon />}
+            label="Instagram Handle"
+            placeholder="e.g. instagram username"
+            {...form.getInputProps("instagram")}
+          />
+          <TextInput
+            leftSection={<FacebookLogoIcon />}
+            label="Facebook Handle"
+            placeholder="e.g. faacebook username"
+            {...form.getInputProps("facebook")}
+          />
+          <TextInput
+            leftSection={<LinkedinLogoIcon />}
+            label="LinkedIn Handle"
+            placeholder="e.g. linkedin username"
+            {...form.getInputProps("linkedin")}
+          />
+          <TextInput
+            leftSection={<WhatsappLogoIcon />}
+            label="Whatsapp Handle"
+            placeholder="e.g. instagramusername"
+            {...form.getInputProps("whatsapp")}
           />
         </SimpleGrid>
       </Stack>

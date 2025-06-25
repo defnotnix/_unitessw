@@ -31,6 +31,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import { useLanguage } from "../app/app.context";
 import imgLogo from "@/assets/img/sswmini.png";
+import { moduleApiCall } from "@vframework/core";
 
 function LogoWithText({ size = "xs" }: { size?: string }) {
   const { language } = useLanguage();
@@ -113,7 +114,7 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
 
     {
       label: language === "en" ? "Saved Candidate" : "保存済み候補者",
-      path: "/wishlist",
+      path: "/saved",
     },
   ];
 
@@ -176,7 +177,20 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
                 </Menu>
 
                 <LangSwitcher />
-                <Button size="xs" leftSection={<DoorOpenIcon />}>
+                <Button
+                  size="xs"
+                  leftSection={<DoorOpenIcon />}
+                  onClick={() => {
+                    moduleApiCall
+                      .createRecord("/authenticate/logout/", {})
+                      .then((res) => {
+                        if (!res.err) {
+                          sessionStorage.removeItem("sswtoken");
+                          Router.push("/");
+                        }
+                      });
+                  }}
+                >
                   Sign Out
                 </Button>
               </Group>

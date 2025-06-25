@@ -15,6 +15,7 @@ import {
   Menu,
   Modal,
   MantineSize,
+  FileInput,
 } from "@mantine/core";
 import {
   DateInput,
@@ -72,6 +73,23 @@ export const configThemeMantineComponents: any = {
   }),
 
   TextInput: TextInput.extend({
+    defaultProps: {
+      size: defaults.inputSize,
+      styles: {
+        label: {
+          fontSize: defaults.fontSize,
+        },
+        input: {
+          fontSize: defaults.fontSize,
+        },
+        error: {
+          fontSize: defaults.fontSize,
+        },
+      },
+    },
+  }),
+
+  FileInput: FileInput.extend({
     defaultProps: {
       size: defaults.inputSize,
       styles: {

@@ -179,7 +179,7 @@ export function StepPhysical() {
 
         <div>
           <Text size="2rem" lh="2.3rem">
-            <b>Family Information</b>
+            <b>Emergency Contact</b>
             <br />
           </Text>
           <Text size="xs">
@@ -190,9 +190,9 @@ export function StepPhysical() {
         <SimpleGrid cols={{ base: 1, lg: 2 }}>
           <Stack gap={0}>
             <TextInput
-              label="Parent Name"
+              label="Contact Owner"
               placeholder="e.g. Ram Shrestha"
-              description="Name of parent"
+              description="Name of Emergency Contact Person"
               {...form.getInputProps("family_name")}
               styles={styles.top}
               leftSection={
@@ -215,9 +215,9 @@ export function StepPhysical() {
 
           <Stack gap={0}>
             <TextInput
-              label="Parent Relation"
+              label="Contact Relation"
               placeholder="e.g. Father"
-              description="Name of parent"
+              description="Relation of Emergency Contact Person"
               {...form.getInputProps("family_relation")}
               styles={styles.top}
               leftSection={
@@ -240,9 +240,9 @@ export function StepPhysical() {
         </SimpleGrid>
 
         <TextInput
-          label="Parent Contact"
+          label="Emergency Contact"
           placeholder="e.g. +977 981123121"
-          description="Your relationship to the contact person"
+          description="Emergency Phone Number"
           {...form.getInputProps("family_contact")}
         />
       </Stack>

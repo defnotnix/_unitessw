@@ -28,10 +28,11 @@ import {
   CameraIcon,
   CheckCircleIcon,
   HeartIcon,
+  XIcon,
 } from "@phosphor-icons/react";
 import dayjs from "dayjs";
 import { useLanguage } from "@/layouts/app/app.context";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
@@ -79,7 +80,13 @@ const getLangValue = (primary: string, alt?: string, lang?: string) =>
 // --------------------
 // Component
 // --------------------
-export function UserCard({ applicant }: { applicant: Applicant }) {
+export function UserCard({
+  applicant,
+  onSuccess,
+}: {
+  applicant: Applicant;
+  onSuccess: any;
+}) {
   const tokenData: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
 
   const { language } = useLanguage();
@@ -88,6 +95,8 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
   const Router = useRouter();
 
   const [opened, { open, close }] = useDisclosure();
+
+  const Pathname = usePathname();
 
   const genderLabel: any = {
     M: t.male,
@@ -103,7 +112,7 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
     mutationKey: ["admin", "cv"],
     mutationFn: async () => {
       const res: any = await apiPersonalInformation.get(applicant.id);
-      console.log(res?.data);
+
       if (!res.err) {
         setInfo({
           ...res?.data,
@@ -418,33 +427,63 @@ export function UserCard({ applicant }: { applicant: Applicant }) {
                 </Button>
 
                 <Button
-                  leftSection={<HeartIcon weight="duotone" size={12} />}
+                  leftSection={
+                    Pathname == "/applicants" ? (
+                      <HeartIcon weight="duotone" size={12} />
+                    ) : (
+                      <XIcon weight="duotone" size={12} />
+                    )
+                  }
                   size="xs"
                   color="pink"
                   onClick={() => {
-                    triggerNotification.form.isLoading({
-                      message: "Adding to Wishlist",
-                    });
-
-                    moduleApiCall
-                      .createRecord("/logs/seeker/wishlist/", {
-                        seeker: tokenData?.user_id,
-                        applicant: info?.mainId,
-                      })
-                      .then((res) => {
-                        triggerNotification.form.isSuccess({
-                          message: "Added to Wishlist",
-                        });
-                      })
-                      .catch((err) => {
-                        triggerNotification.form.isInfo({
-                          message:
-                            "This applicant has already been added to your wishlist",
-                        });
+                    if (Pathname == "/applicants") {
+                      triggerNotification.form.isLoading({
+                        message: "Adding to Wishlist",
                       });
+
+                      moduleApiCall
+                        .createRecord("/logs/seeker/wishlist/", {
+                          seeker: tokenData?.user_id,
+                          applicant: info?.mainId,
+                        })
+                        .then((res) => {
+                          triggerNotification.form.isSuccess({
+                            message: "Added to Wishlist",
+                          });
+                        })
+                        .catch((err) => {
+                          triggerNotification.form.isInfo({
+                            message:
+                              "This applicant has already been added to your wishlist",
+                          });
+                        });
+                    } else {
+                      triggerNotification.form.isLoading({
+                        message: "Revmoing from Wishlist",
+                      });
+
+                      moduleApiCall
+                        .deleteRecord(
+                          "/logs/seeker/wishlist/",
+                          applicant?.mainId
+                        )
+                        .then((res) => {
+                          triggerNotification.form.isSuccess({
+                            message: "Removed from Wishlist",
+                          });
+                          onSuccess();
+                        })
+                        .catch((err) => {
+                          triggerNotification.form.isInfo({
+                            message:
+                              "This applicant has already been removed from your wishlist",
+                          });
+                        });
+                    }
                   }}
                 >
-                  Bookmark
+                  {Pathname == "/applicants" ? "Bookmark" : "Remove from Saved"}
                 </Button>
               </Group>
             </Stack>
