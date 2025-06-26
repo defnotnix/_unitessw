@@ -13,6 +13,7 @@ import {
   Text,
 } from "@mantine/core";
 import React, { useEffect } from "react";
+import { Watermark } from "./watermar";
 
 const personalDetails = [
   {
@@ -161,6 +162,7 @@ export function CV2({
 
   return (
     <Paper h={"11.7in"} w={"8.5in"} pos="relative">
+      <Watermark />
       <Grid gutter={0}>
         <Grid.Col span={8} p="xl">
           <SimpleGrid cols={2}>
@@ -190,7 +192,7 @@ export function CV2({
 
           <SimpleGrid cols={2} spacing="xs">
             <div>
-             <Text size="xs" fw={800}>
+              <Text size="xs" fw={800}>
                 {language === "en" ? "My Personal Traits" : "個人特徴"}
               </Text>
               <Text size="10px" lh="13px" mt="sm">
@@ -201,7 +203,7 @@ export function CV2({
             </div>
 
             <div>
-             <Text size="xs" fw={800}>
+              <Text size="xs" fw={800}>
                 {language === "en" ? "What motivates me." : "動機とは"}
               </Text>
               <Text size="10px" lh="13px" mt="sm">

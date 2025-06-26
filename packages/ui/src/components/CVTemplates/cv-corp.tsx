@@ -14,6 +14,7 @@ import {
 import React, { useEffect } from "react";
 
 import classes from "./cv-cord.module.css";
+import { Watermark } from "./watermar";
 
 export function CVCorp({
   color = "brand",
@@ -49,7 +50,8 @@ export function CVCorp({
   }
 
   return (
-    <Paper h={"11.7in"} w={"8.5in"} p="1in">
+    <Paper h={"11.7in"} w={"8.5in"} p="1in" pos="relative">
+      <Watermark />
       <table className={classes.cvtable}>
         <tbody>
           <tr>

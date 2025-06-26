@@ -15,6 +15,7 @@ import {
   Text,
 } from "@mantine/core";
 import React, { useEffect } from "react";
+import { Watermark } from "./watermar";
 
 const personalDetails = [
   {
@@ -163,6 +164,7 @@ export function CV4({
 
   return (
     <Paper h={"11.7in"} w={"8.5in"} pos="relative">
+      <Watermark />
       <Paper radius={0} pos="absolute" w="100%" h=".05in" bg={color + ".6"} />
 
       <Grid gutter={0}>

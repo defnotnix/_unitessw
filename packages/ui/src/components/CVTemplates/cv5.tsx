@@ -12,6 +12,7 @@ import {
   Text,
 } from "@mantine/core";
 import React, { useEffect } from "react";
+import { Watermark } from "./watermar";
 
 const personalDetails = [
   {
@@ -160,6 +161,7 @@ export function CV5({
 
   return (
     <Paper h={"11.7in"} w={"8.5in"} pos="relative" p="md">
+      <Watermark />
       <Grid gutter={0}>
         <Grid.Col
           style={{
