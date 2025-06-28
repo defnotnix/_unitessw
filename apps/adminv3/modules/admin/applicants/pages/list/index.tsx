@@ -19,7 +19,7 @@ import {
   Text,
 } from "@mantine/core";
 import { ListHandler } from "@vframework/core";
-import { ModuleTableLayout } from "@vframework/ui";
+import { ModuleTableLayout, triggerNotification } from "@vframework/ui";
 import { columns } from "./list.columns";
 
 //mantine
@@ -31,11 +31,12 @@ import { columns } from "./list.columns";
 //components
 
 //api
-import { deleteRecord, getRecords } from "../../module.api";
+import { deleteRecord, getRecords, publishRecord } from "../../module.api";
 import {
   ArrowLeft,
   Atom,
   CaretRight,
+  CheckIcon,
   DotsThreeVertical,
   House,
   IdentificationBadge,
@@ -49,6 +50,7 @@ import { StatCard } from "@/components/StatCard";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { RBACCheck } from "@/components/RBACCheck";
+import { modals } from "@mantine/modals";
 
 export function _List() {
   // * DEFINITIONS
@@ -127,7 +129,7 @@ export function _List() {
           }
         }}
         // * EXTRA ACTIONS
-        extraActions={({ row }: { row: any }) => (
+        extraActions={({ row, refetch }) => (
           <>
             <Menu.Item
               onClick={() => {
@@ -136,6 +138,70 @@ export function _List() {
               leftSection={<ScrollIcon />}
             >
               Generate CV
+            </Menu.Item>
+            <Menu.Item
+              onClick={() => {
+                modals.openConfirmModal({
+                  title: (
+                    <Group>
+                      <Text
+                        size="sm"
+                        style={{
+                          fontWeight: 600,
+                        }}
+                      >
+                        Are you sure you want to publish this applicant?
+                      </Text>
+                    </Group>
+                  ),
+                  children: (
+                    <>
+                      <Text size="xs" my="md">
+                        This will make this profile visible to all registered
+                        seekers.
+                      </Text>
+                    </>
+                  ),
+                  styles: {
+                    header: {
+                      background: "var(--mantine-color-brand-0)",
+                    },
+                  },
+                  labels: {
+                    confirm: "Publish",
+                    cancel: "Cancel",
+                  },
+                  confirmProps: {
+                    color: "brand",
+                  },
+                  onConfirm: async () => {
+                    triggerNotification.form.isLoading({
+                      title: "Removing application from publish list.",
+                      message: "Removal in progress...",
+                    });
+
+                    publishRecord({}, row.id)
+                      .then((res) => {
+                        if (!res.err) {
+                          triggerNotification.form.isSuccess({
+                            title: "Account Unpublished!",
+                            message: "Applicant has been un-published.",
+                          });
+                          refetch();
+                        }
+                      })
+                      .catch((err) => {
+                        triggerNotification.form.isError({
+                          title: "Error",
+                          message: err.message,
+                        });
+                      });
+                  },
+                });
+              }}
+              leftSection={<CheckIcon />}
+            >
+              Unpublish Applicant
             </Menu.Item>
           </>
         )}
@@ -192,17 +258,17 @@ export function _List() {
 
   return (
     <>
-        <ListHandler
-          endpoint={moduleConfig.endpoint}
-          moduleKey={moduleConfig.moduleKey}
-          enableServerPagination
-          enableServerSearch
-          getRecords={getRecords}
-        >
-          <Tabs value={tab} onChange={(e: any) => setTab(e)}>
-            <RenderTable />
-          </Tabs>
-        </ListHandler>
+      <ListHandler
+        endpoint={moduleConfig.endpoint}
+        moduleKey={moduleConfig.moduleKey}
+        enableServerPagination
+        enableServerSearch
+        getRecords={getRecords}
+      >
+        <Tabs value={tab} onChange={(e: any) => setTab(e)}>
+          <RenderTable />
+        </Tabs>
+      </ListHandler>
     </>
   );
 }

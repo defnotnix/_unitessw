@@ -1,12 +1,9 @@
 "use client";
-import _ from "moment";
 
 export const formProps: any = {
   initial: {
-    specification: [],
-    orthodontics: [],
-    work: [],
-    academics: [],
+    items: [],
+    pricelist: [],
   },
 
   // > STEPS
@@ -25,17 +22,9 @@ export const formProps: any = {
 
   // > SUBMIT
   transformDataOnSubmit: (formdata: any) => {
-    const { image, ...res } = formdata;
-
-    console.log("call", formdata);
-
-    return {
-      ...res,
-      ...(formdata.image instanceof File ? { image: formdata.image } : {}),
-      specification: JSON.stringify(formdata.specification),
-    };
+    return formdata;
   },
-  submitFormData: true,
+  submitFormData: false,
 
   // > API
 

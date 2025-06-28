@@ -1,47 +1,43 @@
 "use client";
 
+import { ListHandler } from "@vframework/core";
 import {
-  ModuleModalFormLayout,
   ModuleTableLayout,
-  triggerNotification,
+  triggerNotification
 } from "@vframework/ui";
 import { useRouter } from "next/navigation";
-import { FormHandler, ListHandler } from "@vframework/core";
 import {
   createRecord,
   deleteRecord,
-  updateRecord,
-  getRecords,
   disableRecord,
+  getRecords,
   getSingleRecord,
+  updateRecord,
 } from "../../module.api";
 
-import { columns } from "./list.columns";
 import {
   ActionIcon,
   Avatar,
   Badge,
-  Divider,
   Group,
+  Menu,
   Modal,
   Paper,
   SimpleGrid,
-  Space,
   Stack,
-  Text,
-  Menu,
+  Text
 } from "@mantine/core";
+import { columns } from "./list.columns";
 
 import { EyeIcon, WarningIcon, XIcon } from "@phosphor-icons/react";
 
-import { moduleConfig } from "../../module.config";
 import { _Form as Form } from "../../form/form";
 import { formProps } from "../../form/form.config";
+import { moduleConfig } from "../../module.config";
 
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
-import { RBACCheck } from "@/components/RBACCheck";
 import { endpoint } from "@/layouts/app";
 import { modals } from "@mantine/modals";
 

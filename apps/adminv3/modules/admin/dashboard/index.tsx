@@ -1,15 +1,10 @@
 "use client";
 
-import { StatCard } from "@/components/StatCard";
 import {
   ActionIcon,
-  Anchor,
   Avatar,
   Badge,
-  Box,
-  Breadcrumbs,
   Button,
-  ButtonGroup,
   Center,
   Container,
   Divider,
@@ -19,33 +14,58 @@ import {
   SimpleGrid,
   Space,
   Stack,
-  Table,
-  Text,
+  Text
 } from "@mantine/core";
 import {
-  ArrowUpLeftIcon,
   ArrowUpRightIcon,
   ArticleIcon,
   CheckIcon,
+  ChecksIcon,
   EyeIcon,
-  House,
-  HouseIcon,
   Icon,
   ScrollIcon,
-  UsersIcon,
+  UsersIcon
 } from "@phosphor-icons/react";
 
-import classes from "./_.module.css";
-import { useState } from "react";
-import { BarChart, DonutChart } from "@mantine/charts";
-import { jwtDecode } from "jwt-decode";
+import { endpoint } from "@/layouts/app";
+import { BarChart } from "@mantine/charts";
+import { modals } from "@mantine/modals";
 import { useQuery } from "@tanstack/react-query";
-import { apiDispatch, moduleApiCall } from "@vframework/core";
+import { moduleApiCall } from "@vframework/core";
+import { triggerNotification } from "@vframework/ui";
+import { jwtDecode } from "jwt-decode";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { getUnpublished, publishRecord } from "../applicants/module.api";
+import { getSeekerReqRecords, toggleLogStatus } from "../bookedlogs/module.api";
+import classes from "./_.module.css";
 
 export function ModuleAdminDashboard() {
+  const Router = useRouter();
+
   const tokenData: any = jwtDecode<any>(
     sessionStorage.getItem("sswtoken") || ""
   );
+
+  const queryApplicants = useQuery({
+    queryKey: ["admin", "dashboard", "applicants"],
+    queryFn: async () => {
+      const res = await getUnpublished();
+      console.log(res);
+      return res.results;
+    },
+    initialData: [],
+  });
+
+  const querySeekerRequest = useQuery({
+    queryKey: ["admin", "dashboard", "seekerRequest"],
+    queryFn: async () => {
+      const res = await getSeekerReqRecords();
+      console.log(res);
+      return res.results;
+    },
+    initialData: [],
+  });
 
   const queryDashboard = useQuery({
     queryKey: ["admin", "dashboard"],
@@ -114,6 +134,16 @@ export function ModuleAdminDashboard() {
                 <Text size="xs" fw={700}>
                   Applicants Feed
                 </Text>
+
+                <ActionIcon
+                  size="sm"
+                  variant="subtle"
+                  onClick={() => {
+                    Router.push("/admin/applicants/pending");
+                  }}
+                >
+                  <ArrowUpRightIcon />
+                </ActionIcon>
               </Group>
             </Paper>
             <Divider />
@@ -135,57 +165,129 @@ export function ModuleAdminDashboard() {
             </SimpleGrid>
           </Paper>
 
-          <Paper radius={0} bg="brand.0" p="sm">
-            <SimpleGrid cols={4} spacing="md">
-              <div>
-                <Group gap="xs">
-                  <Avatar size="sm" color="blue">
-                    AM
-                  </Avatar>
+          {queryApplicants.data?.map((item: any, index: number) => {
+            return (
+              <Paper radius={0} bg="brand.0" p="sm" withBorder key={index}>
+                <SimpleGrid cols={4} spacing="md">
                   <div>
-                    <Text size="xs" fw={700}>
-                      Applicant Name
-                    </Text>
-                    <Text size="10px" opacity={0.5} fw={700}>
-                      Age: 28 | Male
-                    </Text>
+                    <Group gap="xs">
+                      <Avatar
+                        src={endpoint + item?.image}
+                        size="sm"
+                        color="blue"
+                        name={item?.full_name}
+                      />
+                      <div>
+                        <Text size="xs" fw={700}>
+                          {item?.full_name}
+                        </Text>
+                        <Text size="10px" opacity={0.5} fw={700}>
+                          {item?.furigana}
+                        </Text>
+                      </div>
+                    </Group>
                   </div>
-                </Group>
-              </div>
-
-              <div>
-                <Group gap="xs">
                   <div>
-                    <Text size="xs" fw={700}>
-                      Hospitality Services
-                    </Text>
-
-                    <Text size="10px" opacity={0.5} fw={700}>
-                      anamol.maharjan@gmail.com
-                    </Text>
+                    <Group gap="xs">
+                      <div>
+                        <Text size="xs" fw={700}>
+                          {item?.current_address}
+                        </Text>
+                        <Text size="10px" opacity={0.5} fw={700}>
+                          {item?.jp_current_address}
+                        </Text>
+                      </div>
+                    </Group>
                   </div>
-                </Group>
-              </div>
+                  <Text size="12px">
+                    Nayabazar, Sorakhutte, Kathmandu, Bagmati, Nepal.
+                  </Text>
+                  <Group justify="space-between" wrap="nowrap">
+                    <Group gap={4}>
+                      <Badge size="xs" color="teal">
+                        Profile Complete
+                      </Badge>
+                    </Group>
 
-              <Text size="12px">
-                Nayabazar, Sorakhutte, Kathmandu, Bagmati, Nepal.
-              </Text>
+                    <ActionIcon
+                      variant="light"
+                      color="teal"
+                      onClick={() => {
+                        modals.openConfirmModal({
+                          title: (
+                            <Group>
+                              <Text
+                                size="sm"
+                                style={{
+                                  fontWeight: 600,
+                                }}
+                              >
+                                Are you sure you want to publish this applicant?
+                              </Text>
+                            </Group>
+                          ),
+                          children: (
+                            <>
+                              <Text size="xs" my="md">
+                                This will make this profile visible to all
+                                registered seekers.
+                              </Text>
+                            </>
+                          ),
+                          styles: {
+                            header: {
+                              background: "var(--mantine-color-brand-0)",
+                            },
+                          },
+                          labels: {
+                            confirm: "Publish",
+                            cancel: "Cancel",
+                          },
+                          confirmProps: {
+                            color: "brand",
+                          },
+                          onConfirm: async () => {
+                            triggerNotification.form.isLoading({
+                              title: "Publishing",
+                              message: "Publishing in progress...",
+                            });
 
-              <Group justify="space-between" wrap="nowrap">
-                <Group gap={4}>
-                  <Badge size="xs">Active</Badge>
-                  <Badge size="xs" color="teal.7">
-                    Profile Complete
-                  </Badge>
-                </Group>
-
-                <ActionIcon size="sm" variant="subtle">
-                  <ArrowUpRightIcon />
-                </ActionIcon>
-              </Group>
-            </SimpleGrid>
-          </Paper>
+                            publishRecord({}, item.id)
+                              .then((res) => {
+                                if (!res.err) {
+                                  triggerNotification.form.isSuccess({
+                                    title: "Published",
+                                    message: "Applicant has been published.",
+                                  });
+                                  queryApplicants.refetch();
+                                }
+                              })
+                              .catch((err) => {
+                                triggerNotification.form.isError({
+                                  title: "Error",
+                                  message: err.message,
+                                });
+                              });
+                          },
+                        });
+                      }}
+                    >
+                      <CheckIcon />
+                    </ActionIcon>
+                  </Group>
+                </SimpleGrid>
+              </Paper>
+            );
+          })}
         </Paper>
+
+        {queryApplicants.data?.length == 0 && (
+          <Center p="xl">
+            <Text size="xs" opacity={0.5}>
+              You don't have any new applicant requests.
+            </Text>
+          </Center>
+        )}
       </Paper>
     );
   };
@@ -301,7 +403,7 @@ export function ModuleAdminDashboard() {
               <Paper withBorder>
                 <Paper p="sm">
                   <Text size="xs" fw={700}>
-                    New Seeker Requests
+                    Recent Seeker Requests
                   </Text>
                 </Paper>
 
@@ -320,109 +422,129 @@ export function ModuleAdminDashboard() {
                 </SimpleGrid>
               </Paper>
 
-              <Paper radius={0} bg="brand.0" p="sm" withBorder>
-                <SimpleGrid cols={2} spacing="xs">
-                  <div>
-                    <Group gap="xs">
-                      <Avatar size="sm" color="blue">
-                        AM
-                      </Avatar>
+              {querySeekerRequest.data?.map((item: any, index: number) => {
+                return (
+                  <Paper radius={0} bg="brand.0" p="sm" withBorder key={index}>
+                    <SimpleGrid cols={2} spacing="xs">
                       <div>
-                        <Text size="xs" fw={700}>
-                          Applicant Name
-                        </Text>
-                        <Text size="10px" opacity={0.5} fw={700}>
-                          anamol.maharjan@gmail.com
-                        </Text>
+                        <Group gap="xs">
+                          <Avatar size="sm" name={item.applicant?.name} />
+                          <Stack gap={2}>
+                            <Badge
+                              size="xs"
+                              color={
+                                item?.intent == "Interview" ? "indigo" : "pink"
+                              }
+                            >
+                              {item?.intent == "Interview"
+                                ? "For Interview"
+                                : "Interested"}
+                            </Badge>
+                            <Text size="xs" fw={700}>
+                              {item?.applicant?.name}
+                            </Text>
+                            <Text size="10px" opacity={0.5} fw={700}>
+                              {item?.applicant?.email}
+                            </Text>
+                          </Stack>
+                        </Group>
                       </div>
-                    </Group>
-                  </div>
 
-                  <Group justify="space-between" wrap="nowrap">
-                    <div>
-                      <Text size="xs" fw={700}>
-                        NihongoTech
-                      </Text>
-                      <Text size="10px" opacity={0.5} fw={700}>
-                        13 minutes ago.
-                      </Text>
-                    </div>
+                      <Group justify="space-between" wrap="nowrap">
+                        <Stack gap={2}>
+                          <Text size="10px" opacity={0.5} fw={700}>
+                            {item?.seeker?.email}
+                          </Text>
+                          <Text size="xs" fw={700}>
+                            {item?.seeker?.name}
+                          </Text>
 
-                    <ActionIcon size="sm" variant="subtle">
-                      <ArrowUpRightIcon />
-                    </ActionIcon>
-                  </Group>
-                </SimpleGrid>
-              </Paper>
-              <Paper radius={0} p="sm" withBorder>
-                <SimpleGrid cols={2} spacing="xs">
-                  <div>
-                    <Group gap="xs">
-                      <Avatar size="sm" color="blue">
-                        AM
-                      </Avatar>
-                      <div>
-                        <Text size="xs" fw={700}>
-                          Applicant Name
-                        </Text>
-                        <Text size="10px" opacity={0.5} fw={700}>
-                          anamol.maharjan@gmail.com
-                        </Text>
-                      </div>
-                    </Group>
-                  </div>
+                          <Text size="10px" opacity={0.5} fw={700}>
+                            {String(new Date(item?.created_at)).substring(
+                              0,
+                              25
+                            )}
+                          </Text>
+                        </Stack>
 
-                  <Group justify="space-between" wrap="nowrap">
-                    <div>
-                      <Text size="xs" fw={700}>
-                        NihongoTech
-                      </Text>
-                      <Text size="10px" opacity={0.5} fw={700}>
-                        13 minutes ago.
-                      </Text>
-                    </div>
+                        <Button
+                          size="xs"
+                          p={0}
+                          px="sm"
+                          leftSection={<ChecksIcon />}
+                          onClick={() => {
+                            modals.openConfirmModal({
+                              title: (
+                                <Group>
+                                  <Text
+                                    size="sm"
+                                    style={{
+                                      fontWeight: 600,
+                                    }}
+                                  >
+                                    Are you sure you want to accept this
+                                    request?
+                                  </Text>
+                                </Group>
+                              ),
+                              children: (
+                                <>
+                                  <Text size="xs" my="md">
+                                    This will mark this request as accepted for
+                                    both you and the seeker account.
+                                  </Text>
+                                </>
+                              ),
+                              labels: {
+                                confirm: "Confirm",
+                                cancel: "Cancel",
+                              },
+                              confirmProps: {
+                                color: "brand",
+                              },
+                              onConfirm: () => {
+                                triggerNotification.form.isLoading({});
 
-                    <ActionIcon size="sm" variant="subtle">
-                      <ArrowUpRightIcon />
-                    </ActionIcon>
-                  </Group>
-                </SimpleGrid>
-              </Paper>
+                                toggleLogStatus(item?.id)
+                                  .then((res) => {
+                                    if (!res.err) {
+                                      querySeekerRequest.refetch();
+                                      triggerNotification.form.isSuccess({
+                                        message: "Request Accepted",
+                                      });
+                                    }
+                                  })
+                                  .catch((err) => {
+                                    console.log(err);
+                                    triggerNotification.form.isError({
+                                      message: "Request Rejected",
+                                    });
+                                  });
+                              },
+                              styles: {
+                                header: {
+                                  background: "var(--mantine-color-brand-0)",
+                                },
+                              },
+                              size: "sm",
+                            });
+                          }}
+                        >
+                          Accept
+                        </Button>
+                      </Group>
+                    </SimpleGrid>
+                  </Paper>
+                );
+              })}
 
-              <Paper radius={0} p="sm" bg="brand.0" withBorder>
-                <SimpleGrid cols={2} spacing="xs">
-                  <div>
-                    <Group gap="xs">
-                      <Avatar size="sm" color="blue">
-                        AM
-                      </Avatar>
-                      <div>
-                        <Text size="xs" fw={700}>
-                          Applicant Name
-                        </Text>
-                        <Text size="10px" opacity={0.5} fw={700}>
-                          anamol.maharjan@gmail.com
-                        </Text>
-                      </div>
-                    </Group>
-                  </div>
-
-                  <Group justify="space-between" wrap="nowrap">
-                    <div>
-                      <Text size="xs" fw={700}>
-                        NihongoTech
-                      </Text>
-                      <Text size="10px" opacity={0.5} fw={700}>
-                        13 minutes ago.
-                      </Text>
-                    </div>
-
-                    <ActionIcon size="sm" variant="subtle">
-                      <ArrowUpRightIcon />
-                    </ActionIcon>
-                  </Group>
-                </SimpleGrid>
-              </Paper>
+              {querySeekerRequest.data?.length == 0 && (
+                <Center p="xl">
+                  <Text size="xs" opacity={0.5}>
+                    You don't have any pending seeker requests
+                  </Text>
+                </Center>
+              )}
             </Paper>
           </Grid.Col>
         </Grid>

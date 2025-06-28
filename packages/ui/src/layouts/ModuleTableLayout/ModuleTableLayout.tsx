@@ -178,6 +178,7 @@ export function ModuleTableLayout({
   disableAdd = false,
   disableDelete = false,
   disableEdit = false,
+  disableActions = false,
   customRender,
   withBackButton,
   customCreateText,
@@ -723,7 +724,7 @@ export function ModuleTableLayout({
                     render: (row, index) => <>{index + 1}</>,
                   },
                   ...columns,
-                  ...tableActions,
+                  ...(disableActions ? [] : tableActions),
                 ]}
                 //Row Styling
                 rowColor={rowColor}

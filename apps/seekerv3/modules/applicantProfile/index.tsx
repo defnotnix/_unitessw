@@ -252,13 +252,13 @@ export function ModuleApplicantProfile() {
                   </Button>
                 </ButtonGroup>
 
-                <Divider mx="md" orientation="vertical" color="brand.4" />
-
-                <Text size="xs">Print :</Text>
-
                 <ButtonGroup>
-                  <Button size="xs" onClick={reactToPrintFn}>
-                    Current CV
+                  <Button
+                    size="xs"
+                    onClick={reactToPrintFn}
+                    leftSection={<PrinterIcon />}
+                  >
+                    Print Current CV
                   </Button>
                 </ButtonGroup>
               </Group>
@@ -276,7 +276,12 @@ export function ModuleApplicantProfile() {
           </>
         )}
 
-        <Paper withBorder>
+        <Paper
+          withBorder
+          style={{
+            wordWrap: "break-word",
+          }}
+        >
           <div ref={contentRef}>
             {cvType == "1" && (
               <CV1

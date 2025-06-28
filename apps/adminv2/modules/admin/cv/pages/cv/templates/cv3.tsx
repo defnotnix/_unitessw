@@ -227,9 +227,8 @@ export function CV3({
                 <Table.Tr key={index}>
                   <Table.Td>{index + 1}</Table.Td>
                   <Table.Td>
-                    {item.start_date && item.end_date
-                      ? `${item.start_date} - ${item.end_date}`
-                      : "-"}
+                                      {`${item.start_month}, ${item.start_year} - ${item.end_month}, ${item.end_year}`}
+
                   </Table.Td>
                   <Table.Td>
                     <b>
@@ -282,9 +281,8 @@ export function CV3({
                 <Table.Tr key={index}>
                   <Table.Td>{index + 1}</Table.Td>
                   <Table.Td>
-                    {item.start_date && item.end_date
-                      ? `${item.start_date} - ${item.end_date}`
-                      : "-"}
+                                      {`${item.start_month}, ${item.start_year} - ${item.end_month}, ${item.end_year}`}
+
                   </Table.Td>
                   <Table.Td>
                     <b>{language === "en" ? item.company : item.jp_company}</b>

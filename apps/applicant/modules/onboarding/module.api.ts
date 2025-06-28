@@ -142,6 +142,26 @@ export const apiWork = {
   },
 };
 
+export const apiJapanVisit = {
+  delete: async (id: any) => {
+    return await moduleApiCall.deleteRecord("/applicant/japan/visit/", id);
+  },
+  get: async (id: any) => {
+    return await apiDispatch.get({
+      endpoint: `/applicant/japan/visit/${id}/`,
+    });
+  },
+  create: async (body: any) => {
+    return await apiDispatch.post({
+      endpoint: "/applicant/japan/visit/",
+      body,
+    });
+  },
+  update: async (body: any, id: any) => {
+    return await moduleApiCall.editRecord("/applicant/japan/visit/", body, id);
+  },
+};
+
 export const apiLicense = {
   delete: async (id: any) => {
     return await moduleApiCall.deleteRecord(

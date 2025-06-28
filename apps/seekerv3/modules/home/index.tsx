@@ -97,6 +97,9 @@ export function ModuleSeekerHome() {
             radius="xl"
             size="xl"
             rightSection={<ArrowRightIcon />}
+            onClick={() => {
+              Router.push("/applicants");
+            }}
           >
             {language === "en"
               ? "Browse all employees manually"

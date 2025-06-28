@@ -20,7 +20,7 @@ import { LanguageContext, LanguageProvider } from "./app.context";
 
 //oauth
 
-export const endpoint = "http://10.0.0.8:8000";
+export const endpoint = "http://10.0.0.9:8000";
 
 export function LayoutApp({ children }: PropsWithChildren) {
   return (

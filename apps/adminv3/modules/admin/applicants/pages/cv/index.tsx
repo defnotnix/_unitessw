@@ -289,7 +289,9 @@ export function _CV() {
           </>
         )}
 
-        <Paper withBorder>
+        <Paper withBorder style={{
+          wordWrap: "break-word",
+        }}>
           <div ref={contentRef}>
             {cvType == "1" && (
               <CV1

@@ -40,6 +40,8 @@ import { apiPersonalInformation } from "@/modules/applicantProfile/module.api";
 import { moduleApiCall } from "@vframework/core";
 import { triggerNotification } from "@vframework/ui";
 import { jwtDecode } from "jwt-decode";
+import { modals } from "@mantine/modals";
+import { apiCancelInterview, apiUnnotify, markInterested } from "./module.api";
 
 // --------------------
 // Type
@@ -83,9 +85,15 @@ const getLangValue = (primary: string, alt?: string, lang?: string) =>
 export function UserCard({
   applicant,
   onSuccess,
+  onSuccessInterest,
+  onSuccessBooking,
+  onSuccessWishlist,
 }: {
   applicant: Applicant;
-  onSuccess: any;
+  onSuccess?: any;
+  onSuccessInterest?: any;
+  onSuccessBooking?: any;
+  onSuccessWishlist?: any;
 }) {
   const tokenData: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
 
@@ -113,6 +121,8 @@ export function UserCard({
     mutationFn: async () => {
       const res: any = await apiPersonalInformation.get(applicant.id);
 
+      console.log(res);
+
       if (!res.err) {
         setInfo({
           ...res?.data,
@@ -126,6 +136,7 @@ export function UserCard({
           work_experience: res?.data?.a_work_experience,
           licenses: res?.data?.a_license_qualification,
           mainId: res?.data?.id,
+          pastvisits: res?.data?.a_japan_visit,
         });
         return {};
       } else {
@@ -326,6 +337,9 @@ export function UserCard({
                 <Group gap="md" wrap="nowrap" mb="sm">
                   <Image h={120} w={100} src={applicant.image} />
                   <div>
+                    <Text size="1.xs" mb={4} fw={800}>
+                      {applicant?.code}
+                    </Text>
                     <Text size="1.3rem" mb={4} fw={800}>
                       {getLangValue(
                         applicant.full_name,
@@ -334,11 +348,17 @@ export function UserCard({
                       )}
                     </Text>
                     <Text size="xs" opacity={0.8} fw={600}>
-                      {`${age} ${applicant.date_of_birth}`}
+                      {`${dayjs().diff(dayjs(applicant.date_of_birth), "year")} ${lang === "en" ? "years old" : "歳"}`}
                       <br />
-                      {`  ${lang == "en" ? applicant.gender : applicant.gender == "Male" ? "男" : "女性"} / ${
-                        applicant.is_married ? t.married : t.unmarried
-                      }`}
+                      {`${
+                        lang === "en"
+                          ? applicant.gender
+                          : applicant.gender === "Male"
+                            ? "男"
+                            : applicant.gender === "Female"
+                              ? "女性"
+                              : "その他"
+                      } / ${applicant.is_married ? t.married : t.unmarried}`}
                     </Text>
                   </div>
                 </Group>
@@ -417,18 +437,266 @@ export function UserCard({
               <Text size="2rem" fw={800} c="white">
                 {lang === "en" ? info.full_name : info.furigana}
               </Text>
+              <Text size="md" fw={600} c="white" opacity={0.5} mt={-8}>
+                {lang === "en" ? "Registration Code : " : "候補者コード : "}
+                {info.code}
+              </Text>
 
               <Group gap="2px">
-                <Button size="xs" leftSection={<BellIcon />}>
-                  Notify
+                <Button
+                  variant={!info?.interest ? "filled" : "white"}
+                  size="xs"
+                  leftSection={<BellIcon />}
+                  onClick={() => {
+                    const isNotified = info?.interest;
+                    const titleText = isNotified
+                      ? lang === "en"
+                        ? "Remove Notification?"
+                        : "通知を削除しますか？"
+                      : lang === "en"
+                        ? "Notify Candidate?"
+                        : "候補者に通知しますか？";
+
+                    const bodyText = isNotified
+                      ? lang === "en"
+                        ? "This candidate will be removed from your notification list."
+                        : "この候補者は通知リストから削除されます。"
+                      : lang === "en"
+                        ? "The Unite SSW team will be notified of your interest in this candidate."
+                        : "Unite SSW チームにあなたの関心が通知されます。";
+
+                    const confirmText = isNotified
+                      ? lang === "en"
+                        ? "Remove"
+                        : "削除"
+                      : lang === "en"
+                        ? "Notify"
+                        : "通知";
+
+                    modals.openConfirmModal({
+                      title: (
+                        <Group wrap="nowrap">
+                          <ActionIcon size="sm" color="brand" variant="light">
+                            <BellIcon />
+                          </ActionIcon>
+                          <Text size="sm" fw={600}>
+                            {titleText}
+                          </Text>
+                        </Group>
+                      ),
+                      children: (
+                        <Text size="xs" my="md">
+                          {bodyText}
+                          <br />
+                          <br />
+                          <b>
+                            {lang === "en"
+                              ? "Proceed with this action?"
+                              : "この操作を実行しますか？"}
+                          </b>
+                        </Text>
+                      ),
+                      labels: {
+                        confirm: confirmText,
+                        cancel: lang === "en" ? "Cancel" : "キャンセル",
+                      },
+                      confirmProps: { color: "brand", size: "xs" },
+                      cancelProps: { size: "xs" },
+                      size: "sm",
+                      styles: {
+                        header: {
+                          background: "var(--mantine-color-brand-1)",
+                        },
+                      },
+                      onConfirm: async () => {
+                        triggerNotification.form.isLoading({});
+
+                        if (!isNotified) {
+                          // Notify
+                          try {
+                            const res = await markInterested({
+                              intent: "Interested",
+                              seeker: tokenData?.user_id,
+                              applicant: info?.mainId,
+                            });
+                            if (!res.error) {
+                              setInfo({ ...info, interest: true });
+                              triggerNotification.form.isSuccess({
+                                message:
+                                  lang === "en"
+                                    ? "Candidate notified!"
+                                    : "候補者に通知しました！",
+                              });
+                            } else {
+                              throw new Error();
+                            }
+                          } catch {
+                            triggerNotification.form.isError({
+                              message:
+                                lang === "en"
+                                  ? "Notification failed!"
+                                  : "通知に失敗しました！",
+                            });
+                          }
+                        } else {
+                          // Remove notification
+                          try {
+                            const res = await apiUnnotify(info?.mainId);
+                            if (!res.error) {
+                              if (onSuccessInterest) {
+                                onSuccessInterest();
+                              }
+                              setInfo({ ...info, interest: false });
+                              triggerNotification.form.isSuccess({
+                                message:
+                                  lang === "en"
+                                    ? "Candidate removed from your notify list!"
+                                    : "候補者は通知リストから削除されました！",
+                              });
+                            } else {
+                              throw new Error();
+                            }
+                          } catch {
+                            triggerNotification.form.isError({
+                              message:
+                                lang === "en"
+                                  ? "Already Removed"
+                                  : "すでに削除されています",
+                            });
+                          }
+                        }
+                      },
+                    });
+                  }}
+                >
+                  {!info?.interest
+                    ? lang === "en"
+                      ? "Notify"
+                      : "候補者に通知する"
+                    : lang === "en"
+                      ? "Remove Notify"
+                      : "通知を削除する"}
                 </Button>
-                <Button size="xs" leftSection={<CameraIcon />}>
-                  Book for Interview
+
+                <Button
+                  size="xs"
+                  leftSection={<CameraIcon />}
+                  variant={!info?.interview ? "filled" : "white"}
+                  onClick={() => {
+                    const isBooked = info?.interview;
+
+                    const titleText = isBooked
+                      ? lang === "en"
+                        ? "Cancel Interview?"
+                        : "面接をキャンセルしますか？"
+                      : lang === "en"
+                        ? "Book for Interview?"
+                        : "面接を予約しますか？";
+
+                    const bodyText = isBooked
+                      ? lang === "en"
+                        ? "This will cancel the interview request for this candidate."
+                        : "この候補者の面接リクエストをキャンセルします。"
+                      : lang === "en"
+                        ? "The Unite SSW team will be notified to arrange an interview with this candidate."
+                        : "Unite SSW チームに面接の手配を依頼します。";
+
+                    const confirmText = isBooked
+                      ? lang === "en"
+                        ? "Cancel"
+                        : "キャンセル"
+                      : lang === "en"
+                        ? "Book"
+                        : "予約";
+
+                    modals.openConfirmModal({
+                      title: (
+                        <Group wrap="nowrap">
+                          <ActionIcon size="sm" color="brand" variant="light">
+                            <CameraIcon />
+                          </ActionIcon>
+                          <Text size="sm" fw={600}>
+                            {titleText}
+                          </Text>
+                        </Group>
+                      ),
+                      children: (
+                        <Text size="xs" my="md">
+                          {bodyText}
+                          <br />
+                          <br />
+                          <b>
+                            {lang === "en"
+                              ? "Proceed with this action?"
+                              : "この操作を実行しますか？"}
+                          </b>
+                        </Text>
+                      ),
+                      labels: {
+                        confirm: confirmText,
+                        cancel: lang === "en" ? "Cancel" : "キャンセル",
+                      },
+                      confirmProps: { color: "brand", size: "xs" },
+                      cancelProps: { size: "xs" },
+                      size: "sm",
+                      styles: {
+                        header: {
+                          background: "var(--mantine-color-brand-1)",
+                        },
+                      },
+                      onConfirm: async () => {
+                        triggerNotification.form.isLoading({});
+
+                        try {
+                          const res = isBooked
+                            ? await apiCancelInterview(info?.mainId)
+                            : await markInterested({
+                                intent: "Interview",
+                                seeker: tokenData?.user_id,
+                                applicant: info?.mainId,
+                              });
+
+                          if (!res?.error) {
+                            setInfo({ ...info, interview: !isBooked });
+                            if (onSuccessBooking) {
+                              onSuccessBooking();
+                            }
+                            triggerNotification.form.isSuccess({
+                              message: isBooked
+                                ? lang === "en"
+                                  ? "Interview cancelled."
+                                  : "面接はキャンセルされました。"
+                                : lang === "en"
+                                  ? "Interview booked!"
+                                  : "面接を予約しました！",
+                            });
+                          } else {
+                            throw new Error();
+                          }
+                        } catch {
+                          triggerNotification.form.isError({
+                            message:
+                              lang === "en"
+                                ? "Action failed."
+                                : "操作に失敗しました。",
+                          });
+                        }
+                      },
+                    });
+                  }}
+                >
+                  {lang === "en"
+                    ? info?.interview
+                      ? "Cancel Interview"
+                      : "Book for Interview"
+                    : info?.interview
+                      ? "面接をキャンセルする"
+                      : "面接を予約する"}
                 </Button>
 
                 <Button
                   leftSection={
-                    Pathname == "/applicants" ? (
+                    !info?.wishlist ? (
                       <HeartIcon weight="duotone" size={12} />
                     ) : (
                       <XIcon weight="duotone" size={12} />
@@ -437,7 +705,7 @@ export function UserCard({
                   size="xs"
                   color="pink"
                   onClick={() => {
-                    if (Pathname == "/applicants") {
+                    if (!info?.wishlist) {
                       triggerNotification.form.isLoading({
                         message: "Adding to Wishlist",
                       });
@@ -448,6 +716,13 @@ export function UserCard({
                           applicant: info?.mainId,
                         })
                         .then((res) => {
+                          setInfo({
+                            ...info,
+                            wishlist: true,
+                          });
+                          if (onSuccessWishlist) {
+                            onSuccessWishlist();
+                          }
                           triggerNotification.form.isSuccess({
                             message: "Added to Wishlist",
                           });
@@ -460,19 +735,22 @@ export function UserCard({
                         });
                     } else {
                       triggerNotification.form.isLoading({
-                        message: "Revmoing from Wishlist",
+                        message: "Removing from Wishlist",
                       });
 
                       moduleApiCall
-                        .deleteRecord(
-                          "/logs/seeker/wishlist/",
-                          applicant?.mainId
-                        )
+                        .deleteRecord("/logs/discard/wishlist/", info?.mainId)
                         .then((res) => {
+                          setInfo({
+                            ...info,
+                            wishlist: false,
+                          });
                           triggerNotification.form.isSuccess({
                             message: "Removed from Wishlist",
                           });
-                          onSuccess();
+                          if (onSuccessWishlist) {
+                            onSuccessWishlist();
+                          }
                         })
                         .catch((err) => {
                           triggerNotification.form.isInfo({
@@ -483,7 +761,13 @@ export function UserCard({
                     }
                   }}
                 >
-                  {Pathname == "/applicants" ? "Bookmark" : "Remove from Saved"}
+                  {!info?.wishlist
+                    ? lang == "en"
+                      ? "Bookmark"
+                      : "ブックマーク"
+                    : lang == "en"
+                      ? "Remove from Saved"
+                      : "保存から削除"}
                 </Button>
               </Group>
             </Stack>
@@ -673,13 +957,26 @@ export function UserCard({
                         ? "No"
                         : "いいえ"}
                   </Text>
+
+                  <Text size="xs" fw={800}>
+                    {lang === "en" ? "Has Tatoo" : "タトゥー"}
+                  </Text>
+                  <Text size="xs">
+                    {info.has_tatoo
+                      ? lang === "en"
+                        ? "Yes"
+                        : "はい"
+                      : lang === "en"
+                        ? "No"
+                        : "いいえ"}
+                  </Text>
                 </SimpleGrid>
               </Paper>
             </Stack>
           </SimpleGrid>
 
           <Text size="xl" fw={800} px="lg">
-            Academics
+            {lang === "en" ? "Academics" : "学歴"}
           </Text>
 
           <Paper withBorder>
@@ -693,7 +990,7 @@ export function UserCard({
               <Table.Thead>
                 <Table.Tr>
                   <Table.Th w={50}>#</Table.Th>
-                  <Table.Th w={120}>
+                  <Table.Th w={200}>
                     {language === "en" ? "Period" : "期間"}
                   </Table.Th>
                   <Table.Th w={200}>
@@ -709,9 +1006,7 @@ export function UserCard({
                   <Table.Tr key={index}>
                     <Table.Td>{index + 1}</Table.Td>
                     <Table.Td>
-                      {item.start_date && item.end_date
-                        ? `${item.start_date} - ${item.end_date}`
-                        : "-"}
+                      {`${item.start_month}, ${item.start_year} - ${item.end_month}, ${item.end_year}`}
                     </Table.Td>
                     <Table.Td>
                       <b>
@@ -732,7 +1027,7 @@ export function UserCard({
           </Paper>
 
           <Text size="xl" fw={800} px="lg">
-            Work History
+            {lang === "en" ? "Work History" : "勤務履歴"}
           </Text>
 
           <Paper withBorder>
@@ -746,7 +1041,7 @@ export function UserCard({
               <Table.Thead>
                 <Table.Tr>
                   <Table.Th w={50}>#</Table.Th>
-                  <Table.Th w={120}>
+                  <Table.Th w={200}>
                     {language === "en" ? "Period" : "期間"}
                   </Table.Th>
                   <Table.Th w={200}>
@@ -763,9 +1058,7 @@ export function UserCard({
                   <Table.Tr key={index}>
                     <Table.Td>{index + 1}</Table.Td>
                     <Table.Td>
-                      {item.start_date && item.end_date
-                        ? `${item.start_date} - ${item.end_date}`
-                        : "-"}
+                      {`${item.start_month}, ${item.start_year} - ${item.end_month}, ${item.end_year}`}
                     </Table.Td>
                     <Table.Td>
                       <b>
@@ -784,7 +1077,7 @@ export function UserCard({
           </Paper>
 
           <Text size="xl" fw={800} px="lg">
-            License Qualification
+            {lang === "en" ? "License Qualification" : "証明書"}
           </Text>
 
           <Paper withBorder>
@@ -816,7 +1109,57 @@ export function UserCard({
                     <Table.Td>
                       <b>{language === "en" ? item.name : item.jp_name}</b>
                     </Table.Td>
-                    <Table.Td>{item?.status ? "Active" : "Expired"}</Table.Td>
+                    <Table.Td>
+                      {item?.status
+                        ? lang == "en"
+                          ? "Active"
+                          : "有効"
+                        : lang == "en"
+                          ? "Expired"
+                          : "失効"}
+                    </Table.Td>
+                  </Table.Tr>
+                ))}
+              </Table.Tbody>
+            </Table>
+          </Paper>
+
+          <Text size="xl" fw={800} px="lg">
+            {lang === "en" ? "Prevous Japan Visits" : "前回到日本の訪問履歴"}
+          </Text>
+
+          <Paper withBorder>
+            <Table
+              striped
+              withTableBorder
+              style={{
+                fontSize: "var(--mantine-font-size-xs)",
+              }}
+            >
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th w={50}>#</Table.Th>
+                  <Table.Th w={120}>
+                    {language === "en" ? "Date" : "日付"}
+                  </Table.Th>
+                  <Table.Th w={200}>
+                    {language === "en" ? "Purpose" : "目的"}
+                  </Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+
+              <Table.Tbody>
+                {info?.pastvisits?.map((item: any, index: number) => (
+                  <Table.Tr key={index}>
+                    <Table.Td>{index + 1}</Table.Td>
+                    <Table.Td>
+                      {`${item.from_month}, ${item.start_year} - ${item.to_month}, ${item.end_year}`}
+                    </Table.Td>
+                    <Table.Td>
+                      <b>
+                        {language === "en" ? item.purpose : item.jp_purpose}
+                      </b>
+                    </Table.Td>
                   </Table.Tr>
                 ))}
               </Table.Tbody>

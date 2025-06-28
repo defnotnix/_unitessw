@@ -1,59 +1,40 @@
 "use client";
 
+import { ListHandler } from "@vframework/core";
 import {
-  ModuleModalFormLayout,
   ModuleTableLayout,
-  triggerNotification,
+  triggerNotification
 } from "@vframework/ui";
 import { useRouter } from "next/navigation";
-import { FormHandler, ListHandler } from "@vframework/core";
 import {
   createRecord,
   deleteRecord,
-  updateRecord,
-  getRecords,
   disableRecord,
+  getRecords,
+  updateRecord,
 } from "../../module.api";
 
-import { columns } from "./list.columns";
 import {
   ActionIcon,
-  Badge,
-  Box,
   Group,
-  LoadingOverlay,
   Menu,
-  Modal,
-  Paper,
-  SimpleGrid,
   Space,
-  Stack,
-  Text,
+  Text
 } from "@mantine/core";
 import {
-  Calendar,
-  Chair,
-  Check,
-  Cricket,
-  DotsThree,
-  Invoice,
-  Pen,
-  Trash,
-  UserPlus,
-  Users,
   WarningIcon,
-  XIcon,
+  XIcon
 } from "@phosphor-icons/react";
 import { moduleConfig } from "../../module.config";
+import { columns } from "./list.columns";
 
-import { _Form as Form } from "../../form/form";
-import { formProps } from "../../form/form.config";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
+import { _Form as Form } from "../../form/form";
+import { formProps } from "../../form/form.config";
 
-import { RBACCheck } from "@/components/RBACCheck";
-import { modals } from "@mantine/modals";
 import { endpoint } from "@/layouts/app";
+import { modals } from "@mantine/modals";
 
 export function _List() {
   const router = useRouter();

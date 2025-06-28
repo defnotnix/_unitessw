@@ -16,7 +16,7 @@ export const deleteRecord = (id: any) =>
 export const apiPersonalInformation = {
   get: async (id: any) => {
     return await apiDispatch.get({
-      endpoint: `/applicant/info/${id}/`,
+      endpoint: `/applicant/seeker/info/${id}/`,
     });
   },
 

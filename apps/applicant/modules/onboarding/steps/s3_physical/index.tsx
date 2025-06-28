@@ -150,7 +150,17 @@ export function StepPhysical() {
           />
         </SimpleGrid>
 
-        <SimpleGrid cols={2} spacing="xs" my="md">
+        <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="xs" my="md">
+          <Switch
+            label="Has Tatoo"
+            description="Indicate if you have any tatoo"
+            {...form.getInputProps("has_tatoo", { type: "checkbox" })}
+            styles={{
+              label: {
+                fontSize: "var(--mantine-font-size-xs)",
+              },
+            }}
+          />
           <Switch
             label="Has Food Allergies"
             description="Indicate if you have food allergies"

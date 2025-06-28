@@ -10,6 +10,7 @@ import {
   Center,
   Divider,
   Group,
+  NumberInput,
   Paper,
   Select,
   SimpleGrid,
@@ -30,7 +31,7 @@ import {
 } from "@phosphor-icons/react";
 import { DateInput, DatePickerInput } from "@mantine/dates";
 import { modals } from "@mantine/modals";
-import { apiLicense } from "../../module.api";
+import { apiJapanVisit, apiLicense } from "../../module.api";
 //mantine
 
 //icons
@@ -162,7 +163,7 @@ export function StepVisit() {
                       color: "red",
                     },
                     onConfirm: () => {
-                      apiLicense.delete(_.id);
+                      apiJapanVisit.delete(_.id);
                       form.removeListItem("visithistory", index);
                     },
                   });
@@ -183,10 +184,66 @@ export function StepVisit() {
               <TrashIcon />
             </ActionIcon>
             <SimpleGrid cols={2} spacing="xs">
-              <DateInput
-                placeholder="e.g. Driving License"
-                {...form.getInputProps(`visithistory.${index}.date`)}
-              />
+              <div>
+                <SimpleGrid cols={2} spacing={0}>
+                  <NumberInput
+                    hideControls
+                    placeholder="Enter Start Year"
+                    {...form.getInputProps(`visithistory.${index}.start_year`)}
+                  />
+                  <Select
+                    disabled={!form.getValues().visithistory[index].start_year}
+                    data={[
+                      "January",
+                      "February",
+                      "March",
+                      "April",
+                      "May",
+                      "June",
+                      "July",
+                      "August",
+                      "September",
+                      "October",
+                      "November",
+                      "December",
+                    ]}
+                    placeholder="Select Month"
+                    {...form.getInputProps(`visithistory.${index}.from_month`)}
+                  />
+                </SimpleGrid>
+
+                <SimpleGrid cols={2} spacing={0}>
+                  <NumberInput
+                    min={form.getValues()?.visithistory[index]?.start_year}
+                    disabled={
+                      !form.getValues().visithistory[index].start_year ||
+                      !form.getValues().visithistory[index].from_month
+                    }
+                    hideControls
+                    placeholder="Enter End Year"
+                    {...form.getInputProps(`visithistory.${index}.end_year`)}
+                  />
+                  <Select
+                    disabled={!form.getValues().visithistory[index].end_year}
+                    data={[
+                      "January",
+                      "February",
+                      "March",
+                      "April",
+                      "May",
+                      "June",
+                      "July",
+                      "August",
+                      "September",
+                      "October",
+                      "November",
+                      "December",
+                    ]}
+                    placeholder="Select Month"
+                    {...form.getInputProps(`visithistory.${index}.to_month`)}
+                  />
+                </SimpleGrid>
+              </div>
               <Stack gap={0}>
                 <TextInput
                   placeholder="e.g. For a vacation"

@@ -304,7 +304,7 @@ export function LayoutAdmin({ children }: PropsWithChildren) {
 
             <Grid.Col span={{ base: 12, lg: 4 }} visibleFrom="lg">
               <Group justify="flex-end" gap="xs">
-                <Menu shadow="xl">
+                {/* <Menu shadow="xl">
                   <Menu.Target>
                     <ActionIcon variant="subtle" color="gray">
                       <BellIcon />
@@ -549,7 +549,7 @@ export function LayoutAdmin({ children }: PropsWithChildren) {
                       </Paper>
                     </Stack>
                   </Menu.Dropdown>
-                </Menu>
+                </Menu> */}
 
                 <Menu>
                   <Menu.Target>

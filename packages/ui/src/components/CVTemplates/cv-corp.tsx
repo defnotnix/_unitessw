@@ -15,6 +15,8 @@ import React, { useEffect } from "react";
 
 import classes from "./cv-cord.module.css";
 import { Watermark } from "./watermar";
+//@ts-ignore
+import imgSSW from "./brand/sswunite_light.png";
 
 export function CVCorp({
   color = "brand",
@@ -60,12 +62,16 @@ export function CVCorp({
                 height: ".5in",
               }}
             >
-              <b>M{data?.id}</b>
+              <b>{data?.code}</b>
             </td>
             <td>
               <img
-                src="https://manabiyanepal.com.np/_next/static/media/manabiya_logo.a8d02286.png"
-                style={{ height: ".5in", width: ".5in" }}
+                src={
+                  logo == "mb"
+                    ? "https://manabiyanepal.com.np/_next/static/media/manabiya_logo.a8d02286.png"
+                    : imgSSW.src
+                }
+                style={{ height: ".5in", width: ".5in", objectFit: "contain" }}
               />
             </td>
             <td colSpan={5}>
@@ -442,8 +448,8 @@ export function CVCorp({
 
           {data?.education.map((ed: any, index: number) => (
             <tr key={index}>
-              <td>{ed?.start_date}</td>
-              <td>{ed?.end_date}</td>
+              <td>{`${ed.start_month}, ${ed.start_year}`}</td>
+              <td>{`${ed.end_month}, ${ed.end_year}`}</td>
               <td
                 colSpan={7}
                 style={{
@@ -495,8 +501,8 @@ export function CVCorp({
 
           {data?.work_experience.map((work: any, index: number) => (
             <tr key={index}>
-              <td>{work?.start_date}</td>
-              <td>{work?.end_date}</td>
+              <td>{`${work.start_month}, ${work.start_year}`}</td>
+              <td>{`${work.end_month}, ${work.end_year}`}</td>
 
               <td
                 colSpan={6}

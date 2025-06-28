@@ -113,25 +113,86 @@ export function ModuleSeekerApplicants() {
     queryData.refetch();
   }, [Params, current]);
 
+  const allTranslations = {
+    en: {
+      filters: "Search Filters",
+      candidateCode: "Candidate Code",
+      candidateCodeDesc: "Only searches for exact code",
+      jobCategory: "Job Category",
+      jobCategoryPlaceholder: "Select Job Category",
+      gender: "Gender",
+      genderPlaceholder: "Gender",
+      ageRange: "Age Range (Min - Max)",
+      fullName: "Full Name (English)",
+      furigana: "Full Name (Furigana)",
+      min: "Min",
+      max: "Max",
+      weightRange: "Weight (Min - Max)",
+      heightRange: "Height (Min - Max)",
+      kg: "kg",
+      cm: "cm",
+      bloodGroup: "Blood Group",
+      bloodGroupPlaceholder: "Select",
+      maritalStatus: "Marital Status",
+      applyFilter: "Apply Filter",
+      clearFilter: "Clear Filter",
+      candidateFinder: "Candidate Finder",
+    },
+    jp: {
+      filters: "フィルターパラメーター",
+      candidateCode: "候補者コード",
+      candidateCodeDesc: "正確なコードでのみ検索されます",
+      jobCategory: "職種カテゴリ",
+      jobCategoryPlaceholder: "職種を選択",
+      gender: "性別",
+      genderPlaceholder: "性別を選択",
+      ageRange: "年齢範囲（最小 - 最大）",
+      fullName: "氏名（英語）",
+      furigana: "氏名（フリガナ）",
+      min: "最小",
+      max: "最大",
+      weightRange: "体重（最小 - 最大）",
+      heightRange: "身長（最小 - 最大）",
+      kg: "kg",
+      cm: "cm",
+      bloodGroup: "血液型",
+      bloodGroupPlaceholder: "選択",
+      maritalStatus: "配偶者の有無",
+      applyFilter: "フィルターを適用",
+      clearFilter: "フィルターをクリア",
+      candidateFinder: "候補者検索",
+    },
+  };
+
+  const translations = allTranslations[language as "en" | "jp"];
+
   function RenderFilter() {
     return (
       <>
         <Stack>
           <Text size="xs" opacity={0.5} fw={700}>
-            {language === "en" ? "Search Filters" : "フィルターパラメーター"}
+            {translations.filters}
           </Text>
+
           <Stack gap="xs">
+            <TextInput
+              label={translations.candidateCode}
+              description={translations.candidateCodeDesc}
+              size="sm"
+              placeholder={translations.candidateCode}
+              radius="md"
+              {...form.getInputProps("code")}
+            />
+
             <Select
               clearable
-              data={queryJobCategory.data.map((item: any) => {
-                return {
-                  label: `${item.name} (${item.jp_name})`,
-                  value: String(item.id),
-                };
-              })}
-              label="Job Category"
+              data={queryJobCategory.data.map((item: any) => ({
+                label: `${item.name} (${item.jp_name})`,
+                value: String(item.id),
+              }))}
+              label={translations.jobCategory}
               size="sm"
-              placeholder="Select Job Category"
+              placeholder={translations.jobCategoryPlaceholder}
               radius="md"
               {...form.getInputProps("category")}
             />
@@ -144,21 +205,21 @@ export function ModuleSeekerApplicants() {
                   { value: "Female", label: "Female" },
                   { value: "Other", label: "Other" },
                 ]}
-                label="Gender"
+                label={translations.gender}
                 size="sm"
-                placeholder="Gender"
+                placeholder={translations.genderPlaceholder}
                 radius="md"
                 {...form.getInputProps("gender")}
               />
               <div>
                 <Text size="xs" my={4}>
-                  Age Range (Min - Max)
+                  {translations.ageRange}
                 </Text>
                 <SimpleGrid cols={2} spacing={2}>
                   <NumberInput
                     hideControls
                     size="sm"
-                    placeholder="Min"
+                    placeholder={translations.min}
                     radius="md"
                     {...form.getInputProps("min_age")}
                   />
@@ -170,7 +231,7 @@ export function ModuleSeekerApplicants() {
                     }
                     hideControls
                     size="sm"
-                    placeholder="Max"
+                    placeholder={translations.max}
                     radius="md"
                     {...form.getInputProps("max_age")}
                   />
@@ -178,16 +239,17 @@ export function ModuleSeekerApplicants() {
               </div>
 
               <TextInput
-                label="Full Name (English)"
+                label={translations.fullName}
                 size="sm"
-                placeholder="Select Job Category"
+                placeholder={translations.fullName}
                 radius="md"
                 {...form.getInputProps("full_name")}
               />
+
               <TextInput
-                label="Full Name (Furigana)"
+                label={translations.furigana}
                 size="sm"
-                placeholder="Select Job Category"
+                placeholder={translations.furigana}
                 radius="md"
                 {...form.getInputProps("furigana")}
               />
@@ -195,17 +257,17 @@ export function ModuleSeekerApplicants() {
 
             <div>
               <Text size="xs" my={4}>
-                Weight (Min - Max)
+                {translations.weightRange}
               </Text>
               <SimpleGrid cols={2} spacing={2}>
                 <NumberInput
                   hideControls
                   size="sm"
-                  placeholder="Min"
+                  placeholder={translations.min}
                   radius="md"
                   {...form.getInputProps("min_weight")}
                   rightSectionWidth={50}
-                  rightSection={<Text size="xs">kg</Text>}
+                  rightSection={<Text size="xs">{translations.kg}</Text>}
                 />
                 <NumberInput
                   min={
@@ -215,27 +277,28 @@ export function ModuleSeekerApplicants() {
                   }
                   hideControls
                   size="sm"
-                  placeholder="Max"
+                  placeholder={translations.max}
                   radius="md"
                   {...form.getInputProps("max_weight")}
                   rightSectionWidth={50}
-                  rightSection={<Text size="xs">kg</Text>}
+                  rightSection={<Text size="xs">{translations.kg}</Text>}
                 />
               </SimpleGrid>
             </div>
+
             <div>
               <Text size="xs" my={4}>
-                Height (Min - Max)
+                {translations.heightRange}
               </Text>
               <SimpleGrid cols={2} spacing={2}>
                 <NumberInput
                   hideControls
                   size="sm"
-                  placeholder="Min"
+                  placeholder={translations.min}
                   radius="md"
                   {...form.getInputProps("min_height")}
                   rightSectionWidth={50}
-                  rightSection={<Text size="xs">cm</Text>}
+                  rightSection={<Text size="xs">{translations.cm}</Text>}
                 />
                 <NumberInput
                   min={
@@ -245,14 +308,15 @@ export function ModuleSeekerApplicants() {
                   }
                   hideControls
                   size="sm"
-                  placeholder="Max"
+                  placeholder={translations.max}
                   radius="md"
                   {...form.getInputProps("max_height")}
                   rightSectionWidth={50}
-                  rightSection={<Text size="xs">cm</Text>}
+                  rightSection={<Text size="xs">{translations.cm}</Text>}
                 />
               </SimpleGrid>
             </div>
+
             <Select
               clearable
               data={[
@@ -265,21 +329,22 @@ export function ModuleSeekerApplicants() {
                 { label: "O+", value: "O+" },
                 { label: "O-", value: "O-" },
               ]}
-              label="Blood Group"
+              label={translations.bloodGroup}
               size="sm"
-              placeholder="Select"
+              placeholder={translations.bloodGroupPlaceholder}
               radius="md"
               {...form.getInputProps("blood_group")}
             />
+
             <Select
               data={[
                 { value: "Male", label: "Male" },
                 { value: "Female", label: "Female" },
                 { value: "Other", label: "Other" },
               ]}
-              label="Martial Status"
+              label={translations.maritalStatus}
               size="sm"
-              placeholder="Select"
+              placeholder={translations.maritalStatus}
               radius="md"
               {...form.getInputProps("martial_status")}
             />
@@ -288,30 +353,22 @@ export function ModuleSeekerApplicants() {
               <Button
                 onClick={() => {
                   const rawValues = form.getValues();
-
-                  // Filter out null, undefined, or empty string values
                   const filteredValues = Object.fromEntries(
                     Object.entries(rawValues).filter(
                       ([, value]) =>
                         value !== null && value !== undefined && value !== ""
                     )
                   );
-
                   const params = new URLSearchParams(
                     filteredValues as Record<string, string>
                   ).toString();
                   Router.push("/applicants?" + params);
                 }}
               >
-                {language === "en" ? "Apply Filter" : "フィルターを適用"}
+                {translations.applyFilter}
               </Button>
-              <Button
-                variant="subtle"
-                onClick={() => {
-                  form.reset();
-                }}
-              >
-                {language === "en" ? "Clear Filter" : "フィルターをクリア"}
+              <Button variant="subtle" onClick={() => form.reset()}>
+                {translations.clearFilter}
               </Button>
             </Group>
           </Stack>
@@ -361,8 +418,12 @@ export function ModuleSeekerApplicants() {
           <Group justify="space-between">
             <Text size="xs" pl={{ base: 0, lg: "xl" }}>
               {language === "en"
-                ? `Showing X of ${paginationData.total_items}`
-                : `応募者 X 名中 ${paginationData.total_items}`}
+                ? `Showing ${(current - 1) * 20 + 1} - ${
+                    (current - 1) * 20 + queryData.data.length
+                  } of ${paginationData.total_items}`
+                : `全 ${paginationData.total_items} 名中 ${(current - 1) * 20 + 1} ～ ${
+                    (current - 1) * 20 + queryData.data.length
+                  } を表示中`}
             </Text>
             <Group gap={2}>
               <ThemeIcon hiddenFrom="lg">

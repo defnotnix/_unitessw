@@ -284,26 +284,20 @@ export function StepIdentity() {
           <TextInput
             leftSection={<InstagramLogoIcon />}
             label="Instagram Handle"
-            placeholder="e.g. instagram username"
-            {...form.getInputProps("instagram")}
+            placeholder="e.g. instagram url"
+            {...form.getInputProps("instagram_url")}
           />
           <TextInput
             leftSection={<FacebookLogoIcon />}
             label="Facebook Handle"
-            placeholder="e.g. faacebook username"
-            {...form.getInputProps("facebook")}
+            placeholder="e.g. facebook url"
+            {...form.getInputProps("facebook_url")}
           />
           <TextInput
             leftSection={<LinkedinLogoIcon />}
             label="LinkedIn Handle"
-            placeholder="e.g. linkedin username"
-            {...form.getInputProps("linkedin")}
-          />
-          <TextInput
-            leftSection={<WhatsappLogoIcon />}
-            label="Whatsapp Handle"
-            placeholder="e.g. instagramusername"
-            {...form.getInputProps("whatsapp")}
+            placeholder="e.g. linkedin url"
+            {...form.getInputProps("linkedin_url")}
           />
         </SimpleGrid>
       </Stack>

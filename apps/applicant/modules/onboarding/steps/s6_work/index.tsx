@@ -10,6 +10,7 @@ import {
   Center,
   Divider,
   Group,
+  NumberInput,
   Paper,
   Select,
   SimpleGrid,
@@ -261,17 +262,70 @@ export function StepWork() {
               </Stack>
 
               <Stack gap={0}>
-                <DateInput
-                  placeholder="e.g. 2015"
-                  {...form.getInputProps(`work_experience.${index}.start_date`)}
-                  styles={styles.top}
-                />
-                <DateInput
-                  minDate={form.getValues().work_experience[index].start_date}
-                  placeholder=" e.g. 2018"
-                  {...form.getInputProps(`work_experience.${index}.end_date`)}
-                  styles={styles.bot}
-                />
+                <SimpleGrid cols={2} spacing={0}>
+                  <NumberInput
+                    hideControls
+                    placeholder="Select Start Year"
+                    {...form.getInputProps(
+                      `work_experience.${index}.start_year`
+                    )}
+                  />
+                  <Select
+                    disabled={
+                      !form.getValues().work_experience[index].start_year
+                    }
+                    data={[
+                      "January",
+                      "February",
+                      "March",
+                      "April",
+                      "May",
+                      "June",
+                      "July",
+                      "August",
+                      "September",
+                      "October",
+                      "November",
+                      "December",
+                    ]}
+                    placeholder="Select Month"
+                    {...form.getInputProps(
+                      `work_experience.${index}.start_month`
+                    )}
+                  />
+                </SimpleGrid>
+
+                <SimpleGrid cols={2} spacing={0}>
+                  <NumberInput
+                    min={form.getValues()?.work_experience[index]?.start_year}
+                    disabled={
+                      !form.getValues().work_experience[index].start_year ||
+                      !form.getValues().work_experience[index].start_month
+                    }
+                    hideControls
+                    placeholder="Select End Year"
+                    {...form.getInputProps(`work_experience.${index}.end_year`)}
+                  />
+                  <Select
+                    disabled={!form.getValues().work_experience[index].end_year}
+                    data={[
+                      "January",
+                      "February",
+                      "March",
+                      "April",
+                      "May",
+                      "June",
+                      "July",
+                      "August",
+                      "September",
+                      "October",
+                      "November",
+                      "December",
+                    ]}
+                    placeholder="Select Month"
+                    {...form.getInputProps(`work_experience.${index}.end_month`)}
+                  />
+                </SimpleGrid>
               </Stack>
             </SimpleGrid>
             <Divider my="sm" />

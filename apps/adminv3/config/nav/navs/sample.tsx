@@ -90,12 +90,21 @@ export const navItems: PropAdminNavItems[] = [
       {
         icon: ScrollIcon,
         label: "Applicant Requests",
-        value: "/admin/applicants",
+        value: "/admin/applicants/pending",
+      },
+      {
+        label: "Selected Applicants",
       },
       {
         icon: CalendarIcon,
-        label: "Applicant Bookings",
-        value: "/admin/applicants",
+        label: "Interested Applicants",
+        value: "/admin/applicants/notified",
+      },
+
+      {
+        icon: CalendarIcon,
+        label: "Responded Requests",
+        value: "/admin/applicants/accepted",
       },
     ],
   },
@@ -140,8 +149,12 @@ export const navItems: PropAdminNavItems[] = [
     roles: ["admin"],
     children: [
       {
-        label: "Activity Logs",
-        value: "/admin/misc/vacancy-category",
+        label: "Applicant Logs",
+        value: "/admin/misc/applicant-logs",
+      },
+      {
+        label: "Seeker Logs",
+        value: "/admin/misc/seeker-logs",
       },
     ],
   },

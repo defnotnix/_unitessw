@@ -111,6 +111,7 @@ export type PropModuleTableLayout = {
   disableAdd?: boolean;
   disableDelete?: boolean;
   disableEdit?: boolean;
+  disableActions?: boolean;
   withAddExtra?: boolean;
   customRender?: (props: any) => JSX.Element;
   customCreate?: any;

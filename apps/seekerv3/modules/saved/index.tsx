@@ -156,7 +156,7 @@ export function ModuleSeekerApplicantsSaved() {
                     ...item.a_background,
                     ...item.a_physical,
                   }}
-                  onSuccess={queryData.refetch}
+                  onSuccessWishlist={queryData.refetch}
                   key={index}
                 />
               ))}

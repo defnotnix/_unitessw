@@ -34,6 +34,7 @@ import {
   apiBackground,
   apiEducation,
   apiIdentification,
+  apiJapanVisit,
   apiLicense,
   apiPersonalInformation,
   apiPhysical,
@@ -53,11 +54,10 @@ import { StepCertificates } from "./steps/s7_certifications";
 import classes from "./_.module.css";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForceUpdate } from "@mantine/hooks";
-import _ from "lodash";
+import _, { pad } from "lodash";
 import { StepIdentification } from "./steps/s8_identification";
 import { jwtDecode } from "jwt-decode";
 import { endpoint } from "@/layouts/app";
-import { StepTatoo } from "./steps/s9_tatoo";
 import { StepVisit } from "./steps/s10_visit";
 
 export function ModuleOnboarding() {
@@ -88,6 +88,8 @@ export function ModuleOnboarding() {
       if (token.user_id) {
         const res = await apiPersonalInformation.get(token.user_id);
         const data = res?.data || {};
+
+        console.log(data);
 
         setPersonId(data.id);
         setHolder((prev) => ({ ...prev, ...data }));
@@ -120,9 +122,10 @@ export function ModuleOnboarding() {
           ...res?.data?.a_identification,
 
           category: String(res?.data?.category),
-          education: res?.data?.a_education,
-          work_experience: res?.data?.a_work_experience,
-          licenses: res?.data?.a_license_qualification,
+          education: res?.data?.a_education || [],
+          work_experience: res?.data?.a_work_experience || [],
+          licenses: res?.data?.a_license_qualification || [],
+          visithistory: res?.data?.a_japan_visit || [],
 
           image: res?.data?.image ? endpoint + res?.data?.image : null,
           passport: res?.data?.a_identification?.passport
@@ -151,7 +154,6 @@ export function ModuleOnboarding() {
     "Work History",
     "Certifications",
     "Identifications",
-    "Body Tatoo",
     "Japan Visit History",
     "Completed",
   ];
@@ -240,7 +242,14 @@ export function ModuleOnboarding() {
       apiCreate: apiBackground.create,
       apiUpdate: (body: any) =>
         apiBackground.update(body, data?.a_background?.id),
-      transform: (e: any) => ({ applicant: personId, ...e }),
+      transform: (e: any) => ({
+        applicant: personId,
+        ...e,
+        code:
+          "USW" +
+          "0000".substring(0, 4 - String(personId).length) +
+          String(personId),
+      }),
     },
     {
       component: <StepPhysical />,
@@ -273,8 +282,6 @@ export function ModuleOnboarding() {
         e.education.map((item: any) => ({
           applicant: personId,
           ...item,
-          from_year: item.year?.[0]?.substring(0, 4),
-          to_year: item.year?.[1]?.substring(0, 4),
         })),
     },
     {
@@ -295,8 +302,6 @@ export function ModuleOnboarding() {
         e.work_experience.map((item: any) => ({
           applicant: personId,
           ...item,
-          from_year: item.year?.[0]?.substring(0, 4),
-          end_year: item.year?.[1]?.substring(0, 4),
         })),
     },
     {
@@ -345,22 +350,17 @@ export function ModuleOnboarding() {
     },
 
     {
-      component: <StepTatoo />,
-      apiCreate: apiIdentification.create,
-      isFormData: true,
-      apiUpdate: (body: any) =>
-        apiIdentification.update(body, data?.a_identification?.id),
-
-      transform: (formdata: any) => {},
-    },
-    {
       component: <StepVisit />,
-      apiCreate: apiIdentification.create,
-      isFormData: true,
+      apiCreate: apiJapanVisit.create,
+      isFormData: false,
       apiUpdate: (body: any) =>
-        apiIdentification.update(body, data?.a_identification?.id),
+        apiJapanVisit.update(body, data?.a_identification?.id),
 
-      transform: (formdata: any) => {},
+      transform: (e: any) =>
+        e.visithistory.map((item: any) => ({
+          applicant: personId,
+          ...item,
+        })),
     },
 
     { component: <CompletedStep />, apiCreate: null, apiUpdate: null },
@@ -443,17 +443,17 @@ export function ModuleOnboarding() {
     );
   };
 
-  // if (!data) {
-  //   return (
-  //     <>
-  //       <Center h={500}>
-  //         <Paper withBorder p="md">
-  //           <Loader size="xs" />
-  //         </Paper>
-  //       </Center>
-  //     </>
-  //   );
-  // }
+  if (!data) {
+    return (
+      <>
+        <Center h={500}>
+          <Paper withBorder p="md">
+            <Loader size="xs" />
+          </Paper>
+        </Center>
+      </>
+    );
+  }
 
   return (
     <section>

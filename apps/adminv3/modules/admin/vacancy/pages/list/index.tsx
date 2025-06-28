@@ -107,11 +107,7 @@ export function _List() {
                         mb="md"
                         pos="relative"
                       >
-                        <Image
-                          h={300}
-                          fit="contain"
-                          src={endpoint + item.image}
-                        />
+                        <Image h={300} fit="contain" src={item.image} />
 
                         <Group
                           gap={0}

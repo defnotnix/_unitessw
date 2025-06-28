@@ -116,6 +116,14 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
       label: language === "en" ? "Saved Candidate" : "保存済み候補者",
       path: "/saved",
     },
+    {
+      label: language === "en" ? "Notified Candidates" : "保存済み候補者",
+      path: "/notified",
+    },
+    {
+      label: language === "en" ? "Booked for Interview" : "保存済み候補者",
+      path: "/interview",
+    },
   ];
 
   return (

@@ -3,6 +3,7 @@
 import {
   ActionIcon,
   Anchor,
+  Badge,
   Breadcrumbs,
   Button,
   ButtonGroup,
@@ -12,6 +13,7 @@ import {
   Divider,
   Grid,
   Group,
+  Image,
   Loader,
   Paper,
   Select,
@@ -20,8 +22,10 @@ import {
 import {
   ArrowLeft,
   ArrowLeftIcon,
+  CaretRightIcon,
   House,
   HouseIcon,
+  PencilIcon,
   PrinterIcon,
 } from "@phosphor-icons/react";
 import { useRef, useState } from "react";
@@ -31,9 +35,11 @@ import { CV } from "@vframework/ui";
 import { useReactToPrint } from "react-to-print";
 
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { apiPersonalInformation } from "./applicant.api";
 import { endpoint } from "@/layouts/app";
+import { jwtDecode } from "jwt-decode";
+import { images } from "@/public/img";
 
 const bread = [
   {
@@ -56,6 +62,10 @@ export function ModuleApplicant() {
   const [cvColor, setCvColor] = useState<any>("brand");
   const Params = useParams();
 
+  const Router = useRouter();
+
+  const tokenData: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
+
   const contentRef = useRef<HTMLDivElement>(null);
 
   const [printSt, setPrintSt] = useState(false);
@@ -73,7 +83,7 @@ export function ModuleApplicant() {
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "cv", String(Params.id)],
     queryFn: async () => {
-      const res: any = await apiPersonalInformation.get(Params.id);
+      const res: any = await apiPersonalInformation.get(tokenData?.user_id);
       console.log(res?.data);
       if (!res.err) {
         return {
@@ -121,255 +131,316 @@ export function ModuleApplicant() {
 
   return (
     <>
-      <Paper>
-        <Container py="sm">
-          <Grid align="center">
-            <Grid.Col span={{ base: 12, lg: 3 }}>
-              <Group wrap="nowrap">
-                <ActionIcon size="sm" variant="light">
-                  <ArrowLeftIcon size={12} />
-                </ActionIcon>
-                <Breadcrumbs
-                  separatorMargin={4}
-                  separator={
-                    <Text size="xs" c="gray.5">
-                      /
-                    </Text>
-                  }
-                >
-                  <HouseIcon
-                    weight="duotone"
-                    size={12}
-                    color="var(--mantine-color-brand-5)"
-                  />
-                  {bread.map((breadinfo: any, index: number) => (
-                    <Anchor
-                      size="xs"
-                      c={index == bread.length - 1 ? "dark.9" : "gray.5"}
-                      fw={600}
-                      key={index}
-                    >
-                      {breadinfo.label}
-                    </Anchor>
-                  ))}
-                </Breadcrumbs>
+      <section
+        style={{
+          background: "var(--mantine-color-gray-2)",
+        }}
+      >
+        <Paper bg="dark.9" radius={0}>
+          <Container py="xs">
+            <Group justify="space-between">
+              <Group>
+                <Image h={24} w={24} fit="contain" src={images.logoMini} />
+                <Text size="xs" c="gray.0">
+                  Unite SSW
+                </Text>
+                <Text size="xs" c="gray.0" opacity={0.5}>
+                  Applicant Portal
+                </Text>
               </Group>
-            </Grid.Col>
 
-            <Grid.Col span={{ base: 12, lg: 9 }}>
-              <Group justify="flex-end" gap="xs">
-                <Group gap={0}>
-                  {cvType == "7" && (
+              <Group gap={6}>
+                <Text size="xs" c="gray.0">
+                  Explore Job Vacancies from different companies in Japan.
+                </Text>
+                <Button
+                  size="xs"
+                  p={0}
+                  h={24}
+                  px="xs"
+                  rightSection={<CaretRightIcon size={12} />}
+                  color="indigo.6"
+                  onClick={()=>{
+                    Router.push("/vacancy")
+                  }}
+                >
+                  Explore Job Vacancy
+                </Button>
+              </Group>
+            </Group>
+          </Container>
+        </Paper>
+        <Paper>
+          <Container py="sm">
+            <Grid align="center">
+              <Grid.Col span={{ base: 12, lg: 3 }}>
+                <Group wrap="nowrap">
+                  <ActionIcon size="sm" variant="light">
+                    <ArrowLeftIcon size={12} />
+                  </ActionIcon>
+                  <Breadcrumbs
+                    separatorMargin={4}
+                    separator={
+                      <Text size="xs" c="gray.5">
+                        /
+                      </Text>
+                    }
+                  >
+                    <HouseIcon
+                      weight="duotone"
+                      size={12}
+                      color="var(--mantine-color-brand-5)"
+                    />
+                    {bread.map((breadinfo: any, index: number) => (
+                      <Anchor
+                        size="xs"
+                        c={index == bread.length - 1 ? "dark.9" : "gray.5"}
+                        fw={600}
+                        key={index}
+                      >
+                        {breadinfo.label}
+                      </Anchor>
+                    ))}
+                  </Breadcrumbs>
+
+                  {data?.is_published ? (
+                    <Badge color="teal">Published</Badge>
+                  ) : (
+                    <Badge color="red">Not Published</Badge>
+                  )}
+                </Group>
+              </Grid.Col>
+
+              <Grid.Col span={{ base: 12, lg: 9 }}>
+                <Group justify="flex-end" gap="xs">
+                  <Group gap={0}>
+                    {cvType == "7" && (
+                      <Select
+                        leftSection={<Text size="xs">L:</Text>}
+                        onChange={(e: any) => setCvLogo(e)}
+                        size="xs"
+                        data={[
+                          { value: "mb", label: "Manabiya" },
+                          { value: "us", label: "UniteSSW" },
+                        ]}
+                      />
+                    )}
                     <Select
-                      leftSection={<Text size="xs">L:</Text>}
-                      onChange={(e: any) => setCvLogo(e)}
+                      leftSection={<Text size="xs">T:</Text>}
                       w={150}
+                      value={cvType}
+                      onChange={(e: any) => setCvType(e)}
                       size="xs"
                       data={[
-                        { value: "mb", label: "Manabiya" },
-                        { value: "us", label: "UniteSSW" },
+                        { value: "1", label: "CV-1" },
+                        { value: "2", label: "CV-2" },
+                        { value: "3", label: "CV-3" },
+                        { value: "4", label: "CV-4" },
+                        { value: "5", label: "CV-5" },
+                        { value: "6", label: "CV-6" },
+                        { value: "7", label: "CV-Corporate" },
                       ]}
                     />
-                  )}
-                  <Select
-                    leftSection={<Text size="xs">T:</Text>}
-                    w={150}
-                    value={cvType}
-                    onChange={(e: any) => setCvType(e)}
-                    size="xs"
-                    data={[
-                      { value: "1", label: "CV-1" },
-                      { value: "2", label: "CV-2" },
-                      { value: "3", label: "CV-3" },
-                      { value: "4", label: "CV-4" },
-                      { value: "5", label: "CV-5" },
-                      { value: "6", label: "CV-6" },
-                      { value: "7", label: "CV-Corporate" },
-                    ]}
-                  />
 
-                  <Select
-                    w={150}
-                    leftSection={
-                      <ColorSwatch
-                        size={12}
-                        color={`var(--mantine-color-${cvColor}-5)`}
-                      />
-                    }
-                    value={cvColor}
-                    onChange={(e: any) => setCvColor(e)}
-                    size="xs"
-                    data={[
-                      {
-                        value: "brand",
-                        label: "Default",
-                      },
+                    <Select
+                      w={150}
+                      leftSection={
+                        <ColorSwatch
+                          size={12}
+                          color={`var(--mantine-color-${cvColor}-5)`}
+                        />
+                      }
+                      value={cvColor}
+                      onChange={(e: any) => setCvColor(e)}
+                      size="xs"
+                      data={[
+                        {
+                          value: "brand",
+                          label: "Default",
+                        },
 
-                      {
-                        value: "blue",
-                        label: "Blue",
-                      },
-                      {
-                        value: "cyan",
-                        label: "Cyan",
-                      },
-                      {
-                        value: "pink",
-                        label: "Pink",
-                      },
-                      {
-                        value: "grape",
-                        label: "Grape",
-                      },
-                      {
-                        value: "indigo",
-                        label: "Indigo",
-                      },
-                      {
-                        value: "teal",
-                        label: "Teal",
-                      },
-                      {
-                        value: "green",
-                        label: "Green",
-                      },
-                      {
-                        value: "lime",
-                        label: "Lime",
-                      },
-                      {
-                        value: "yellow",
-                        label: "Yellow",
-                      },
-                      {
-                        value: "orange",
-                        label: "Orange",
-                      },
-                      {
-                        value: "red",
-                        label: "Red",
-                      },
-                      {
-                        value: "gray",
-                        label: "Gray",
-                      },
-                    ]}
-                  />
+                        {
+                          value: "blue",
+                          label: "Blue",
+                        },
+                        {
+                          value: "cyan",
+                          label: "Cyan",
+                        },
+                        {
+                          value: "pink",
+                          label: "Pink",
+                        },
+                        {
+                          value: "grape",
+                          label: "Grape",
+                        },
+                        {
+                          value: "indigo",
+                          label: "Indigo",
+                        },
+                        {
+                          value: "teal",
+                          label: "Teal",
+                        },
+                        {
+                          value: "green",
+                          label: "Green",
+                        },
+                        {
+                          value: "lime",
+                          label: "Lime",
+                        },
+                        {
+                          value: "yellow",
+                          label: "Yellow",
+                        },
+                        {
+                          value: "orange",
+                          label: "Orange",
+                        },
+                        {
+                          value: "red",
+                          label: "Red",
+                        },
+                        {
+                          value: "gray",
+                          label: "Gray",
+                        },
+                      ]}
+                    />
+                  </Group>
+
+                  <ButtonGroup>
+                    <Button
+                      size="xs"
+                      onClick={() => {
+                        setLanguage("en");
+                      }}
+                      variant={language == "en" ? "filled" : "light"}
+                    >
+                      EN
+                    </Button>
+                    <Button
+                      size="xs"
+                      onClick={() => {
+                        setLanguage("jp");
+                      }}
+                      variant={language == "jp" ? "filled" : "light"}
+                    >
+                      JP
+                    </Button>
+                  </ButtonGroup>
+
+                  <ButtonGroup>
+                    <Button
+                      size="xs"
+                      onClick={reactToPrintFn}
+                      leftSection={<PrinterIcon />}
+                    >
+                      Print CV
+                    </Button>
+                    <Button
+                      size="xs"
+                      onClick={() => {
+                        Router.push("/onboarding");
+                      }}
+                      disabled={data?.is_published}
+                      variant="light"
+                      leftSection={<PencilIcon />}
+                    >
+                      Update Profile
+                    </Button>
+                  </ButtonGroup>
                 </Group>
-
-                <ButtonGroup>
-                  <Button
-                    size="xs"
-                    onClick={() => {
-                      setLanguage("en");
-                    }}
-                    variant={language == "en" ? "filled" : "light"}
-                  >
-                    EN
-                  </Button>
-                  <Button
-                    size="xs"
-                    onClick={() => {
-                      setLanguage("jp");
-                    }}
-                    variant={language == "jp" ? "filled" : "light"}
-                  >
-                    JP
-                  </Button>
-                </ButtonGroup>
-
-                <Divider mx="md" orientation="vertical" color="brand.4" />
-
-                <Text size="xs">Print :</Text>
-
-                <ButtonGroup>
-                  <Button size="xs" onClick={reactToPrintFn}>
-                    Current CV
-                  </Button>
-                </ButtonGroup>
-              </Group>
-            </Grid.Col>
-          </Grid>
-        </Container>
-      </Paper>
-
-      <Center mt="md">
-        {!cvType && (
-          <>
-            <Text my={100} size="xs">
-              Please select a CV Template
-            </Text>
-          </>
-        )}
-
-        <Paper withBorder>
-          <div ref={contentRef}>
-            {cvType == "1" && (
-              <CV1
-                color={cvColor}
-                data={data}
-                language={language}
-                printSt={printSt}
-              />
-            )}
-
-            {cvType == "2" && (
-              <CV2
-                color={cvColor}
-                data={data}
-                language={language}
-                printSt={printSt}
-              />
-            )}
-
-            {cvType == "3" && (
-              <CV3
-                color={cvColor}
-                data={data}
-                language={language}
-                printSt={printSt}
-              />
-            )}
-
-            {cvType == "4" && (
-              <CV4
-                color={cvColor}
-                data={data}
-                language={language}
-                printSt={printSt}
-              />
-            )}
-
-            {cvType == "5" && (
-              <CV5
-                color={cvColor}
-                data={data}
-                language={language}
-                printSt={printSt}
-              />
-            )}
-
-            {cvType == "6" && (
-              <CV6
-                color={cvColor}
-                data={data}
-                language={language}
-                printSt={printSt}
-              />
-            )}
-
-            {cvType == "7" && (
-              <CVCorp
-                color={cvColor}
-                data={data}
-                language={language}
-                printSt={printSt}
-                logo={cvLogo}
-              />
-            )}
-          </div>
+              </Grid.Col>
+            </Grid>
+          </Container>
         </Paper>
-      </Center>
+
+        <Center mt="md">
+          {!cvType && (
+            <>
+              <Text my={100} size="xs">
+                Please select a CV Template
+              </Text>
+            </>
+          )}
+
+          <Paper
+            withBorder
+            style={{
+              wordWrap: "break-word",
+            }}
+          >
+            <div ref={contentRef}>
+              {cvType == "1" && (
+                <CV1
+                  color={cvColor}
+                  data={data}
+                  language={language}
+                  printSt={printSt}
+                />
+              )}
+
+              {cvType == "2" && (
+                <CV2
+                  color={cvColor}
+                  data={data}
+                  language={language}
+                  printSt={printSt}
+                />
+              )}
+
+              {cvType == "3" && (
+                <CV3
+                  color={cvColor}
+                  data={data}
+                  language={language}
+                  printSt={printSt}
+                />
+              )}
+
+              {cvType == "4" && (
+                <CV4
+                  color={cvColor}
+                  data={data}
+                  language={language}
+                  printSt={printSt}
+                />
+              )}
+
+              {cvType == "5" && (
+                <CV5
+                  color={cvColor}
+                  data={data}
+                  language={language}
+                  printSt={printSt}
+                />
+              )}
+
+              {cvType == "6" && (
+                <CV6
+                  color={cvColor}
+                  data={data}
+                  language={language}
+                  printSt={printSt}
+                />
+              )}
+
+              {cvType == "7" && (
+                <CVCorp
+                  color={cvColor}
+                  data={data}
+                  language={language}
+                  printSt={printSt}
+                  logo={cvLogo}
+                />
+              )}
+            </div>
+          </Paper>
+        </Center>
+      </section>
     </>
   );
 }
