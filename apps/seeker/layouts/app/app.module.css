@@ -1,8 +1,0 @@
-.body {
-  min-height: 100vh;
-  background: linear-gradient(
-    to bottom,
-    var(--mantine-color-red-9),
-    var(--mantine-color-brand-9)
-  );
-}
