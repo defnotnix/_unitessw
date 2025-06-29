@@ -10,6 +10,7 @@ import {
   Group,
   Image,
   Paper,
+  Stack,
   Text,
 } from "@mantine/core";
 import { ImageSquare, Pen, Pencil, Trash } from "@phosphor-icons/react";
@@ -43,53 +44,55 @@ export function ImageUpload({
             <Paper
               bg="brand.0"
               withBorder
-              p="xl"
               {...props}
               style={{
-                height: height,
                 borderColor: error ? "red" : "",
               }}
             >
-              <Group justify="center">
-                <ActionIcon variant="light" color="brand">
-                  <ImageSquare size={32} />
-                </ActionIcon>
-              </Group>
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontWeight: 600,
-                }}
-                size="xs"
-                color="dimmed"
-                mt="md"
-              >
-                {label || "Upload Media"}
-              </Text>
-              <Text
-                style={{
-                  textAlign: "center",
-                }}
-                size={"xs"}
-                color="dimmed"
-              >
-                {description || "File format : PNG/JPG/JPEG/WEBP"}
-              </Text>
-              <Group justify="center">
-                <Button size="xs" mt="md" mb="xs">
-                  Browse
-                </Button>
-              </Group>
+              <Center h={height} p="xl">
+                <Stack gap={0}>
+                  <Group justify="center">
+                    <ActionIcon variant="light" color="brand">
+                      <ImageSquare size={32} />
+                    </ActionIcon>
+                  </Group>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      fontWeight: 600,
+                    }}
+                    size="xs"
+                    color="dimmed"
+                    mt="md"
+                  >
+                    {label || "Upload Media"}
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                    }}
+                    size={"xs"}
+                    color="dimmed"
+                  >
+                    {description || "File format : PNG/JPG/JPEG/WEBP"}
+                  </Text>
+                  <Group justify="center">
+                    <Button size="xs" mt="md" mb="xs">
+                      Browse
+                    </Button>
+                  </Group>
 
-              <Text
-                style={{
-                  textAlign: "center",
-                }}
-                size="xs"
-                color="dimmed"
-              >
-                Max size 320KB
-              </Text>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                    }}
+                    size="xs"
+                    color="dimmed"
+                  >
+                    Max size 320KB
+                  </Text>
+                </Stack>
+              </Center>
             </Paper>
           )}
         </FileButton>

@@ -1,3 +1,4 @@
+"use client";
 import { PropsWithChildren, useEffect } from "react";
 //vfw
 import { QueryWrapper, AppWrapper } from "@vframework/core";

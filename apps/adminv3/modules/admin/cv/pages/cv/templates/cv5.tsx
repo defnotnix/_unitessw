@@ -184,11 +184,7 @@ export function CV5({
               </Text>
             </Stack>
 
-            <Image
-              src={
-data?.image
-              }
-            />
+            <Image src={data?.image} />
 
             {false && (
               <AspectRatio ratio={16 / 9} mt={-16}>
@@ -229,14 +225,14 @@ data?.image
           </Text>
 
           <Text size="xs" mt="md">
-                        {language === "en" ? data?.remark : data?.jp_remark}
+            {language === "en" ? data?.remark : data?.jp_remark}
           </Text>
 
           <Divider my="md" />
 
           <SimpleGrid cols={2} spacing="xs">
             <div>
-             <Text size="xs" fw={800}>
+              <Text size="xs" fw={800}>
                 {language === "en" ? "My Personal Traits" : "個人特徴"}
               </Text>
               <Text size="10px" lh="13px" mt="sm">
@@ -247,7 +243,7 @@ data?.image
             </div>
 
             <div>
-             <Text size="xs" fw={800}>
+              <Text size="xs" fw={800}>
                 {language === "en" ? "What motivates me." : "動機とは"}
               </Text>
               <Text size="10px" lh="13px" mt="sm">
@@ -292,8 +288,7 @@ data?.image
                 <Table.Tr key={index}>
                   <Table.Td>{index + 1}</Table.Td>
                   <Table.Td>
-                                      {`${item.start_month}, ${item.start_year} - ${item.end_month}, ${item.end_year}`}
-
+                    {`${item.start_date} -  ${item.end_date}`}
                   </Table.Td>
                   <Table.Td>
                     <b>
@@ -346,9 +341,7 @@ data?.image
                 <Table.Tr key={index}>
                   <Table.Td>{index + 1}</Table.Td>
                   <Table.Td>
-                                      {`${item.start_month}, ${item.start_year} - ${item.end_month}, ${item.end_year}`}
-
-                  </Table.Td>
+   {`${item.start_date} -  ${item.end_date}`}                  </Table.Td>
                   <Table.Td>
                     <b>{language === "en" ? item.company : item.jp_company}</b>
                   </Table.Td>

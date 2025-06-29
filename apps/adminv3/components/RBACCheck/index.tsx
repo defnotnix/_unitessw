@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
-import { useState, useEffect, ReactNode } from "react";
-import { jwtDecode } from "jwt-decode";
-import { Center, Text, Loader, Paper, Group, Stack } from "@mantine/core";
+import { Center, Group, Loader, Stack, Text } from "@mantine/core";
 import { LockIcon } from "@phosphor-icons/react";
+import { jwtDecode } from "jwt-decode";
+import { ReactNode, useEffect, useState } from "react";
 
 interface SessionData {
   [key: string]: boolean;
@@ -32,7 +34,7 @@ export function RBACCheck({
       }
 
       const tokenData: any = jwtDecode<SessionData>(token);
-
+      console.log(tokenData);
       const hasAccess = allowList.some(
         (role) => tokenData[`is_${role}`] == "True"
       );

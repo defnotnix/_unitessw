@@ -98,6 +98,7 @@ export function ModuleTableLayout({
   apiEdit = (d) => null,
   onEditTrigger = (row) => row,
   onEditSuccess,
+  disableSearch,
 
   /**
    * Table data configuration
@@ -509,16 +510,17 @@ export function ModuleTableLayout({
                       <Divider orientation="vertical" opacity={0.5} mx="sm" />
                     </>
                   )}
-
-                  <TextInput
-                    rightSection={<MagnifyingGlass />}
-                    size="xs"
-                    placeholder="Search"
-                    w={{ base: "100%", md: "400" }}
-                    onChange={(e) => {
-                      setSearchVal(e.target.value);
-                    }}
-                  />
+                  {!disableSearch && (
+                    <TextInput
+                      rightSection={<MagnifyingGlass />}
+                      size="xs"
+                      placeholder="Search"
+                      w={{ base: "100%", md: "400" }}
+                      onChange={(e) => {
+                        setSearchVal(e.target.value);
+                      }}
+                    />
+                  )}
 
                   {withFilter && (
                     <Button

@@ -3,7 +3,16 @@ import { moduleConfig } from "./module.config";
 
 const endpoint = moduleConfig.endpoint || "";
 
-export const getRecords = moduleApiCall.getRecords;
+export const getRecords = async (props: any) => {
+  console.log(props);
+  const { searchValue, endpoint, ...rest } = props;
+  return moduleApiCall.getRecords({
+    ...rest,
+    endpoint: "/cvmake/search/",
+    params: props.searchValue,
+  });
+};
+
 export const getDeletedRecords = ({
   endpoint,
   ...props

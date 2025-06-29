@@ -107,7 +107,7 @@ export function ModuleSeekerHome() {
           </Button>
         </Group>
 
-        <Group justify="center" mb="lg">
+        {/* <Group justify="center" mb="lg">
           <Text size="xs" fw={600}>
             There are{" "}
             <b
@@ -127,7 +127,7 @@ export function ModuleSeekerHome() {
             </b>{" "}
             distinct job categories.
           </Text>
-        </Group>
+        </Group> */}
 
         <Paper p="xl" withBorder shadow="md" radius="lg">
           <Group justify="space-between">

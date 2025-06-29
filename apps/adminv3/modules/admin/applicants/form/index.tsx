@@ -8,7 +8,6 @@ import {
   Container,
   Grid,
   Group,
-  Image,
   Loader,
   Paper,
   Stack,
@@ -20,16 +19,12 @@ import {
   ArrowRightIcon,
   CheckIcon as Check,
   CheckIcon,
-  ExclamationMarkIcon as ExclamationMark,
-  HashIcon as Hash,
   InfoIcon,
-  WarningIcon,
 } from "@phosphor-icons/react";
 import { FormHandler } from "@vframework/core";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useState } from "react";
 import { formProps } from "./steps/s1_Identity/form.config";
 
-import imgLogo from "@/assets/img/sswmini.png";
 import {
   apiBackground,
   apiEducation,
@@ -50,10 +45,9 @@ import { StepAcademics } from "./steps/s5_academics";
 import { StepWork } from "./steps/s6_work";
 import { StepCertificates } from "./steps/s7_certifications";
 
-import classes from "./_.module.css";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForceUpdate } from "@mantine/hooks";
-import _ from "lodash";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import classes from "./_.module.css";
 import { StepIdentification } from "./steps/s8_identification";
 
 export function _Form() {

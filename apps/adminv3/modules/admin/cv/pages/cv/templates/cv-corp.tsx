@@ -1,17 +1,7 @@
 "use client";
 
-import {
-  AspectRatio,
-  Divider,
-  Grid,
-  Image,
-  Paper,
-  SimpleGrid,
-  Stack,
-  Table,
-  Text,
-} from "@mantine/core";
-import React, { useEffect } from "react";
+import { Paper } from "@mantine/core";
+import { useEffect } from "react";
 
 import classes from "./cv-cord.module.css";
 

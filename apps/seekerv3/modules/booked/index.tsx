@@ -145,7 +145,6 @@ export function ModuleApplicantBooked() {
                     ...item.a_background,
                     ...item.a_physical,
                   }}
-                  onSuccess={queryData.refetch}
                   key={index}
                   onSuccessBooking={queryData.refetch}
                 />

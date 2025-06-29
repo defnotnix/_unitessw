@@ -26,6 +26,7 @@ async function getRecords({
       ...params,
     },
   });
+  console.log(params)
   return res.err ? [] : res.data;
 }
 

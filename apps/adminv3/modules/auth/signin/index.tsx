@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 //next
 
 //mantine
@@ -9,21 +9,15 @@ import {
   Anchor,
   Badge,
   Button,
-  Center,
   Checkbox,
-  Container,
-  Divider,
   Group,
   Loader,
   Menu,
-  Paper,
   PasswordInput,
-  SimpleGrid,
   Space,
   Stack,
   Text,
   TextInput,
-  ThemeIcon,
   UnstyledButton,
 } from "@mantine/core";
 //mantine-form
@@ -32,27 +26,16 @@ import { useForm } from "@mantine/form";
 import { triggerNotification } from "@vframework/ui";
 
 //icons
-import {
-  AppleLogo,
-  Atom,
-  GoogleLogo,
-  Info,
-  X,
-  Warning,
-  CaretDown,
-  Check,
-} from "@phosphor-icons/react";
+import { CaretDown, Check, Info, Warning, X } from "@phosphor-icons/react";
 
 //styles
-import classes from "./auth.module.css";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
 
 //api
 import { apiLogin } from "./auth.api";
 
 import { jwtDecode } from "jwt-decode";
-import { useTimeout } from "@mantine/hooks";
 
 //components
 

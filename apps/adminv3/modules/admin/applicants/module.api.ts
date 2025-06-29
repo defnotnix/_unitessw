@@ -3,10 +3,25 @@ import { moduleConfig } from "./module.config";
 
 const endpoint = moduleConfig.endpoint || "";
 
-export const getRecords = moduleApiCall.getRecords;
-export const getUnpublished = () =>
-  moduleApiCall.getRecords({
+export const getRecords = async (props: any) => {
+  console.log(props);
+  const { searchValue, endpoint, ...rest } = props;
+  return moduleApiCall.getRecords({
+    ...rest,
+    endpoint: "/applicant/search/",
+    params: props.searchValue,
+  });
+};
+
+export const getUnpublished = (props: any) => {
+  console.log(props);
+  return moduleApiCall.getRecords({
     endpoint: "/applicant/unpublished/",
+  });
+};
+export const getJobCategory = () =>
+  moduleApiCall.getRecords({
+    endpoint: "/applicant/category/",
   });
 
 export const getSingleRecord = (id: any) =>

@@ -17,13 +17,7 @@ import {
   Select,
   Text,
 } from "@mantine/core";
-import {
-  ArrowLeft,
-  ArrowLeftIcon,
-  House,
-  HouseIcon,
-  PrinterIcon,
-} from "@phosphor-icons/react";
+import { ArrowLeftIcon, HouseIcon } from "@phosphor-icons/react";
 import { useRef, useState } from "react";
 
 import { CV } from "@vframework/ui";
@@ -289,9 +283,12 @@ export function _CV() {
           </>
         )}
 
-        <Paper withBorder style={{
-          wordWrap: "break-word",
-        }}>
+        <Paper
+          withBorder
+          style={{
+            wordWrap: "break-word",
+          }}
+        >
           <div ref={contentRef}>
             {cvType == "1" && (
               <CV1

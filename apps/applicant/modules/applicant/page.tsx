@@ -2,7 +2,9 @@
 
 import {
   ActionIcon,
+  Alert,
   Anchor,
+  Avatar,
   Badge,
   Breadcrumbs,
   Button,
@@ -15,20 +17,27 @@ import {
   Group,
   Image,
   Loader,
+  Menu,
+  Modal,
   Paper,
+  ScrollArea,
   Select,
+  Stack,
   Text,
+  TextInput,
 } from "@mantine/core";
 import {
   ArrowLeft,
   ArrowLeftIcon,
+  CaretDownIcon,
   CaretRightIcon,
   House,
   HouseIcon,
+  KeyIcon,
   PencilIcon,
   PrinterIcon,
 } from "@phosphor-icons/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { CV } from "@vframework/ui";
 
@@ -41,6 +50,10 @@ import { endpoint } from "@/layouts/app";
 import { jwtDecode } from "jwt-decode";
 import { images } from "@/public/img";
 
+import { motion } from "framer-motion";
+import { useDisclosure } from "@mantine/hooks";
+import { FormHandler } from "@vframework/core";
+
 const bread = [
   {
     label: "Admin",
@@ -51,6 +64,39 @@ const bread = [
     label: "View CV",
   },
 ];
+
+const PasswordForm = () => {
+  const form = FormHandler.useForm();
+  const { current, handleSubmit, handleStepBack, handleStepNext } =
+    FormHandler.usePropContext();
+
+  return (
+    <Stack gap="xs" p="md">
+      <Alert
+        title="Proceed with caution."
+        color="brand"
+        styles={{
+          title: {
+            fontSize: "var(--mantine-font-size-xs)",
+          },
+        }}
+      >
+        <Text size="xs">
+          You are about to change your password. This will be essential for all
+          further sign in`s.
+        </Text>
+      </Alert>
+
+      <TextInput
+        label="New Password"
+        placeholder="Enter old password"
+        {...form.getInputProps("name")}
+      />
+
+      <Button onClick={handleStepNext}>Change Password</Button>
+    </Stack>
+  );
+};
 
 export function ModuleApplicant() {
   const { CV1, CV2, CV3, CV4, CV5, CV6, CVCorp } = CV;
@@ -64,7 +110,14 @@ export function ModuleApplicant() {
 
   const Router = useRouter();
 
-  const tokenData: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
+  const [tokenData, setTokenData] = useState<any>(null);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("sswtoken");
+    if (token) {
+      setTokenData(jwtDecode(token));
+    }
+  }, []);
 
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -79,6 +132,75 @@ export function ModuleApplicant() {
       setPrintSt(false);
     },
   });
+
+  const [openedPassword, handlePassword] = useDisclosure();
+
+  const RenderCV = () => {
+    return (
+      <Paper
+        withBorder
+        style={{
+          wordWrap: "break-word",
+        }}
+      >
+        <div ref={contentRef}>
+          {cvType == "1" && (
+            <CV1
+              color={cvColor}
+              data={data}
+              language={language}
+              printSt={printSt}
+            />
+          )}
+
+          {cvType == "2" && (
+            <CV2
+              color={cvColor}
+              data={data}
+              language={language}
+              printSt={printSt}
+            />
+          )}
+
+          {cvType == "3" && (
+            <CV3
+              color={cvColor}
+              data={data}
+              language={language}
+              printSt={printSt}
+            />
+          )}
+
+          {cvType == "4" && (
+            <CV4
+              color={cvColor}
+              data={data}
+              language={language}
+              printSt={printSt}
+            />
+          )}
+
+          {cvType == "5" && (
+            <CV5
+              color={cvColor}
+              data={data}
+              language={language}
+              printSt={printSt}
+            />
+          )}
+
+          {cvType == "6" && (
+            <CV6
+              color={cvColor}
+              data={data}
+              language={language}
+              printSt={printSt}
+            />
+          )}
+        </div>
+      </Paper>
+    );
+  };
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "cv", String(Params.id)],
@@ -131,6 +253,39 @@ export function ModuleApplicant() {
 
   return (
     <>
+      <motion.div
+        style={{
+          height: "100vh",
+          width: "100vw",
+          position: "fixed",
+          top: 0,
+          zIndex: 999,
+        }}
+        initial={{
+          opacity: 1,
+        }}
+        animate={{
+          opacity: 0,
+          display: "none",
+          transition: {
+            duration: 0.5,
+            delay: 0.5,
+          },
+        }}
+      >
+        <Center h={"100vh"} bg="dark.9">
+          <Paper p="md" bg="none">
+            <Stack>
+              <Image src={images.logoMini} />
+
+              <Center>
+                <Loader color="white" size="xs" />
+              </Center>
+            </Stack>
+          </Paper>
+        </Center>
+      </motion.div>
+
       <section
         style={{
           background: "var(--mantine-color-gray-2)",
@@ -160,8 +315,8 @@ export function ModuleApplicant() {
                   px="xs"
                   rightSection={<CaretRightIcon size={12} />}
                   color="indigo.6"
-                  onClick={()=>{
-                    Router.push("/vacancy")
+                  onClick={() => {
+                    Router.push("/vacancy");
                   }}
                 >
                   Explore Job Vacancy
@@ -238,7 +393,6 @@ export function ModuleApplicant() {
                         { value: "4", label: "CV-4" },
                         { value: "5", label: "CV-5" },
                         { value: "6", label: "CV-6" },
-                        { value: "7", label: "CV-Corporate" },
                       ]}
                     />
 
@@ -358,7 +512,7 @@ export function ModuleApplicant() {
           </Container>
         </Paper>
 
-        <Center mt="md">
+        <Center mt="md" visibleFrom="lg">
           {!cvType && (
             <>
               <Text my={100} size="xs">
@@ -366,80 +520,19 @@ export function ModuleApplicant() {
               </Text>
             </>
           )}
-
-          <Paper
-            withBorder
-            style={{
-              wordWrap: "break-word",
-            }}
-          >
-            <div ref={contentRef}>
-              {cvType == "1" && (
-                <CV1
-                  color={cvColor}
-                  data={data}
-                  language={language}
-                  printSt={printSt}
-                />
-              )}
-
-              {cvType == "2" && (
-                <CV2
-                  color={cvColor}
-                  data={data}
-                  language={language}
-                  printSt={printSt}
-                />
-              )}
-
-              {cvType == "3" && (
-                <CV3
-                  color={cvColor}
-                  data={data}
-                  language={language}
-                  printSt={printSt}
-                />
-              )}
-
-              {cvType == "4" && (
-                <CV4
-                  color={cvColor}
-                  data={data}
-                  language={language}
-                  printSt={printSt}
-                />
-              )}
-
-              {cvType == "5" && (
-                <CV5
-                  color={cvColor}
-                  data={data}
-                  language={language}
-                  printSt={printSt}
-                />
-              )}
-
-              {cvType == "6" && (
-                <CV6
-                  color={cvColor}
-                  data={data}
-                  language={language}
-                  printSt={printSt}
-                />
-              )}
-
-              {cvType == "7" && (
-                <CVCorp
-                  color={cvColor}
-                  data={data}
-                  language={language}
-                  printSt={printSt}
-                  logo={cvLogo}
-                />
-              )}
-            </div>
-          </Paper>
+          <RenderCV />
         </Center>
+
+        <ScrollArea hiddenFrom="lg">
+          {!cvType && (
+            <>
+              <Text my={100} size="xs">
+                Please select a CV Template
+              </Text>
+            </>
+          )}
+          <RenderCV />
+        </ScrollArea>
       </section>
     </>
   );

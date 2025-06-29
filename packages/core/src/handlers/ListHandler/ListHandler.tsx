@@ -147,9 +147,6 @@ export function ListHandler({
           ? res?.[dataKey]
           : res;
 
-
-          console.log(_data)
-
       if (enableServerPagination) {
         dispatch({
           type: "SET_TOTAL_RECORDS",

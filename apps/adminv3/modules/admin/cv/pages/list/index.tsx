@@ -9,16 +9,21 @@ import {
   Anchor,
   Breadcrumbs,
   Button,
+  Container,
   Divider,
   Group,
   Menu,
+  NumberInput,
   Paper,
+  Select,
   SimpleGrid,
   Space,
+  Stack,
   Tabs,
   Text,
+  TextInput,
 } from "@mantine/core";
-import { ListHandler } from "@vframework/core";
+import { ListHandler, useListHandlerContext } from "@vframework/core";
 import { ModuleTableLayout } from "@vframework/ui";
 import { columns } from "./list.columns";
 
@@ -35,14 +40,18 @@ import { deleteRecord, getDeletedRecords, getRecords } from "../../module.api";
 import {
   ArrowLeft,
   Atom,
+  CaretDownIcon,
   CaretRight,
+  CaretUpIcon,
   DotsThreeVertical,
   House,
   IdentificationBadge,
+  MagnifyingGlassIcon,
   PlugsConnected,
   Plus,
   ScrollIcon,
   Star,
+  XIcon,
 } from "@phosphor-icons/react";
 import { moduleConfig } from "../../module.config";
 import { StatCard } from "@/components/StatCard";
@@ -50,6 +59,9 @@ import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { RBACCheck } from "@/components/RBACCheck";
 import { Label } from "recharts";
+import { getJobCategory } from "@/modules/admin/applicants/module.api";
+import { useForm } from "@mantine/form";
+import { useDisclosure } from "@mantine/hooks";
 
 export function _List() {
   // * DEFINITIONS
@@ -73,10 +85,111 @@ export function _List() {
 
   // * COMPONENTS
 
+  const RenderCustomSearch = () => {
+    const { setSearchVal } = useListHandlerContext();
+
+    const form = useForm({
+      mode: "uncontrolled",
+    });
+    const [openedAdvanced, handlersAdvance] = useDisclosure();
+
+    const queryJobCategory = useQuery({
+      queryKey: ["seeker", "category"],
+      queryFn: async () => {
+        const res = await getJobCategory();
+        console.log(res);
+        return res;
+      },
+      initialData: [],
+    });
+
+    return (
+      <>
+        <Container pt="md">
+          <Paper p="md">
+            <Stack gap="xs" pb="md">
+              <SimpleGrid cols={{ base: 1, lg: 2 }}>
+                <TextInput
+                  label={"Full Name"}
+                  size="sm"
+                  radius="md"
+                  placeholder="e.g. Ramesh Shah"
+                  {...form.getInputProps("full_name")}
+                />
+                <SimpleGrid cols={{ base: 1, lg: 2 }}>
+                  <TextInput
+                    label={"Email Address"}
+                    size="sm"
+                    radius="md"
+                    placeholder="e.g. xyz@example.com"
+                    {...form.getInputProps("email")}
+                  />
+
+                  <TextInput
+                    label={"Contact Number"}
+                    size="sm"
+                    radius="md"
+                    placeholder="e.g. 98135XXXXXX"
+                    {...form.getInputProps("contact")}
+                  />
+                </SimpleGrid>
+              </SimpleGrid>
+            </Stack>
+
+            <Group justify="space-between">
+              <Button
+                size="xs"
+                radius="xl"
+                leftSection={
+                  openedAdvanced ? (
+                    <CaretUpIcon size={12} />
+                  ) : (
+                    <CaretDownIcon size={12} />
+                  )
+                }
+                variant="light"
+                onClick={() => {
+                  handlersAdvance.toggle();
+                }}
+              >
+                EnableAdvanced Search Options
+              </Button>
+
+              <Group gap="xs">
+                <Button
+                  onClick={() => {
+                    form.reset();
+                    setSearchVal({});
+                  }}
+                  leftSection={<XIcon />}
+                  size="xs"
+                  variant="light"
+                >
+                  Clear Search
+                </Button>
+                <Button
+                  onClick={() => {
+                    setSearchVal(form.getValues());
+                  }}
+                  leftSection={<MagnifyingGlassIcon />}
+                  size="xs"
+                >
+                  Apply Search
+                </Button>
+              </Group>
+            </Group>
+          </Paper>
+        </Container>
+      </>
+    );
+  };
+
   const RenderTable = () => {
     return (
       <ModuleTableLayout
         {...moduleConfig}
+        disableSearch
+        contentPreTable={<RenderCustomSearch />}
         apiDelete={deleteRecord}
         //Data
         columns={columns}

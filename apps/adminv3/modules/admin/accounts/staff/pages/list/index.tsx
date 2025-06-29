@@ -1,47 +1,40 @@
 "use client";
 
-import {
-  ModuleModalFormLayout,
-  ModuleTableLayout,
-  triggerNotification,
-} from "@vframework/ui";
+import { ListHandler } from "@vframework/core";
+import { ModuleTableLayout, triggerNotification } from "@vframework/ui";
 import { useRouter } from "next/navigation";
-import { FormHandler, ListHandler } from "@vframework/core";
 import {
   createRecord,
   deleteRecord,
-  updateRecord,
-  getRecords,
   disableRecord,
+  getRecords,
   getSingleRecord,
+  updateRecord,
 } from "../../module.api";
 
-import { columns } from "./list.columns";
 import {
   ActionIcon,
   Avatar,
   Badge,
-  Divider,
   Group,
+  Menu,
   Modal,
   Paper,
   SimpleGrid,
-  Space,
   Stack,
   Text,
-  Menu,
 } from "@mantine/core";
+import { columns } from "./list.columns";
 
 import { EyeIcon, WarningIcon, XIcon } from "@phosphor-icons/react";
 
-import { moduleConfig } from "../../module.config";
 import { _Form as Form } from "../../form/form";
 import { formProps } from "../../form/form.config";
+import { moduleConfig } from "../../module.config";
 
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
-import { RBACCheck } from "@/components/RBACCheck";
 import { endpoint } from "@/layouts/app";
 import { modals } from "@mantine/modals";
 
@@ -96,63 +89,63 @@ export function _List() {
 
   return (
     <>
-    
-        <ListHandler
-          endpoint={moduleConfig.endpoint}
-          moduleKey={moduleConfig.moduleKey}
-          getRecords={getRecords}
-          transformOnGet={(data) =>
-            data.map((item: any) => ({
-              ...item,
-              image: item?.image ? endpoint + item.image : null,
-            }))
-          }
-        >
-          <ModuleTableLayout
-            {...moduleConfig}
-            idAccessor="id"
-            apiEdit={updateRecord}
-            apiCreate={createRecord}
-            apiDelete={deleteRecord}
-            disableDelete
-            columns={columns}
-            rowStyle={({ gender }: any) => ({
-              background:
-                gender === "male" ? "var(--mantine-color-indigo-0)" : "",
-            })}
-            extraActions={({ row, refetch }: any) => (
-              <>
-                <Menu.Item
-                  leftSection={<EyeIcon />}
-                  onClick={async () => {
-                    triggerNotification.list.isLoading({});
-                    try {
-                      const res = await getSingleRecord(row.id);
-                      triggerNotification.list.isSuccess({});
-                      setActive(res);
-                      handlersFormModalPlayer.open();
-                    } catch {
-                      triggerNotification.list.isError({});
-                    }
-                  }}
-                >
-                  View Profile
-                </Menu.Item>
+      <ListHandler
+        endpoint={moduleConfig.endpoint}
+        moduleKey={moduleConfig.moduleKey}
+        getRecords={getRecords}
+        transformOnGet={(data) =>
+          data.map((item: any) => ({
+            ...item,
+            perm_cv: item?.is_staff1 || item?.is_staff3,
+            perm_applicant: item?.is_staff2 || item?.is_staff3,
+            image: item?.image ? endpoint + item.image : null,
+          }))
+        }
+      >
+        <ModuleTableLayout
+          {...moduleConfig}
+          idAccessor="id"
+          apiEdit={updateRecord}
+          apiCreate={createRecord}
+          apiDelete={deleteRecord}
+          disableDelete
+          columns={columns}
+          rowStyle={({ gender }: any) => ({
+            background:
+              gender === "male" ? "var(--mantine-color-indigo-0)" : "",
+          })}
+          extraActions={({ row, refetch }: any) => (
+            <>
+              <Menu.Item
+                leftSection={<EyeIcon />}
+                onClick={async () => {
+                  triggerNotification.list.isLoading({});
+                  try {
+                    const res = await getSingleRecord(row.id);
+                    triggerNotification.list.isSuccess({});
+                    setActive(res);
+                    handlersFormModalPlayer.open();
+                  } catch {
+                    triggerNotification.list.isError({});
+                  }
+                }}
+              >
+                View Profile
+              </Menu.Item>
 
-                <Menu.Item
-                  leftSection={<XIcon />}
-                  onClick={() => openDisableConfirm(row, refetch)}
-                >
-                  Disable Account
-                </Menu.Item>
-              </>
-            )}
-            hasModalForms
-            modalFormProps={{ width: "lg", formProps }}
-            modalForm={<Form />}
-          />
-        </ListHandler>
-     
+              <Menu.Item
+                leftSection={<XIcon />}
+                onClick={() => openDisableConfirm(row, refetch)}
+              >
+                Disable Account
+              </Menu.Item>
+            </>
+          )}
+          hasModalForms
+          modalFormProps={{ width: "lg", formProps }}
+          modalForm={<Form />}
+        />
+      </ListHandler>
 
       {/* Modal: View Profile */}
       <Modal

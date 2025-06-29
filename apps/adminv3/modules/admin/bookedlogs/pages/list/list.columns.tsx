@@ -1,9 +1,4 @@
-import { Avatar, Badge, Button, Group, Stack, Text } from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { CheckIcon } from "@phosphor-icons/react";
-import { toggleLogStatus } from "../../module.api";
-import { triggerNotification } from "@vframework/ui";
-import { useState } from "react";
+import { Badge, Group, Text } from "@mantine/core";
 
 export const columns = [
   {

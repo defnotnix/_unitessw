@@ -1,4 +1,4 @@
-import { Avatar, Badge, Group, Stack, Text } from "@mantine/core";
+import { Badge, Group, Text } from "@mantine/core";
 
 export const columns = [
   {

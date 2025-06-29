@@ -157,7 +157,7 @@ export function ModuleAuthSignIn() {
 
         Router.push("/signup-verify?id=" + form.getValues()?.email);
       } else {
-        setErrorType(response?.data?.type || "nan");
+        setErrorType(response?.data?.alias || "nan");
         form.setFieldValue("fLoading", false);
         triggerNotification.auth.isError({
           message: err.message || "Cannot Reach Server, Try Again!",
@@ -233,6 +233,14 @@ export function ModuleAuthSignIn() {
           <Alert py="xs" color="red" icon={<XIcon weight="bold" />}>
             <Text size="xs" c="red.8" fw={500} py="2">
               Cannot Reach Server, Try Again!
+            </Text>
+          </Alert>
+        );
+      case "cooldown_account":
+        return (
+          <Alert py="xs" color="red" icon={<XIcon weight="bold" />}>
+            <Text size="xs" c="red.8" fw={500} py="2">
+              Account is under cooldown. Please try again later.
             </Text>
           </Alert>
         );
@@ -337,9 +345,14 @@ export function ModuleAuthSignIn() {
             size="xs"
             label="Remember me"
           />
-          <Anchor size="xs" c="dark" fw={600} onClick={()=>{
-            Router.push("/forgot-password");
-          }}>
+          <Anchor
+            size="xs"
+            c="dark"
+            fw={600}
+            onClick={() => {
+              Router.push("/forgot-password");
+            }}
+          >
             {language == "en" ? "Forgot Password?" : "パス"}
           </Anchor>
         </Group>

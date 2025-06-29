@@ -28,8 +28,8 @@ export const columns = [
       return (
         <>
           <Group gap="xs">
-            <Badge size="xs" color={record?.is_active ? "blue" : "red"}>
-              {record?.is_published ? "Active" : "Unpublished"}
+            <Badge size="xs" color={record?.is_published ? "blue" : "red"}>
+              {record?.is_published ? "Published" : "Unpublished"}
             </Badge>
           </Group>
         </>

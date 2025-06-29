@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -30,6 +32,7 @@ export default function TokenCheck({ children }: PropsWithChildren) {
 
         setChecked(true);
       } catch (err) {
+        console.log(err);
         router.push("/");
       }
     };

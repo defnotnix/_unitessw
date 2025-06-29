@@ -118,6 +118,10 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                 </Text>
               </Group>
 
+              <Text size="6rem" opacity={0.05} c="gray.0">
+                Applicant<br/>Portal
+              </Text>
+
               <Box>
                 <Text size="3rem" c="gray.0">
                   {" "}

@@ -1,5 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
+import { useLanguage } from "@/layouts/app/app.context";
+import { apiPersonalInformation } from "@/modules/applicantProfile/module.api";
 import {
   ActionIcon,
   AspectRatio,
@@ -7,20 +11,19 @@ import {
   Badge,
   Box,
   Button,
-  Center,
-  Divider,
   Drawer,
   Grid,
   Group,
   Image,
   Paper,
   SimpleGrid,
-  Space,
   Stack,
   Table,
   Text,
   Tooltip,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { modals } from "@mantine/modals";
 import {
   BagIcon,
   BellIcon,
@@ -30,17 +33,13 @@ import {
   HeartIcon,
   XIcon,
 } from "@phosphor-icons/react";
-import dayjs from "dayjs";
-import { useLanguage } from "@/layouts/app/app.context";
-import { usePathname, useRouter } from "next/navigation";
-import { useDisclosure } from "@mantine/hooks";
-import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { apiPersonalInformation } from "@/modules/applicantProfile/module.api";
 import { moduleApiCall } from "@vframework/core";
 import { triggerNotification } from "@vframework/ui";
+import dayjs from "dayjs";
 import { jwtDecode } from "jwt-decode";
-import { modals } from "@mantine/modals";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { apiCancelInterview, apiUnnotify, markInterested } from "./module.api";
 
 // --------------------
@@ -84,18 +83,23 @@ const getLangValue = (primary: string, alt?: string, lang?: string) =>
 // --------------------
 export function UserCard({
   applicant,
-  onSuccess,
   onSuccessInterest,
   onSuccessBooking,
   onSuccessWishlist,
 }: {
   applicant: Applicant;
-  onSuccess?: any;
   onSuccessInterest?: any;
   onSuccessBooking?: any;
   onSuccessWishlist?: any;
 }) {
-  const tokenData: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
+  const [tokenData, setTokenData] = useState<any>(null);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("sswtoken");
+    if (token) {
+      setTokenData(jwtDecode(token));
+    }
+  }, []);
 
   const { language } = useLanguage();
   const lang = language === "jp" ? "jp" : "en";
@@ -104,19 +108,9 @@ export function UserCard({
 
   const [opened, { open, close }] = useDisclosure();
 
-  const Pathname = usePathname();
-
-  const genderLabel: any = {
-    M: t.male,
-    F: t.female,
-    O: t.other,
-  };
-
-  const age = dayjs().diff(applicant.dob, "year");
-
   const [info, setInfo] = useState<any>({});
 
-  const { data, isPending, mutate } = useMutation({
+  const { mutate } = useMutation({
     mutationKey: ["admin", "cv"],
     mutationFn: async () => {
       const res: any = await apiPersonalInformation.get(applicant.id);
@@ -335,7 +329,7 @@ export function UserCard({
             <Grid align="center" py="xs">
               <Grid.Col span={{ base: 12, lg: 5 }}>
                 <Group gap="md" wrap="nowrap" mb="sm">
-                  <Image h={120} w={100} src={applicant.image} />
+                  <Image h={120} w={100} src={applicant.image} alt="x" />
                   <div>
                     <Text size="1.xs" mb={4} fw={800}>
                       {applicant?.code}
@@ -603,7 +597,7 @@ export function UserCard({
 
                     const confirmText = isBooked
                       ? lang === "en"
-                        ? "Cancel"
+                        ? "Confirm"
                         : "キャンセル"
                       : lang === "en"
                         ? "Book"
@@ -715,7 +709,7 @@ export function UserCard({
                           seeker: tokenData?.user_id,
                           applicant: info?.mainId,
                         })
-                        .then((res) => {
+                        .then(() => {
                           setInfo({
                             ...info,
                             wishlist: true,
@@ -727,7 +721,7 @@ export function UserCard({
                             message: "Added to Wishlist",
                           });
                         })
-                        .catch((err) => {
+                        .catch(() => {
                           triggerNotification.form.isInfo({
                             message:
                               "This applicant has already been added to your wishlist",
@@ -740,7 +734,7 @@ export function UserCard({
 
                       moduleApiCall
                         .deleteRecord("/logs/discard/wishlist/", info?.mainId)
-                        .then((res) => {
+                        .then(() => {
                           setInfo({
                             ...info,
                             wishlist: false,
@@ -752,7 +746,7 @@ export function UserCard({
                             onSuccessWishlist();
                           }
                         })
-                        .catch((err) => {
+                        .catch(() => {
                           triggerNotification.form.isInfo({
                             message:
                               "This applicant has already been removed from your wishlist",
@@ -763,7 +757,7 @@ export function UserCard({
                 >
                   {!info?.wishlist
                     ? lang == "en"
-                      ? "Bookmark"
+                      ? "Save"
                       : "ブックマーク"
                     : lang == "en"
                       ? "Remove from Saved"

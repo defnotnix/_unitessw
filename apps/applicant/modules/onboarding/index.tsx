@@ -3,7 +3,6 @@
 import {
   ActionIcon,
   Box,
-  Breadcrumbs,
   Center,
   Container,
   Grid,
@@ -16,17 +15,14 @@ import {
   ThemeIcon,
 } from "@mantine/core";
 import {
-  ArrowLeftIcon,
   ArrowRightIcon,
   CheckIcon as Check,
   CheckIcon,
   ExclamationMarkIcon as ExclamationMark,
-  HashIcon as Hash,
   InfoIcon,
-  WarningIcon,
 } from "@phosphor-icons/react";
 import { FormHandler } from "@vframework/core";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useState } from "react";
 import { formProps } from "./steps/s1_Identity/form.config";
 
 import imgLogo from "@/assets/img/sswmini.png";
@@ -51,14 +47,14 @@ import { StepAcademics } from "./steps/s5_academics";
 import { StepWork } from "./steps/s6_work";
 import { StepCertificates } from "./steps/s7_certifications";
 
-import classes from "./_.module.css";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useForceUpdate } from "@mantine/hooks";
-import _, { pad } from "lodash";
-import { StepIdentification } from "./steps/s8_identification";
-import { jwtDecode } from "jwt-decode";
 import { endpoint } from "@/layouts/app";
+import { images } from "@/public/img";
+import { useForceUpdate } from "@mantine/hooks";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { jwtDecode } from "jwt-decode";
+import classes from "./_.module.css";
 import { StepVisit } from "./steps/s10_visit";
+import { StepIdentification } from "./steps/s8_identification";
 
 export function ModuleOnboarding() {
   const forceUpdate = useForceUpdate();
@@ -69,14 +65,10 @@ export function ModuleOnboarding() {
   const [personId, setPersonId] = useState(null);
   const [holder, setHolder] = useState({});
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
-  const [published, setPublished] = useState(false);
 
   const [reEdit, setReEdit] = useState(false);
 
-  const Params = useParams();
-  const queryParams = useSearchParams();
-
-  const queryClient = useQueryClient();
+  const [showForm, setShowForm] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "applicants", "edit"],
@@ -109,35 +101,36 @@ export function ModuleOnboarding() {
         }
 
         if (res?.data?.is_published) {
-          alert("Seems like your account is already published.");
           Router.push("/myprofile");
+          return formProps.initial;
+        } else {
+          setShowForm(true);
+          return {
+            ...res?.data,
+            ...res?.data?.a_background,
+
+            ...res?.data?.a_physical,
+            ...res?.data?.a_story,
+            ...res?.data?.a_identification,
+
+            category: String(res?.data?.category),
+            education: res?.data?.a_education || [],
+            work_experience: res?.data?.a_work_experience || [],
+            licenses: res?.data?.a_license_qualification || [],
+            visithistory: res?.data?.a_japan_visit || [],
+
+            image: res?.data?.image ? endpoint + res?.data?.image : null,
+            passport: res?.data?.a_identification?.passport
+              ? endpoint + res?.data?.a_identification?.passport
+              : null,
+            l_cert_image: res?.data?.a_identification?.l_cert_image
+              ? endpoint + res?.data?.a_identification?.l_cert_image
+              : null,
+            ssw_cert_image: res?.data?.a_identification?.ssw_cert_image
+              ? endpoint + res?.data?.a_identification?.ssw_cert_image
+              : null,
+          };
         }
-
-        return {
-          ...res?.data,
-          ...res?.data?.a_background,
-
-          ...res?.data?.a_physical,
-          ...res?.data?.a_story,
-          ...res?.data?.a_identification,
-
-          category: String(res?.data?.category),
-          education: res?.data?.a_education || [],
-          work_experience: res?.data?.a_work_experience || [],
-          licenses: res?.data?.a_license_qualification || [],
-          visithistory: res?.data?.a_japan_visit || [],
-
-          image: res?.data?.image ? endpoint + res?.data?.image : null,
-          passport: res?.data?.a_identification?.passport
-            ? endpoint + res?.data?.a_identification?.passport
-            : null,
-          l_cert_image: res?.data?.a_identification?.l_cert_image
-            ? endpoint + res?.data?.a_identification?.l_cert_image
-            : null,
-          ssw_cert_image: res?.data?.a_identification?.ssw_cert_image
-            ? endpoint + res?.data?.a_identification?.ssw_cert_image
-            : null,
-        };
       } else {
         return formProps.initial;
       }
@@ -443,12 +436,18 @@ export function ModuleOnboarding() {
     );
   };
 
-  if (!data) {
+  if (!showForm) {
     return (
       <>
-        <Center h={500}>
-          <Paper withBorder p="md">
-            <Loader size="xs" />
+        <Center h={"100vh"} bg="dark.9">
+          <Paper p="md" bg="none">
+            <Stack>
+              <Image src={images.logoMini} />
+
+              <Center>
+                <Loader color="white" size="xs" />
+              </Center>
+            </Stack>
           </Paper>
         </Center>
       </>

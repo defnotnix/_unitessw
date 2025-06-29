@@ -1,24 +1,18 @@
 "use client";
 
-import React, { useEffect } from "react";
 //next
 
 //mantine
 import {
-  Group,
-  Paper,
   Select,
   SimpleGrid,
   Stack,
   Switch,
   Text,
   TextInput,
-  ThemeIcon,
 } from "@mantine/core";
+import { DateInput } from "@mantine/dates";
 import { FormHandler } from "@vframework/core";
-import { ImageUpload } from "@vframework/ui";
-import { ExclamationMark } from "@phosphor-icons/react";
-import { DateInput, DatePickerInput } from "@mantine/dates";
 //mantine
 
 //icons

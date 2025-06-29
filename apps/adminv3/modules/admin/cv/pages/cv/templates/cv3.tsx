@@ -168,10 +168,7 @@ export function CV3({
       <Grid gutter={0}>
         <Grid.Col span={8} px="xl" py=".5in">
           <Group wrap="nowrap">
-            <Avatar
-              src={data?.image}
-              size="xl"
-            />
+            <Avatar src={data?.image} size="xl" />
             <div>
               <Text size="2.5rem" fw={800}>
                 {language === "en" ? data?.full_name : data?.furigana}
@@ -192,7 +189,7 @@ export function CV3({
           </Text>
 
           <Text size="xs" mt="md">
-                        {language === "en" ? data?.remark : data?.jp_remark}
+            {language === "en" ? data?.remark : data?.jp_remark}
           </Text>
 
           <Divider my="md" />
@@ -229,8 +226,7 @@ export function CV3({
                 <Table.Tr key={index}>
                   <Table.Td>{index + 1}</Table.Td>
                   <Table.Td>
-                                      {`${item.start_month}, ${item.start_year} - ${item.end_month}, ${item.end_year}`}
-
+                    {`${item.start_date} -  ${item.end_date}`}
                   </Table.Td>
                   <Table.Td>
                     <b>
@@ -283,9 +279,7 @@ export function CV3({
                 <Table.Tr key={index}>
                   <Table.Td>{index + 1}</Table.Td>
                   <Table.Td>
-                                      {`${item.start_month}, ${item.start_year} - ${item.end_month}, ${item.end_year}`}
-
-                  </Table.Td>
+   {`${item.start_date} -  ${item.end_date}`}                  </Table.Td>
                   <Table.Td>
                     <b>{language === "en" ? item.company : item.jp_company}</b>
                   </Table.Td>
@@ -303,7 +297,7 @@ export function CV3({
         <Grid.Col span={4} p="xl" bg={color + ".0"} h="10.35in" mt="1.35in">
           <Stack gap="s">
             <div>
-             <Text size="xs" fw={800}>
+              <Text size="xs" fw={800}>
                 {language === "en" ? "My Personal Traits" : "個人特徴"}
               </Text>
               <Text size="10px" lh="13px" mt="sm">
@@ -314,7 +308,7 @@ export function CV3({
             </div>
             <Divider color={color + ".4"} />
             <div>
-             <Text size="xs" fw={800}>
+              <Text size="xs" fw={800}>
                 {language === "en" ? "What motivates me." : "動機とは"}
               </Text>
               <Text size="10px" lh="13px" mt="sm">

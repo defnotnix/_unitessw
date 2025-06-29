@@ -1,43 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
 //mantine
 import {
-  ActionIcon,
-  Badge,
-  Box,
-  Button,
-  Center,
   Checkbox,
   Divider,
-  FileButton,
-  FileInput,
-  Grid,
   Group,
-  Image,
-  MultiSelect,
-  NumberInput,
-  Paper,
   PasswordInput,
-  Pill,
-  PillsInput,
-  Radio,
-  Select,
   SimpleGrid,
   Stack,
   Text,
-  Textarea,
   TextInput,
 } from "@mantine/core";
 //framework
 import { FormHandler } from "@vframework/core";
-import { FormElement, ImageUpload } from "@vframework/ui";
-import { DateInput, TimeInput, YearPickerInput } from "@mantine/dates";
-
-import { useQuery } from "@tanstack/react-query";
+import { ImageUpload } from "@vframework/ui";
 
 import classes from "./form.module.css";
-import { Plus, Trash } from "@phosphor-icons/react";
 
 // Assuming you have these defined elsewhere
 

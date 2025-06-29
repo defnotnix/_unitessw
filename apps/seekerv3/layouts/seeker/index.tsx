@@ -162,28 +162,6 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
 
             <Grid.Col span={{ base: 12, lg: 3 }}>
               <Group justify="flex-end" gap="xs">
-                <Menu withArrow shadow="xl">
-                  <Menu.Target>
-                    <ActionIcon color="gray" variant="subtle">
-                      <MegaphoneSimpleIcon />
-                    </ActionIcon>
-                  </Menu.Target>
-                  <Menu.Dropdown w={400}>
-                    <Box p="sm" fw={600}>
-                      <Text size="sm">Announcements</Text>
-                    </Box>
-                    <AnnouncementList />
-                  </Menu.Dropdown>
-                </Menu>
-
-                <Menu>
-                  <Menu.Target>
-                    <ActionIcon color="gray" variant="subtle">
-                      <BellIcon />
-                    </ActionIcon>
-                  </Menu.Target>
-                </Menu>
-
                 <LangSwitcher />
                 <Button
                   size="xs"

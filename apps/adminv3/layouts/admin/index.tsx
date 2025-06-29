@@ -1,6 +1,6 @@
 "use client";
 
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useEffect, useState } from "react";
 //next
 
 //mantine
@@ -82,7 +82,14 @@ export function LayoutAdmin({ children }: PropsWithChildren) {
   const [openedPassword, handlePassword] = useDisclosure();
   const [openedDrawer, handleDrawer] = useDisclosure();
 
-  const tokenData: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
+  const [tokenData, setTokenData] = useState<any>(null);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("sswtoken");
+    if (token) {
+      setTokenData(jwtDecode(token));
+    }
+  }, []);
 
   // * CONTEXT
 

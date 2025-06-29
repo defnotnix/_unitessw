@@ -1,4 +1,6 @@
-import { PropsWithChildren, useEffect } from "react";
+"use client";
+
+import { PropsWithChildren, Suspense, useEffect } from "react";
 //vfw
 import { QueryWrapper, AppWrapper } from "@vframework/core";
 
@@ -52,7 +54,9 @@ export function LayoutApp({ children }: PropsWithChildren) {
         }
       >
         <GoogleOAuthProvider clientId="891191709922-oqundf96vqb74d9ubv0nd5urhn5eh072.apps.googleusercontent.com">
-          <LanguageProvider>{children}</LanguageProvider>
+          <LanguageProvider>
+            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+          </LanguageProvider>
         </GoogleOAuthProvider>
       </AppWrapper>
     </QueryWrapper>

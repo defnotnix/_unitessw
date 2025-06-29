@@ -14,9 +14,10 @@ import {
   SimpleGrid,
   Space,
   Stack,
-  Text
+  Text,
 } from "@mantine/core";
 import {
+  ArrowRightIcon,
   ArrowUpRightIcon,
   ArticleIcon,
   CheckIcon,
@@ -24,7 +25,7 @@ import {
   EyeIcon,
   Icon,
   ScrollIcon,
-  UsersIcon
+  UsersIcon,
 } from "@phosphor-icons/react";
 
 import { endpoint } from "@/layouts/app";
@@ -35,7 +36,7 @@ import { moduleApiCall } from "@vframework/core";
 import { triggerNotification } from "@vframework/ui";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getUnpublished, publishRecord } from "../applicants/module.api";
 import { getSeekerReqRecords, toggleLogStatus } from "../bookedlogs/module.api";
 import classes from "./_.module.css";
@@ -43,14 +44,19 @@ import classes from "./_.module.css";
 export function ModuleAdminDashboard() {
   const Router = useRouter();
 
-  const tokenData: any = jwtDecode<any>(
-    sessionStorage.getItem("sswtoken") || ""
-  );
+  const [tokenData, setTokenData] = useState<any>(null);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("sswtoken");
+    if (token) {
+      setTokenData(jwtDecode(token));
+    }
+  }, []);
 
   const queryApplicants = useQuery({
     queryKey: ["admin", "dashboard", "applicants"],
     queryFn: async () => {
-      const res = await getUnpublished();
+      const res = await getUnpublished({});
       console.log(res);
       return res.results;
     },
@@ -467,7 +473,7 @@ export function ModuleAdminDashboard() {
                           </Text>
                         </Stack>
 
-                        <Button
+                        {/* <Button
                           size="xs"
                           p={0}
                           px="sm"
@@ -531,7 +537,16 @@ export function ModuleAdminDashboard() {
                           }}
                         >
                           Accept
-                        </Button>
+                        </Button> */}
+
+                        <ActionIcon
+                          variant="light"
+                          onClick={() => {
+                            Router.push("/admin/applicants/notified");
+                          }}
+                        >
+                          <ArrowRightIcon />
+                        </ActionIcon>
                       </Group>
                     </SimpleGrid>
                   </Paper>

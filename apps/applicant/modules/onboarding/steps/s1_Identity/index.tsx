@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useEffect } from "react";
 //next
 
 //mantine
 import {
+  Center,
   Divider,
+  Grid,
   Group,
+  Image,
   Paper,
   Select,
   SimpleGrid,
@@ -16,19 +18,22 @@ import {
   TextInput,
   ThemeIcon,
 } from "@mantine/core";
-import { FormHandler } from "@vframework/core";
-import { ImageUpload } from "@vframework/ui";
+import { DatePickerInput } from "@mantine/dates";
 import {
-  ExclamationMark,
   FacebookLogoIcon,
+  InfoIcon,
   InstagramLogoIcon,
   LinkedinLogoIcon,
-  WhatsappLogoIcon,
 } from "@phosphor-icons/react";
-import { DatePickerInput } from "@mantine/dates";
-import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
+import { FormHandler } from "@vframework/core";
+import { ImageUpload } from "@vframework/ui";
+import { useParams } from "next/navigation";
 import { apiCategory } from "../../module.api";
+
+import imgFemaileRef from "@/assets/img/female_reference.jpg";
+import imgMaleRef from "@/assets/img/male_reference.jpg";
+
 //mantine
 
 //icons
@@ -106,13 +111,59 @@ export function StepIdentity() {
         </div>
 
         <Space h="md" />
-        <ImageUpload
-          {...form.getInputProps("image")}
-          label="Profile Picture"
-          description="Upload a recent passport-size photo"
-          onChange={(image: any) => form.setFieldValue("image", image)}
-          value={form.getValues()?.image}
-        />
+
+        <Grid gutter="xs">
+          <Grid.Col span={{ base: 12, lg: 6 }}>
+            <ImageUpload
+              {...form.getInputProps("image")}
+              label="Profile Picture"
+              description="Upload a recent passport-size photo"
+              onChange={(image: any) => form.setFieldValue("image", image)}
+              value={form.getValues()?.image}
+              height={300}
+            />
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, lg: 6 }}>
+            <Paper bg="gray.1" withBorder>
+              <Paper bg="gray.3">
+                <Group h={50} px="md">
+                  <ThemeIcon>
+                    <InfoIcon />
+                  </ThemeIcon>
+                  <Text size="xs" fw={800}>
+                    <b>Profile Picture Guideline:</b>
+                  </Text>
+                </Group>
+              </Paper>
+              <Center h={250} p="md">
+                <Stack gap="xs">
+                  <Group>
+                    <div>
+                      <Image h={120} fit="contain" src={imgMaleRef.src} />
+                    </div>
+                    <div>
+                      <Image h={120} fit="contain" src={imgFemaileRef.src} />
+                    </div>
+                  </Group>
+                  <Text size="xs">
+                    <b>Dress Code:</b> Formal attire is required.
+                    <br />
+                    <b>Face Visibility:</b> Your face must be clearly visible
+                    and unobstructed.
+                    <br />
+                    <b>Background:</b> Use a plain, simple background.
+                    <br />
+                    <b>Subject:</b> The photo must feature only one person.
+                    <br />
+                    <b>For Males:</b> A tie is required.
+                    <br />
+                    <b>For Females:</b> No tie is necessary.
+                  </Text>
+                </Stack>
+              </Center>
+            </Paper>
+          </Grid.Col>
+        </Grid>
 
         <TextInput
           label="Youtube URL"
@@ -257,6 +308,7 @@ export function StepIdentity() {
 
         <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="xs">
           <TextInput
+            disabled
             label="Email"
             placeholder="e.g. user@example.com"
             description="A valid email address"

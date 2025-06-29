@@ -65,7 +65,7 @@ export async function get({
   } catch (error: any) {
     let err: any = new Error("Error");
 
-    if (error?.response?.data?.message == "Token Expired") {
+    if (error?.response?.data?.detail == "Access Token Expired") {
       const res = await handleTokenExpiry();
 
       if (res) {
@@ -112,7 +112,7 @@ export async function post({
   } catch (error: any) {
     let err: any = new Error("Error");
 
-    if (error?.response?.data?.message == "Token Expired") {
+    if (error?.response?.data?.detail == "Access Token Expired") {
       const res = await handleTokenExpiry();
 
       if (res) {
@@ -153,7 +153,7 @@ export async function patch({
   } catch (error: any) {
     let err: any = new Error("Error");
 
-    if (error?.response?.data?.message == "Token Expired") {
+    if (error?.response?.data?.detail == "Access Token Expired") {
       const res = await handleTokenExpiry();
 
       if (res) {
@@ -194,7 +194,7 @@ export async function del({
   } catch (error: any) {
     let err: any = new Error("Error");
 
-    if (error?.response?.data?.message == "Token Expired") {
+    if (error?.response?.data?.detail == "Access Token Expired") {
       const res = await handleTokenExpiry();
 
       if (res) {

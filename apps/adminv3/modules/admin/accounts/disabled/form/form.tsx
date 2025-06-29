@@ -9,12 +9,11 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  TextInput
+  TextInput,
 } from "@mantine/core";
 //framework
 import { FormHandler } from "@vframework/core";
 import { ImageUpload } from "@vframework/ui";
-
 
 import classes from "./form.module.css";
 

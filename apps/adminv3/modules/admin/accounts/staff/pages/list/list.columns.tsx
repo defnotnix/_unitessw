@@ -18,9 +18,9 @@ export const columns = [
     width: 150,
     title: "Permissions",
     render: (record: any) => {
-      if (record.is_staff_1) return "CVs";
-      if (record.is_staff_2) return "Applicants";
-      if (record.is_staff_3) return "CVs & Applicants";
+      if (record.is_staff1) return "CVs";
+      if (record.is_staff2) return "Applicants";
+      if (record.is_staff3) return "CVs & Applicants";
       return "—";
     },
     sortable: false,

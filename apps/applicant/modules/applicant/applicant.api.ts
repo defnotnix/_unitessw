@@ -25,6 +25,7 @@ export const apiPersonalInformation = {
       body,
     });
   },
+
   update: async (body: any, id: any) => {
     return await moduleApiCall.editRecord("/applicant/info/", body, id);
   },
