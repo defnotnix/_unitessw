@@ -42,6 +42,7 @@ export function LayoutApp({ children }: PropsWithChildren) {
         theme={configThemeMantine}
         defaultColorScheme={"light"}
         classNames={classes}
+           title="Applicant-Unite SSW"
         extraHeadTags={
           <>
             <link rel="preconnect" href="https://fonts.googleapis.com" />

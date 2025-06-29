@@ -38,6 +38,7 @@ export function LayoutApp({ children }: PropsWithChildren) {
       }}
     >
       <AppWrapper
+        title="Seeker-Unite SSW"
         theme={configThemeMantine}
         defaultColorScheme={"light"}
         classNames={classes}
