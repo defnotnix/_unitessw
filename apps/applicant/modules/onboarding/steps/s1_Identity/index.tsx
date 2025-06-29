@@ -168,7 +168,7 @@ export function StepIdentity() {
         <TextInput
           label="Youtube URL"
           placeholder="e.g. https://www.youtube.com/watch?v=nBydCvT195k"
-          description="Enter your full legal name as in passport"
+          description="Under the video Click on Share > Embed > Copy the URL and paste it here"
           {...form.getInputProps("youtube_link")}
           leftSection={
             <Text size="xs" fw={800}>
