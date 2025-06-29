@@ -111,7 +111,7 @@ export function ModuleAuthSignIn() {
     },
     onSuccess: (res) => {
       setCompleted(true);
-      sessionStorage.setItem("sswtokenseeker", res?.data?.access_token || "");
+      sessionStorage.setItem("sswtoken", res?.data?.access_token || "");
 
       if (form.values.remember) {
         handleRememberMe();

@@ -85,7 +85,7 @@ export function LayoutAdmin({ children }: PropsWithChildren) {
   const [tokenData, setTokenData] = useState<any>(null);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("sswtokenadmin");
+    const token = sessionStorage.getItem("sswtoken");
     if (token) {
       setTokenData(jwtDecode(token));
     }
@@ -655,7 +655,7 @@ export function LayoutAdmin({ children }: PropsWithChildren) {
                           .createRecord("/authenticate/logout/", {})
                           .then((res) => {
                             if (!res.err) {
-                              sessionStorage.removeItem("sswtokenadmin");
+                              sessionStorage.removeItem("sswtoken");
                               Router.push("/");
                             }
                           });

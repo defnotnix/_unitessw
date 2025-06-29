@@ -95,7 +95,7 @@ export function UserCard({
   const [tokenData, setTokenData] = useState<any>(null);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("sswtokenseeker");
+    const token = sessionStorage.getItem("sswtoken");
     if (token) {
       setTokenData(jwtDecode(token));
     }

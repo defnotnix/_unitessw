@@ -81,7 +81,7 @@ export function ModuleApplicantBooked() {
     queryKey: ["seeker", "saved"],
     queryFn: async () => {
       const tokenData: any = jwtDecode(
-        sessionStorage.getItem("sswtokenseeker") || ""
+        sessionStorage.getItem("sswtoken") || ""
       );
 
       const res = await moduleApiCall.getRecords({
