@@ -44,7 +44,7 @@ export function ModuleOnboarding() {
   const Router = useRouter();
   const [complete, setComplete] = useState(false);
 
-  const token: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
+  const token: any = jwtDecode(sessionStorage.getItem("sswtokenadmin") || "");
   console.log(token);
 
   const FormLayout = ({ children }: PropsWithChildren) => {

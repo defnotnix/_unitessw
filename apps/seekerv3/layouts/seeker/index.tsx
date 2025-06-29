@@ -171,7 +171,7 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
                       .createRecord("/authenticate/logout/", {})
                       .then((res) => {
                         if (!res.err) {
-                          sessionStorage.removeItem("sswtoken");
+                          sessionStorage.removeItem("sswtokenseeker");
                           Router.push("/");
                         }
                       });

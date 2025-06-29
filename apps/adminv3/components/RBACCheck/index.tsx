@@ -26,7 +26,7 @@ export function RBACCheck({
 
   useEffect(() => {
     try {
-      const token = sessionStorage.getItem("sswtoken");
+      const token = sessionStorage.getItem("sswtokenadmin");
 
       if (!token) {
         setIsAuthorized(false);

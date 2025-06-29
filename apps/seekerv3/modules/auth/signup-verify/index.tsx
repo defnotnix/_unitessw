@@ -142,7 +142,7 @@ export function ModuleAuthOTP() {
     },
     onSuccess: (res) => {
       setCompleted(true);
-      //sessionStorage.setItem("Unite SSWtoken", res?.data?.access_token || "");
+      //sessionStorage.setItem("Unite sswtokenseeker", res?.data?.access_token || "");
 
       // if (form.values.remember) {
       //   handleRememberMe();

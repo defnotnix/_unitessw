@@ -17,7 +17,7 @@ export default function TokenCheck({ children }: PropsWithChildren) {
       try {
         const token =
           typeof window !== "undefined"
-            ? sessionStorage.getItem("sswtoken")
+            ? sessionStorage.getItem("sswtokenseeker")
             : null;
 
         if (!token) {

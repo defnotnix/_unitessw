@@ -47,7 +47,7 @@ export function ModuleAdminDashboard() {
   const [tokenData, setTokenData] = useState<any>(null);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("sswtoken");
+    const token = sessionStorage.getItem("sswtokenadmin");
     if (token) {
       setTokenData(jwtDecode(token));
     }
