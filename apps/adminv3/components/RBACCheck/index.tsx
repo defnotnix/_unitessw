@@ -45,7 +45,7 @@ export function RBACCheck({
     }
   }, [allowList]);
 
-  if (isAuthorized === null) {
+  if (!customRender && isAuthorized === null) {
     return (
       <Center h={400}>
         <Loader size={16} />
