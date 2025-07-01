@@ -16,7 +16,7 @@ export const configThemeMantineMain: any = {
   },
   primaryColor: "brand",
   primaryShade: {
-    light: 6,
+    light: 7,
     dark: 5,
   },
   autoContrast: true,

@@ -3,7 +3,6 @@
 //styles
 import {
   ActionIcon,
-  Avatar,
   Button,
   Container,
   Divider,
@@ -144,7 +143,7 @@ export function LayoutSiteFooter() {
 
           <Grid.Col span={{ base: 12, lg: 5 }}>
             <Group wrap="nowrap">
-              <Image src={imgLogo.src} h={32} w={54} fit="contain" />
+              <Image src={imgLogo.src} h={32} w={54} fit="contain" alt="x" />
               <div>
                 <Text size="xl" c="gray.0" tt="uppercase">
                   {state.language == "en" ? "Unite SSW" : "マナビヤネパール"}

@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import {
   ActionIcon,
   Anchor,
   AspectRatio,
+  Burger,
   Button,
-  Center,
   Container,
   Grid,
   Group,
@@ -18,15 +19,14 @@ import {
 } from "@mantine/core";
 import {
   ArrowRightIcon,
+  CheckIcon,
   MapPinIcon,
   PhoneIcon,
-  CheckIcon,
 } from "@phosphor-icons/react";
-import { Carousel } from "@mantine/carousel";
 
+import imgApplicantBooked from "@/assets/img/hired.png";
 import imgApplicantOnboarding from "@/assets/img/onboarding.png";
 import imgApplicantVerification from "@/assets/img/verification.png";
-import imgApplicantBooked from "@/assets/img/hired.png";
 
 import imgP1 from "@/assets/img/p1.png";
 import imgP2 from "@/assets/img/p2.png";
@@ -38,7 +38,9 @@ import imgP7 from "@/assets/img/p7.png";
 
 import imgLogo from "@/assets/img/logo.png";
 import { LayoutSiteFooter } from "@/components/footer";
+import { useScrollIntoView } from "@mantine/hooks";
 import { chunk } from "lodash";
+import { useRouter } from "next/navigation";
 
 const companyStats = [
   {
@@ -163,9 +165,32 @@ const companyStats = [
   },
 ];
 
-export default function () {
+export default function PageHome() {
+  const Router = useRouter();
+
   const state = {
     language: "en",
+  };
+
+  const scroll = {
+    hero: useScrollIntoView<HTMLDivElement>({
+      offset: 0,
+    }),
+    about: useScrollIntoView<HTMLDivElement>({
+      offset: 0,
+    }),
+    forJobSeekers: useScrollIntoView<HTMLDivElement>({
+      offset: 0,
+    }),
+    forEnterprise: useScrollIntoView<HTMLDivElement>({
+      offset: 0,
+    }),
+    company: useScrollIntoView<HTMLDivElement>({
+      offset: 0,
+    }),
+    contact: useScrollIntoView<HTMLDivElement>({
+      offset: 0,
+    }),
   };
 
   return (
@@ -175,7 +200,7 @@ export default function () {
           <Group justify="space-between">
             <Group>
               <Group gap={"xs"}>
-                <Image h={24} w={24} fit="contain" src={imgLogo.src} />
+                <Image alt="" h={24} w={24} fit="contain" src={imgLogo.src} />
                 <Text size="sm" fw={800}>
                   Unite SSW
                 </Text>
@@ -183,35 +208,84 @@ export default function () {
 
               <Space w="xl" />
 
-              <Anchor c="dark" size="sm" fw={600}>
+              <Anchor
+                c="dark"
+                size="sm"
+                fw={600}
+                visibleFrom="lg"
+                onClick={() => {
+                  scroll.hero.scrollIntoView();
+                }}
+              >
                 Home
               </Anchor>
-              <Anchor c="dark" size="sm" fw={600}>
-                Showreel
-              </Anchor>
-              <Anchor c="dark" size="sm" fw={600}>
+
+              <Anchor
+                c="gray.6"
+                size="sm"
+                fw={600}
+                visibleFrom="lg"
+                onClick={() => {
+                  scroll.about.scrollIntoView();
+                }}
+              >
                 About
               </Anchor>
-              <Anchor c="dark" size="sm" fw={600}>
-                How to Apply
+              <Anchor
+                c="gray.6"
+                size="sm"
+                fw={600}
+                visibleFrom="lg"
+                onClick={() => {
+                  scroll.forJobSeekers.scrollIntoView();
+                }}
+              >
+                For Job Seekers
               </Anchor>
-              <Anchor c="dark" size="sm" fw={600}>
+              <Anchor
+                c="gray.6"
+                size="sm"
+                fw={600}
+                visibleFrom="lg"
+                onClick={() => {
+                  scroll.forEnterprise.scrollIntoView();
+                }}
+              >
+                For Enterprise
+              </Anchor>
+              <Anchor
+                c="gray.6"
+                size="sm"
+                fw={600}
+                visibleFrom="lg"
+                onClick={() => {
+                  scroll.company.scrollIntoView();
+                }}
+              >
                 Company
               </Anchor>
-              <Anchor c="dark" size="sm" fw={600}>
+              <Anchor
+                c="gray.6"
+                size="sm"
+                fw={600}
+                visibleFrom="lg"
+                onClick={() => {
+                  scroll.contact.scrollIntoView();
+                }}
+              >
                 Contact
               </Anchor>
             </Group>
 
             <Group gap="xs">
-              <Group gap="xs">
+              <Group gap="xs" visibleFrom="lg">
                 <MapPinIcon weight="duotone" />
                 <Text size="xs" fw={600}>
                   Satdobato, Kathmandu, Nepal.
                 </Text>
               </Group>
 
-              <Group gap="xs">
+              <Group gap="xs" visibleFrom="lg">
                 <PhoneIcon weight="duotone" />
                 <Text size="xs" fw={600}>
                   +977 9813512312
@@ -219,34 +293,50 @@ export default function () {
               </Group>
 
               <Space w="xs" />
+
               <Button size="xs">Sign In / Register</Button>
+              <Burger size="xs" />
             </Group>
           </Group>
         </Container>
       </header>
 
-      <section>
+      <section ref={scroll.hero.targetRef}>
         <Container py={50}>
           <Grid>
             <Grid.Col span={{ base: 12, lg: 2 }}>
-              <Text size="3rem" fw={800} pt="xs">
+              <Text size="3rem" fw={800} pt="xs" visibleFrom="lg">
                 特<br />
                 定<br />
                 技<br />能
               </Text>
+              <Text size="2rem" fw={800} pt="xs" hiddenFrom="lg">
+                特定技能
+              </Text>
             </Grid.Col>
             <Grid.Col span={{ base: 12, lg: 7 }}>
               <Stack>
-                <Text size="4rem" fw={700}>
+                <Text size="4rem" fw={700} visibleFrom="lg">
                   Where skilled workers meet opportunity — connecting talent
                   with companies in Japan.
                 </Text>
 
-                <Group gap="xs">
-                  <Button radius="xl" size="lg">
-                    How can i apply?
+                <Text size="3rem" fw={700} hiddenFrom="lg">
+                  Where skilled workers meet opportunity — connecting talent
+                  with companies in Japan.
+                </Text>
+
+                <Group gap="xs" my="md">
+                  <Button radius="xl" size="lg" onClick={() => {}}>
+                    How does it work?
                   </Button>
-                  <Button radius="xl" size="lg">
+                  <Button
+                    radius="xl"
+                    size="lg"
+                    onClick={() => {
+                      Router.push("https://applicant.unitessw.com");
+                    }}
+                  >
                     Apply Now
                   </Button>
                   <ActionIcon variant="light" size={48} radius="xl">
@@ -269,8 +359,8 @@ export default function () {
               <Text size="xs" fw={800}>
                 We are building a dynamic platform designed to bridge the gap
                 between skilled individuals actively seeking meaningful work and
-                companies eager to discover top-tier talent. Whether you're a
-                craftsman, technician, creative, or specialist, our mission is
+                companies eager to discover top-tier talent. Whether you&apos;re
+                a craftsman, technician, creative, or specialist, our mission is
                 to help you showcase your expertise and connect with
                 organizations that value your skills.
               </Text>
@@ -296,7 +386,7 @@ export default function () {
         </AspectRatio>
       </Container>
 
-      <section>
+      <section ref={scroll.about.targetRef}>
         <Container py={{ base: 100 }}>
           <Grid>
             <Grid.Col span={{ base: 12, lg: 2 }}>
@@ -306,7 +396,12 @@ export default function () {
             </Grid.Col>
             <Grid.Col span={{ base: 12, lg: 6 }}>
               <Stack>
-                <Text size="3rem" fw={700}>
+                <Text size="3rem" fw={700} visibleFrom="lg">
+                  A platform that connects skilled workers seeking opportunities
+                  with companies in search of qualified candidates
+                </Text>
+
+                <Text size="2rem" fw={700} hiddenFrom="lg">
                   A platform that connects skilled workers seeking opportunities
                   with companies in search of qualified candidates
                 </Text>
@@ -315,8 +410,8 @@ export default function () {
                   We are building a dynamic platform designed to bridge the gap
                   between skilled individuals actively seeking meaningful work
                   and companies eager to discover top-tier talent. Whether
-                  you're a craftsman, technician, creative, or specialist, our
-                  mission is to help you showcase your expertise and connect
+                  you&apos;re a craftsman, technician, creative, or specialist,
+                  our mission is to help you showcase your expertise and connect
                   with organizations that value your skills.
                 </Text>
 
@@ -324,8 +419,8 @@ export default function () {
                   We are building a dynamic platform designed to bridge the gap
                   between skilled individuals actively seeking meaningful work
                   and companies eager to discover top-tier talent. Whether
-                  you're a craftsman, technician, creative, or specialist, our
-                  mission is to help you showcase your expertise and connect
+                  you&apos;re a craftsman, technician, creative, or specialist,
+                  our mission is to help you showcase your expertise and connect
                   with organizations that value your skills.
                 </Text>
               </Stack>
@@ -337,7 +432,10 @@ export default function () {
                   between skilled individuals actively.
                 </Text>
 
-                <Image src="https://images.unsplash.com/photo-1514336979248-0d11928b751d?q=80&w=1631&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+                <Image
+                  alt=""
+                  src="https://images.unsplash.com/photo-1514336979248-0d11928b751d?q=80&w=1631&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                />
 
                 <Text size="xs" fw={700} maw={200}>
                   We are building a dynamic platform.
@@ -353,6 +451,7 @@ export default function () {
           background:
             "linear-gradient(-120deg,var(--mantine-color-gray-9),var(--mantine-color-dark-9))",
         }}
+        ref={scroll.forJobSeekers.targetRef}
       >
         <Container py={{ base: 100, lg: 160 }}>
           <Grid>
@@ -363,9 +462,20 @@ export default function () {
             </Grid.Col>
             <Grid.Col span={{ base: 12, lg: 6 }}>
               <Stack>
-                <Text size="3rem" fw={600} c="gray.0" mt={-8}>
-                  Ready to take your career to Japan? Here's how we help make it
-                  happen.
+                <Text size="3rem" fw={600} c="gray.0" mt={-8} visibleFrom="lg">
+                  Ready to take your career to Japan? Here&apos;s how we help
+                  make it happen.
+                </Text>
+                <Text
+                  size="2rem"
+                  fw={600}
+                  c="gray.0"
+                  mt={-8}
+                  hiddenFrom="lg
+                "
+                >
+                  Ready to take your career to Japan? Here&apos;s how we help
+                  make it happen.
                 </Text>
               </Stack>
             </Grid.Col>
@@ -384,7 +494,7 @@ export default function () {
           <SimpleGrid cols={{ base: 1, lg: 3 }} my={64} spacing={4}>
             <Paper>
               <Paper bg="gray.1" h={300}>
-                <Image src={imgApplicantOnboarding.src} h={300} />
+                <Image alt="" src={imgApplicantOnboarding.src} h={300} />
               </Paper>
 
               <SimpleGrid cols={2} p="xl">
@@ -401,7 +511,7 @@ export default function () {
 
             <Paper>
               <Paper bg="gray.1" h={300}>
-                <Image src={imgApplicantVerification.src} h={300} />
+                <Image alt="" src={imgApplicantVerification.src} h={300} />
               </Paper>
               <SimpleGrid cols={2} p="xl">
                 <Text size="lg" fw={800}>
@@ -417,7 +527,7 @@ export default function () {
 
             <Paper>
               <Paper bg="gray.1" h={300}>
-                <Image src={imgApplicantBooked.src} h={300} />
+                <Image alt="" src={imgApplicantBooked.src} h={300} />
               </Paper>
               <SimpleGrid cols={2} p="xl">
                 <Text size="lg" fw={800}>
@@ -441,7 +551,13 @@ export default function () {
             </Grid.Col>
             <Grid.Col span={{ base: 12, lg: 4 }}>
               <Group justify="flex-end" gap="xs">
-                <Button rightSection={<ArrowRightIcon />} size="lg">
+                <Button
+                  rightSection={<ArrowRightIcon />}
+                  size="lg"
+                  onClick={() => {
+                    Router.push("https://applicant.unitessw.com");
+                  }}
+                >
                   Register Now
                 </Button>
               </Group>
@@ -454,6 +570,7 @@ export default function () {
         style={{
           background: "#232b6b",
         }}
+        ref={scroll.forEnterprise.targetRef}
       >
         <Container py={{ base: 100, lg: 160 }}>
           <Grid gutter="xl">
@@ -463,7 +580,10 @@ export default function () {
                   For Enterprise
                 </Text>
 
-                <Text size="3rem" fw={600} c="gray.0" mt={-8}>
+                <Text size="3rem" fw={600} c="gray.0" mt={-8} visibleFrom="lg">
+                  Where companies find skilled & verified talents.
+                </Text>
+                <Text size="2rem" fw={600} c="gray.0" mt={-8} hiddenFrom="lg">
                   Where companies find skilled & verified talents.
                 </Text>
 
@@ -527,14 +647,13 @@ export default function () {
 
                 <Group gap="xs">
                   <Button
-                    color="dark.9"
                     size="lg"
+                    color="white"
                     radius="xl"
-                    rightSection={<ArrowRightIcon />}
+                    onClick={() => {
+                      scroll.contact.scrollIntoView();
+                    }}
                   >
-                    Join us today
-                  </Button>
-                  <Button size="lg" color="white" radius="xl">
                     Contact Us
                   </Button>
                 </Group>
@@ -546,27 +665,27 @@ export default function () {
             </Grid.Col>
 
             <Grid.Col span={{ base: 12, lg: 6 }} offset={{ base: 0, lg: 1 }}>
-              <SimpleGrid cols={{ base: 1, lg: 3 }} spacing={4}>
+              <SimpleGrid cols={{ base: 2, lg: 3 }} spacing={4}>
                 <Paper h={250}>
-                  <Image src={imgP1.src} h={250} fit="cover" />
+                  <Image alt="" src={imgP1.src} h={250} fit="cover" />
                 </Paper>
                 <Paper h={250}>
-                  <Image src={imgP2.src} h={250} fit="cover" />
+                  <Image alt="" src={imgP2.src} h={250} fit="cover" />
                 </Paper>
                 <Paper h={250}>
-                  <Image src={imgP3.src} h={250} fit="cover" />
+                  <Image alt="" src={imgP3.src} h={250} fit="cover" />
                 </Paper>
                 <Paper h={250}>
-                  <Image src={imgP4.src} h={250} fit="cover" />
+                  <Image alt="" src={imgP4.src} h={250} fit="cover" />
                 </Paper>
                 <Paper h={250}>
-                  <Image src={imgP5.src} h={250} fit="cover" />
+                  <Image alt="" src={imgP5.src} h={250} fit="cover" />
                 </Paper>
                 <Paper h={250}>
-                  <Image src={imgP6.src} h={250} fit="cover" />
+                  <Image alt="" src={imgP6.src} h={250} fit="cover" />
                 </Paper>
                 <Paper h={250}>
-                  <Image src={imgP7.src} h={250} fit="cover" />
+                  <Image alt="" src={imgP7.src} h={250} fit="cover" />
                 </Paper>
                 <Paper bg="none">
                   <Group h={250} justify="flex-end" align="flex-end">
@@ -581,7 +700,7 @@ export default function () {
         </Container>
       </section>
 
-      <section>
+      <section ref={scroll.company.targetRef}>
         <Container py={{ base: 100, lg: 160 }}>
           <Grid>
             <Grid.Col span={{ base: 12, lg: 2 }}>
@@ -596,8 +715,8 @@ export default function () {
                   <br /> company statistics.
                 </Text>
 
-                <SimpleGrid cols={2} spacing={0} my="xl">
-                  {chunk(companyStats, 2).map((pair, rowIndex) =>
+                <SimpleGrid cols={{ base: 1, lg: 2 }} spacing={0} my="xl">
+                  {chunk(companyStats, 2).map((pair: any, rowIndex: any) =>
                     pair.map((info: any, index: number) => (
                       <Paper
                         key={rowIndex * 2 + index}
@@ -631,7 +750,9 @@ export default function () {
         </Container>
       </section>
 
-      <LayoutSiteFooter />
+      <section ref={scroll.contact.targetRef}>
+        <LayoutSiteFooter />
+      </section>
     </>
   );
 }
