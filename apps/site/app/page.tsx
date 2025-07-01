@@ -5,7 +5,6 @@ import {
   ActionIcon,
   Anchor,
   AspectRatio,
-  Burger,
   Button,
   Container,
   Grid,
