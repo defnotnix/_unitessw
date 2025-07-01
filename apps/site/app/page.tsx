@@ -11,6 +11,7 @@ import {
   Grid,
   Group,
   Image,
+  Menu,
   Paper,
   SimpleGrid,
   Space,
@@ -19,9 +20,12 @@ import {
 } from "@mantine/core";
 import {
   ArrowRightIcon,
+  BuildingOfficeIcon,
+  CaretDownIcon,
   CheckIcon,
   MapPinIcon,
   PhoneIcon,
+  UserIcon,
 } from "@phosphor-icons/react";
 
 import imgApplicantBooked from "@/assets/img/hired.png";
@@ -294,8 +298,31 @@ export default function PageHome() {
 
               <Space w="xs" />
 
-              <Button size="xs">Sign In / Register</Button>
-              <Burger size="xs" />
+              <Menu trigger="hover">
+                <Menu.Target>
+                  <Button rightSection={<CaretDownIcon />} size="xs">
+                    Sign In / Register
+                  </Button>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Item
+                    leftSection={<UserIcon />}
+                    onClick={() => {
+                      Router.push("https://applicant.unitessw.com");
+                    }}
+                  >
+                    Applicant Portal
+                  </Menu.Item>
+                  <Menu.Item
+                    leftSection={<BuildingOfficeIcon />}
+                    onClick={() => {
+                      Router.push("https://seeker.unitessw.com");
+                    }}
+                  >
+                    Seeker Portal
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
             </Group>
           </Group>
         </Container>
