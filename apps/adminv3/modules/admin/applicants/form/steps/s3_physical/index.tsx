@@ -150,11 +150,11 @@ export function StepPhysical() {
           />
         </SimpleGrid>
 
-        <SimpleGrid cols={2} spacing="xs" my="md">
+        <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="xs" my="md">
           <Switch
-            label="Has Food Allergies"
-            description="Indicate if you have food allergies"
-            {...form.getInputProps("has_food_allergies", { type: "checkbox" })}
+            label="Has Tatoo"
+            description="Indicate if you have any tatoo"
+            {...form.getInputProps("has_tatoo", { type: "checkbox" })}
             styles={{
               label: {
                 fontSize: "var(--mantine-font-size-xs)",
@@ -162,9 +162,20 @@ export function StepPhysical() {
             }}
           />
           <Switch
+            label="Has Food Allergies"
+            description="Indicate if you have food allergies"
+            {...form.getInputProps("has_food_allergy", { type: "checkbox" })}
+            styles={{
+              label: {
+                fontSize: "var(--mantine-font-size-xs)",
+              },
+            }}
+          />
+
+          <Switch
             label="Has Food Prohibitions"
             description="Indicate if you have food prohibitions"
-            {...form.getInputProps("has_food_prohibitions", {
+            {...form.getInputProps("has_food_prohibition", {
               type: "checkbox",
             })}
             styles={{
@@ -175,11 +186,69 @@ export function StepPhysical() {
           />
         </SimpleGrid>
 
+        {form.getValues().has_food_allergy && (
+          <Stack gap={0}>
+            <TextInput
+              rows={3}
+              label="Food Allergy Description"
+              placeholder="e.g. Peanuts, dairy, shellfish"
+              description="Mention any known food allergies"
+              {...form.getInputProps("food_allergy_desc")}
+              styles={styles.top}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  EN
+                </Text>
+              }
+            />
+            <TextInput
+              rows={3}
+              placeholder="例：ピーナッツ、乳製品、甲殻類など"
+              {...form.getInputProps("jp_food_allergy_desc")}
+              styles={styles.bot}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  JP
+                </Text>
+              }
+            />
+          </Stack>
+        )}
+
+        {form.getValues().has_food_prohibition && (
+          <Stack gap={0}>
+            <TextInput
+              rows={3}
+              label="Food Prohibition Description"
+              placeholder="e.g. Pork, beef, alcohol"
+              description="Foods the applicant is restricted from consuming"
+              {...form.getInputProps("food_prohibition_desc")}
+              styles={styles.top}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  EN
+                </Text>
+              }
+            />
+            <TextInput
+              rows={3}
+              placeholder="例：豚肉、牛肉、アルコールなど"
+              {...form.getInputProps("jp_food_prohibition_desc")}
+              styles={styles.bot}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  JP
+                </Text>
+              }
+            />
+          </Stack>
+        )}
+
         <Divider />
 
         <div>
           <Text size="2rem" lh="2.3rem">
-            <b>Family Information</b>
+            <b>Emergency Contact</b>
             <br />
           </Text>
           <Text size="xs">
@@ -190,9 +259,9 @@ export function StepPhysical() {
         <SimpleGrid cols={{ base: 1, lg: 2 }}>
           <Stack gap={0}>
             <TextInput
-              label="Parent Name"
+              label="Contact Owner"
               placeholder="e.g. Ram Shrestha"
-              description="Name of parent"
+              description="Name of Emergency Contact Person"
               {...form.getInputProps("family_name")}
               styles={styles.top}
               leftSection={
@@ -215,9 +284,9 @@ export function StepPhysical() {
 
           <Stack gap={0}>
             <TextInput
-              label="Parent Relation"
+              label="Contact Relation"
               placeholder="e.g. Father"
-              description="Name of parent"
+              description="Relation of Emergency Contact Person"
               {...form.getInputProps("family_relation")}
               styles={styles.top}
               leftSection={
@@ -240,9 +309,9 @@ export function StepPhysical() {
         </SimpleGrid>
 
         <TextInput
-          label="Parent Contact"
+          label="Emergency Contact"
           placeholder="e.g. +977 981123121"
-          description="Your relationship to the contact person"
+          description="Emergency Phone Number"
           {...form.getInputProps("family_contact")}
         />
       </Stack>

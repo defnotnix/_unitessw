@@ -1,0 +1,181 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Verification Code</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #111, #111f59);
+      min-height: 100vh;
+      font-family: "Manrope", sans-serif;
+    }
+
+    .otpbox {
+      background: #f0f3f9;
+      padding: 24px 18px;
+      font-size: 24px;
+      font-weight: semi-bold;
+      border-radius: 16px;
+
+      border: 1px solid rgba(0, 0, 0, 0.2);
+
+      color: #111;
+    }
+  </style>
+
+  <body>
+    <table width="100%" style="color: white; padding-top: 10vh">
+      <tr>
+        <td align="center" style="padding-bottom: 20px">
+          <img
+            src="https://applicant.unitessw.com/_next/static/media/sswmini.8a6e33f0.png"
+            width="48"
+            alt="Logo"
+          />
+          <p>Manabiya HR Unity</p>
+          <p style="opacity: 0.3; font-size: 12px">
+            A platform to bridge career opportunities in Japan.
+          </p>
+
+          <p style="font-size: 2rem; font-weight: 600">
+            Welcome to the<br />
+            Manabiya HR Unity family!
+          </p>
+        </td>
+      </tr>
+    </table>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="padding: 16px 0">
+      <tr>
+        <td align="center">
+          <table
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            style="
+              max-width: 400px;
+              background: #fefefe;
+              border-radius: 24px;
+              box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+              padding: 58px 58px;
+            "
+          >
+            <tr>
+              <td
+                align="center"
+                style="font-size: 2rem; font-weight: bold; color: #111"
+              >
+                Let's sign you up.
+              </td>
+            </tr>
+            <tr>
+              <td align="center">
+                We use this easy verification code so we can verify if the
+                account you are creating are legit. Your onboarding process will
+                begin once the account is verified.
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding: 20px 0">
+                <table
+                  cellpadding="0"
+                  cellspacing="8"
+                  style="margin: auto; border-spacing: 8px 16px"
+                >
+                  <tr>
+                    <td
+                      colspan="5"
+                      style="text-align: center; font-weight: 600"
+                    >
+                      Use the 5-digit OTP below to verify your registration on
+                      Manabiya HR Unity Applicant Portal.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      colspan="5"
+                      style="text-align: center; font-weight: 600"
+                    >
+                      This OTP will expire in 2 minutes
+                    </td>
+                  </tr>
+
+                  <tr style="text-align: center">
+                    <td class="otpbox">{{otpA}}</td>
+                    <td class="otpbox">{{otpB}}</td>
+                    <td class="otpbox">{{otpC}}</td>
+                    <td class="otpbox">{{otpD}}</td>
+                    <td class="otpbox">{{otpE}}</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td
+                align="center"
+                style="font-size: 14px; color: #555; padding-bottom: 20px"
+              >
+                Don’t share this code with anyone!
+              </td>
+            </tr>
+
+            <tr>
+              <td
+                style="
+                  background: #eceeff;
+                  padding: 16px 20px;
+                  border-radius: 8px;
+                  font-size: 13px;
+                  color: #444;
+                  text-align: center;
+                "
+              >
+                ⚠️ <strong>Was this request not made by you?</strong
+                ><br /><br />
+
+                This code was generated from a request. If you did not initiate
+                this request, you can safely <strong>ignore this email</strong>.
+              </td>
+            </tr>
+
+            <tr>
+              <td
+                align="center"
+                style="font-size: 12px; color: #999; padding-top: 20px"
+              >
+                This is an automated message.
+                <strong>Please do not reply.</strong><br />
+              </td>
+            </tr>
+          </table>
+
+          <!-- Footer -->
+
+          <table
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            style="max-width: 480px; margin-top: 20px; text-align: center"
+          >
+            <tr>
+              <td style="font-size: 12px; color: #aaa; padding: 20px">
+                All rights reserved to the Manabiya HR Unity platform © {{year}}.<br />
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -39,7 +39,7 @@ import { ProfileContext } from "./context";
 
 const bread = [
   {
-    label: "Unite SSW Admin",
+    label: "Manabiya HR Unity Admin",
   },
   {
     label: "Players Management",

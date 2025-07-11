@@ -3,7 +3,7 @@ import { PropModuleConfig } from "@vframework/ui";
 export const moduleConfig: PropModuleConfig = {
   bread: [
     {
-      label: "Unite SSW Admin",
+      label: "Manabiya HR Unity Admin",
     },
     {
       label: "Seekers",

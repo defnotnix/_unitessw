@@ -5,7 +5,7 @@ import { createContext, PropsWithChildren, useContext, useState } from "react";
 const LanguageContext: any = createContext(null);
 
 const LanguageProvider = ({ children }: PropsWithChildren) => {
-  const [language, setLanguage] = useState<any>("en");
+  const [language, setLanguage] = useState<any>("jp");
   return (
     <LanguageContext.Provider value={{ language, setLanguage }}>
       {children}

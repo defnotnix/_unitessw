@@ -10,6 +10,7 @@ import {
   Center,
   Divider,
   Group,
+  NumberInput,
   Paper,
   Select,
   SimpleGrid,
@@ -212,18 +213,42 @@ export function StepCertificates() {
               </Stack>
 
               <SimpleGrid cols={2} spacing="xs">
-                <DateInput
-                  placeholder="Select Date"
-                  {...form.getInputProps(`licenses.${index}.date_received`)}
-                />
-
-                <Group pr="xl" justify="flex-end" align="flex-start">
-                  <Switch
-                    {...form.getInputProps(`licenses.${index}.status`, {
-                      type: "checkbox",
-                    })}
+                <Stack gap={0}>
+                  <NumberInput
+                    hideControls
+                    placeholder="Select End Year"
+                    {...form.getInputProps(`licenses.${index}.year`)}
                   />
-                </Group>
+                  <Select
+                    data={[
+                      "January",
+                      "February",
+                      "March",
+                      "April",
+                      "May",
+                      "June",
+                      "July",
+                      "August",
+                      "September",
+                      "October",
+                      "November",
+                      "December",
+                    ]}
+                    placeholder="Select Month"
+                    {...form.getInputProps(`licenses.${index}.month`)}
+                  />
+                </Stack>
+
+                <Switch
+                  label={
+                    form.getValues()?.licenses[index].status
+                      ? "Active"
+                      : "Expired"
+                  }
+                  {...form.getInputProps(`licenses.${index}.status`, {
+                    type: "checkbox",
+                  })}
+                />
               </SimpleGrid>
             </SimpleGrid>
             <Divider my="sm" />

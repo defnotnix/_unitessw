@@ -10,10 +10,10 @@ export const columns = [
         <Avatar size="md" src={record.image} />
         <div>
           <Text size="xs" fw={600}>
-            {record.full_name}
+            {record.first_name} {record.middle_name} {record.last_name}
           </Text>
           <Text size="xs" opacity={0.5}>
-            {record.furigana}
+            {record.jp_first_name} {record.jp_middle_name} {record.jp_last_name}
           </Text>
         </div>
       </Group>

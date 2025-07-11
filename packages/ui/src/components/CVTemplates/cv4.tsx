@@ -16,155 +16,28 @@ import {
 } from "@mantine/core";
 import React, { useEffect } from "react";
 import { Watermark } from "./watermar";
-
-const personalDetails = [
-  {
-    label: "Furigana",
-    label_jp: "ふりがな",
-    enKey: "furigana",
-    jpKey: "furigana",
-  },
-  {
-    label: "Full Name",
-    label_jp: "氏名",
-    enKey: "full_name",
-    jpKey: "full_name",
-  },
-  {
-    label: "Date of Birth",
-    label_jp: "生年月日",
-    enKey: "date_of_birth",
-    jpKey: "date_of_birth",
-  },
-  {
-    label: "Gender",
-    label_jp: "性別",
-    enKey: "gender",
-    jpKey: "gender",
-  },
-  {
-    label: "Nationality",
-    label_jp: "国籍",
-    enKey: "nationality",
-    jpKey: "jp_nationality",
-  },
-  {
-    label: "Blood Type",
-    label_jp: "血液型",
-    enKey: "blood_type",
-    jpKey: "blood_type",
-  },
-  {
-    label: "Religion",
-    label_jp: "宗教",
-    enKey: "religion",
-    jpKey: "jp_religion",
-  },
-  {
-    label: "Marital Status",
-    label_jp: "配偶者の有無",
-    enKey: "martial_status",
-    jpKey: "martial_status",
-  },
-  {
-    label: "Current Address",
-    label_jp: "現在の住所",
-    enKey: "current_address",
-    jpKey: "jp_current_address",
-  },
-  // {
-  //   label: "Residence Status",
-  //   label_jp: "在留資格",
-  //   enKey: "residence_status",
-  //   jpKey: "jp_residence_status",
-  // },
-  // {
-  //   label: "Residence Expiry",
-  //   label_jp: "在留期限",
-  //   enKey: "residence_expiry",
-  //   jpKey: "jp_residence_expiry",
-  // },
-  {
-    label: "Height",
-    label_jp: "身長",
-    enKey: "height_cm",
-    jpKey: "height_cm",
-  },
-  {
-    label: "Weight",
-    label_jp: "体重",
-    enKey: "weight_kg",
-    jpKey: "weight_kg",
-  },
-];
-
-const additionalDetails = [
-  {
-    label: "Clothing Size",
-    label_jp: "服のサイズ",
-    enKey: "clothing_size",
-    jpKey: "clothing_size",
-  },
-  {
-    label: "Shoe Size",
-    label_jp: "靴のサイズ",
-    enKey: "shoe_size",
-    jpKey: "shoe_size",
-  },
-  {
-    label: "Dominant Hand",
-    label_jp: "利き手",
-    enKey: "dominant_hand",
-    jpKey: "dominant_hand",
-  },
-  {
-    label: "Eyesight (Left)",
-    label_jp: "視力（左）",
-    enKey: "eyesight_left",
-    jpKey: "eyesight_left",
-  },
-  {
-    label: "Eyesight (Right)",
-    label_jp: "視力（右）",
-    enKey: "eyesight_right",
-    jpKey: "eyesight_right",
-  },
-  {
-    label: "Email",
-    label_jp: "メールアドレス",
-    enKey: "email",
-    jpKey: "email",
-  },
-  {
-    label: "Parent Relation",
-    label_jp: "続柄",
-    enKey: "parent_relation",
-    jpKey: "jp_parent_relation",
-  },
-  {
-    label: "Parent Contact",
-    label_jp: "保護者の連絡先",
-    enKey: "parent_contact",
-    jpKey: "parent_contact",
-  },
-];
+import { personalDetails } from "./personalDetails";
 
 export function CV4({
   color = "brand",
   data,
   language,
   printSt,
+  logo,
+  date,
 }: {
   color: any;
   data: any;
   language: any;
   printSt: boolean;
+  logo?: any;
+  date: Date;
 }) {
   useEffect(() => {}, [color]);
 
   return (
     <Paper h={"11.7in"} w={"8.5in"} pos="relative">
-      <Watermark />
+      <Watermark logo={logo} />
       <Paper radius={0} pos="absolute" w="100%" h=".05in" bg={color + ".6"} />
 
       <Grid gutter={0}>
@@ -173,26 +46,22 @@ export function CV4({
             <Grid gutter={"lg"} align="center">
               <Grid.Col span={8}>
                 <Text size="2.5rem" fw={800}>
-                  {language === "en" ? data?.full_name : data?.furigana}
-                </Text>
-                <Text size="xs">
                   {language === "en"
-                    ? "Looking for jobs on"
-                    : "求職者が探している職業"}{" "}
-                  <b>{language === "en" ? "Hospitality" : "ホスピタリティ"}</b>
+                    ? `${data?.first_name} ${data?.middle_name} ${data?.last_name}`
+                    : `${data?.jp_last_name} ${data?.jp_first_name} ${data?.jp_middle_name}`}
                 </Text>
 
                 <Text size="10px" lh="12px" fw={800} mt="xl">
                   {language === "en" ? "About Me" : "自己紹介"}
                 </Text>
 
-                <Text size="10px" mt="md">
+                <Text size="10px" lh="12px" mt="md">
                   {language === "en" ? data?.remark : data?.jp_remark}
                 </Text>
 
                 <SimpleGrid cols={2} spacing="xs" mt="xl">
                   <div>
-                    <Text size="xs" fw={800}>
+                    <Text size="11px" fw={800}>
                       My Personal Traits
                     </Text>
                     <Text size="10px" lh="12px" mt="sm">
@@ -203,7 +72,7 @@ export function CV4({
                   </div>
 
                   <div>
-                    <Text size="xs" fw={800}>
+                    <Text size="11px" fw={800}>
                       What motivates me.
                     </Text>
                     <Text size="10px" lh="12px" mt="sm">
@@ -212,9 +81,37 @@ export function CV4({
                         : data?.jp_motivation_statement}
                     </Text>
                   </div>
+
+                  <div>
+                    <Text size="11px" fw={800}>
+                      {language === "en" ? "Strong Points" : "動機とは"}
+                    </Text>
+                    <Text size="10px" lh="13px" mt="sm">
+                      {language === "en"
+                        ? data?.strong_point
+                        : data?.jp_strong_point}
+                    </Text>
+                  </div>
+
+                  <div>
+                    <Text size="11px" fw={800}>
+                      {language === "en" ? "Weak Points" : "動機とは"}
+                    </Text>
+                    <Text size="10px" lh="13px" mt="sm">
+                      {language === "en"
+                        ? data?.weak_point
+                        : data?.jp_weak_point}
+                    </Text>
+                  </div>
                 </SimpleGrid>
               </Grid.Col>
               <Grid.Col span={3} offset={1}>
+                <Text size="10px" fw={700} ta="right" mt={-24} mb={24}>
+                  Printed :{" "}
+                  {language == "en"
+                    ? date.toLocaleDateString()
+                    : date.toLocaleDateString("ja")}
+                </Text>
                 <Image src={data?.image} />
               </Grid.Col>
             </Grid>
@@ -253,8 +150,7 @@ export function CV4({
                 <Table.Tr key={index}>
                   <Table.Td>{index + 1}</Table.Td>
                   <Table.Td>
-                                      {`${item.start_month}, ${item.start_year} - ${item.end_month}, ${item.end_year}`}
-
+                    {`${item.start_month}, ${item.start_year} - ${item?.end_year ? `${item.end_month}, ${item.end_year}` : "Ongoing"}`}
                   </Table.Td>
                   <Table.Td>
                     <b>
@@ -307,8 +203,7 @@ export function CV4({
                 <Table.Tr key={index}>
                   <Table.Td>{index + 1}</Table.Td>
                   <Table.Td>
-                                      {`${item.start_month}, ${item.start_year} - ${item.end_month}, ${item.end_year}`}
-
+                    {`${item.start_month}, ${item.start_year} - ${item?.end_year ? `${item.end_month}, ${item.end_year}` : "Ongoing"}`}
                   </Table.Td>
                   <Table.Td>
                     <b>{language === "en" ? item.company : item.jp_company}</b>
@@ -354,7 +249,7 @@ export function CV4({
               {data?.licenses?.map((item: any, index: number) => (
                 <Table.Tr key={index}>
                   <Table.Td>{index + 1}</Table.Td>
-                  <Table.Td>{item?.date_received}</Table.Td>
+                  <Table.Td>{`${item.month}, ${item.year} `}</Table.Td>
                   <Table.Td>
                     <b>{language === "en" ? item.name : item.jp_name}</b>
                   </Table.Td>
@@ -393,7 +288,7 @@ export function CV4({
 
             <Divider />
 
-            {false && (
+            {!printSt && (
               <AspectRatio ratio={16 / 9} mt={-16}>
                 <iframe
                   src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"

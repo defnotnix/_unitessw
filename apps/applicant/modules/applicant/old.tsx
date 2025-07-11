@@ -55,7 +55,7 @@ export function ModuleApplicant() {
                 }}
               />
               <Text size="xs" c="white" fw={600}>
-                UNITE SSW{" "}
+                Manabiya HR Unity{" "}
                 <span
                   style={{
                     opacity: 0.5,

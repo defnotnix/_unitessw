@@ -173,13 +173,13 @@ export function LayoutAdmin({ children }: PropsWithChildren) {
                   />
 
                   <Text size="xs" c="gray.0" fw={600}>
-                    <b> Unite SSW</b>{" "}
+                    <b> Manabiya HR Unity</b>{" "}
                     <span
                       style={{
                         color: "var(--mantine-color-brand-3)",
                       }}
                     >
-                      | Admin Portal
+                      | Admin
                     </span>
                   </Text>
                 </Group>
@@ -684,7 +684,7 @@ export function LayoutAdmin({ children }: PropsWithChildren) {
       >
         <Stack gap="4" p="xl">
           <Text size="md" fw={600} ta="center">
-            Unite SSW | Admin
+            Manabiya HR Unity | Admin
           </Text>
           <Text size="xs" ta="center" c="gray.6" fw={700}>
             Latest Stable Release | v1.0.1

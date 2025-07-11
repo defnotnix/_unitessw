@@ -35,6 +35,7 @@ import {
   HouseIcon,
   KeyIcon,
   PencilIcon,
+  PowerIcon,
   PrinterIcon,
 } from "@phosphor-icons/react";
 import { useEffect, useRef, useState } from "react";
@@ -53,6 +54,7 @@ import { images } from "@/public/img";
 import { motion } from "framer-motion";
 import { useDisclosure } from "@mantine/hooks";
 import { FormHandler } from "@vframework/core";
+import { DateInput } from "@mantine/dates";
 
 const bread = [
   {
@@ -64,39 +66,6 @@ const bread = [
     label: "View CV",
   },
 ];
-
-const PasswordForm = () => {
-  const form = FormHandler.useForm();
-  const { current, handleSubmit, handleStepBack, handleStepNext } =
-    FormHandler.usePropContext();
-
-  return (
-    <Stack gap="xs" p="md">
-      <Alert
-        title="Proceed with caution."
-        color="brand"
-        styles={{
-          title: {
-            fontSize: "var(--mantine-font-size-xs)",
-          },
-        }}
-      >
-        <Text size="xs">
-          You are about to change your password. This will be essential for all
-          further sign in`s.
-        </Text>
-      </Alert>
-
-      <TextInput
-        label="New Password"
-        placeholder="Enter old password"
-        {...form.getInputProps("name")}
-      />
-
-      <Button onClick={handleStepNext}>Change Password</Button>
-    </Stack>
-  );
-};
 
 export function ModuleApplicant() {
   const { CV1, CV2, CV3, CV4, CV5, CV6, CVCorp } = CV;
@@ -146,6 +115,8 @@ export function ModuleApplicant() {
         <div ref={contentRef}>
           {cvType == "1" && (
             <CV1
+              logo="us"
+              date={new Date()}
               color={cvColor}
               data={data}
               language={language}
@@ -155,6 +126,8 @@ export function ModuleApplicant() {
 
           {cvType == "2" && (
             <CV2
+              logo="us"
+              date={new Date()}
               color={cvColor}
               data={data}
               language={language}
@@ -164,6 +137,8 @@ export function ModuleApplicant() {
 
           {cvType == "3" && (
             <CV3
+              logo="us"
+              date={new Date()}
               color={cvColor}
               data={data}
               language={language}
@@ -173,6 +148,8 @@ export function ModuleApplicant() {
 
           {cvType == "4" && (
             <CV4
+              logo="us"
+              date={new Date()}
               color={cvColor}
               data={data}
               language={language}
@@ -182,6 +159,8 @@ export function ModuleApplicant() {
 
           {cvType == "5" && (
             <CV5
+              logo="us"
+              date={new Date()}
               color={cvColor}
               data={data}
               language={language}
@@ -191,6 +170,8 @@ export function ModuleApplicant() {
 
           {cvType == "6" && (
             <CV6
+              logo="us"
+              date={new Date()}
               color={cvColor}
               data={data}
               language={language}
@@ -205,7 +186,8 @@ export function ModuleApplicant() {
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "cv", String(Params.id)],
     queryFn: async () => {
-      const res: any = await apiPersonalInformation.get(tokenData?.user_id);
+      const _td: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
+      const res: any = await apiPersonalInformation.get(_td?.user_id);
       console.log(res?.data);
       if (!res.err) {
         return {
@@ -297,7 +279,7 @@ export function ModuleApplicant() {
               <Group>
                 <Image h={24} w={24} fit="contain" src={images.logoMini} />
                 <Text size="xs" c="gray.0">
-                  Unite SSW
+                  Manabiya HR Unity
                 </Text>
                 <Text size="xs" c="gray.0" opacity={0.5}>
                   Applicant Portal
@@ -320,6 +302,21 @@ export function ModuleApplicant() {
                   }}
                 >
                   Explore Job Vacancy
+                </Button>
+                <Button
+                  size="xs"
+                  p={0}
+                  h={24}
+                  px="xs"
+                  leftSection={<PowerIcon size={12} />}
+                  variant="outline"
+                  c="brand.3"
+                  onClick={() => {
+                    sessionStorage.removeItem("sswtoken");
+                    Router.push("/");
+                  }}
+                >
+                  Sign Out
                 </Button>
               </Group>
             </Group>
@@ -368,103 +365,6 @@ export function ModuleApplicant() {
 
               <Grid.Col span={{ base: 12, lg: 9 }}>
                 <Group justify="flex-end" gap="xs">
-                  <Group gap={0}>
-                    {cvType == "7" && (
-                      <Select
-                        leftSection={<Text size="xs">L:</Text>}
-                        onChange={(e: any) => setCvLogo(e)}
-                        size="xs"
-                        data={[
-                          { value: "mb", label: "Manabiya" },
-                          { value: "us", label: "UniteSSW" },
-                        ]}
-                      />
-                    )}
-                    <Select
-                      leftSection={<Text size="xs">T:</Text>}
-                      w={150}
-                      value={cvType}
-                      onChange={(e: any) => setCvType(e)}
-                      size="xs"
-                      data={[
-                        { value: "1", label: "CV-1" },
-                        { value: "2", label: "CV-2" },
-                        { value: "3", label: "CV-3" },
-                        { value: "4", label: "CV-4" },
-                        { value: "5", label: "CV-5" },
-                        { value: "6", label: "CV-6" },
-                      ]}
-                    />
-
-                    <Select
-                      w={150}
-                      leftSection={
-                        <ColorSwatch
-                          size={12}
-                          color={`var(--mantine-color-${cvColor}-5)`}
-                        />
-                      }
-                      value={cvColor}
-                      onChange={(e: any) => setCvColor(e)}
-                      size="xs"
-                      data={[
-                        {
-                          value: "brand",
-                          label: "Default",
-                        },
-
-                        {
-                          value: "blue",
-                          label: "Blue",
-                        },
-                        {
-                          value: "cyan",
-                          label: "Cyan",
-                        },
-                        {
-                          value: "pink",
-                          label: "Pink",
-                        },
-                        {
-                          value: "grape",
-                          label: "Grape",
-                        },
-                        {
-                          value: "indigo",
-                          label: "Indigo",
-                        },
-                        {
-                          value: "teal",
-                          label: "Teal",
-                        },
-                        {
-                          value: "green",
-                          label: "Green",
-                        },
-                        {
-                          value: "lime",
-                          label: "Lime",
-                        },
-                        {
-                          value: "yellow",
-                          label: "Yellow",
-                        },
-                        {
-                          value: "orange",
-                          label: "Orange",
-                        },
-                        {
-                          value: "red",
-                          label: "Red",
-                        },
-                        {
-                          value: "gray",
-                          label: "Gray",
-                        },
-                      ]}
-                    />
-                  </Group>
-
                   <ButtonGroup>
                     <Button
                       size="xs"
@@ -509,6 +409,75 @@ export function ModuleApplicant() {
                 </Group>
               </Grid.Col>
             </Grid>
+          </Container>
+        </Paper>
+
+        <Paper withBorder>
+          <Container py="sm">
+            <Group grow>
+              <DateInput
+                value={new Date()}
+                readOnly
+                size="xs"
+                leftSectionWidth={70}
+                leftSection={<Text size="xs">Print Date</Text>}
+              />
+              <Select
+                leftSectionWidth={70}
+                leftSection={<Text size="xs">Template</Text>}
+                w={150}
+                value={cvType}
+                onChange={(e: any) => setCvType(e)}
+                size="xs"
+                data={[
+                  { value: "1", label: "CV-1" },
+                  { value: "2", label: "CV-2" },
+                  { value: "3", label: "CV-3" },
+                  { value: "4", label: "CV-4" },
+                  { value: "5", label: "CV-5" },
+                  { value: "6", label: "CV-6" },
+                  { value: "7", label: "CV-Corporate" },
+                ]}
+              />
+              <Select
+                w={150}
+                leftSection={
+                  <ColorSwatch
+                    size={12}
+                    color={`var(--mantine-color-${cvColor}-5)`}
+                  />
+                }
+                value={cvColor}
+                onChange={setCvColor}
+                size="xs"
+                data={[
+                  { value: "brand", label: "Default" },
+                  { value: "blue", label: "Blue" },
+                  { value: "cyan", label: "Cyan" },
+                  { value: "pink", label: "Pink" },
+                  { value: "grape", label: "Grape" },
+                  { value: "indigo", label: "Indigo" },
+                  { value: "teal", label: "Teal" },
+                  { value: "green", label: "Green" },
+                  { value: "lime", label: "Lime" },
+                  { value: "yellow", label: "Yellow" },
+                  { value: "orange", label: "Orange" },
+                  { value: "red", label: "Red" },
+                  { value: "gray", label: "Gray" },
+                  { value: "gray.0", label: "White" },
+                ]}
+              />
+              <Select
+                value="us"
+                disabled
+                leftSectionWidth={120}
+                leftSection={<Text size="xs">Logo/Watermark</Text>}
+                w={150}
+                size="xs"
+                data={[{ value: "us", label: "Manabiya HR Unity" }]}
+                onChange={(e: any) => setCvLogo(e)}
+              />
+            </Group>
           </Container>
         </Paper>
 

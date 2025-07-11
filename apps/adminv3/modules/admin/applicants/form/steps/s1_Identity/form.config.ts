@@ -10,6 +10,8 @@ export const formProps: any = {
     education: [],
     work_experience: [],
     licenses: [],
+    tatoo: [],
+    visithistory: [],
   },
 
   // > STEPS

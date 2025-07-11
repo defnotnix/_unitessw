@@ -103,7 +103,16 @@ export function ModuleAdminDashboard() {
     const SIcon = icon;
 
     return (
-      <Paper p="md" className={classes.statcard} withBorder>
+      <Paper
+        p="md"
+        className={classes.statcard}
+        withBorder
+        onClick={() => {
+          if (url) {
+            Router.push(url);
+          }
+        }}
+      >
         <Stack gap="xs">
           <Group justify="space-between">
             <Text fw={700} size="xs">
@@ -319,35 +328,35 @@ export function ModuleAdminDashboard() {
               icon={UsersIcon}
               label="Applicants"
               description="Total applicants registered till date."
-              url="/applicants"
+              url="/admin/applicants/all"
               number={queryDashboard.data?.total_published_applicant || "0"}
             />
             <StatCard
               icon={ScrollIcon}
               label="New Requests"
               description="Total applicants registered till date."
-              url="/applicants"
+              url="/admin/applicants/pending"
               number={queryDashboard.data?.total_unpublished_count || "0"}
             />
             <StatCard
               icon={CheckIcon}
               label="Booked Applicants"
               description="Total applicants registered till date."
-              url="/applicants"
+              url="/admin/applicants/notified"
               number={queryDashboard.data?.total_booked_count || "0"}
             />
             <StatCard
               icon={ArticleIcon}
               label="CV"
               description="Total applicants registered till date."
-              url="/applicants"
+              url="/admin/cv/active"
               number={queryDashboard.data?.total_cv_count || "0"}
             />
             <StatCard
               icon={EyeIcon}
               label="Seekers"
               description="Total applicants registered till date."
-              url="/applicants"
+              url="/admin/accounts/seeker"
               number={queryDashboard.data?.inactive_seekers || "0"}
             />
           </SimpleGrid>

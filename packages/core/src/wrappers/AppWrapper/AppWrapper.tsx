@@ -16,7 +16,7 @@ import type { PropAppWrapper } from "./AppWrapper.type";
 
 export function AppWrapper({
   extraHeadTags,
-  title = "UNITE SSW",
+  title = "Manabiya HR Unity",
 
   theme,
   defaultColorScheme = "light",

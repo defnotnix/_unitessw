@@ -22,7 +22,8 @@ import { LanguageContext, LanguageProvider } from "./app.context";
 
 //oauth
 
-export const endpoint = "https://api.unitessw.com";
+//export const endpoint = "https://api.unitessw.com";
+export const endpoint = "http://10.0.0.4:8000";
 
 export function LayoutApp({ children }: PropsWithChildren) {
   return (
@@ -42,7 +43,7 @@ export function LayoutApp({ children }: PropsWithChildren) {
         theme={configThemeMantine}
         defaultColorScheme={"light"}
         classNames={classes}
-           title="Applicant-Unite SSW"
+        title="Applicant-Manabiya HR Unity"
         extraHeadTags={
           <>
             <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -56,7 +57,7 @@ export function LayoutApp({ children }: PropsWithChildren) {
       >
         <GoogleOAuthProvider clientId="891191709922-oqundf96vqb74d9ubv0nd5urhn5eh072.apps.googleusercontent.com">
           <LanguageProvider>
-            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+            <Suspense fallback={<div></div>}>{children}</Suspense>
           </LanguageProvider>
         </GoogleOAuthProvider>
       </AppWrapper>

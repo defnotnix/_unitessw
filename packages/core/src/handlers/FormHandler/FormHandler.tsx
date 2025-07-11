@@ -208,9 +208,9 @@ export function FormHandler({
   });
 
   const handleSubmit = () => {
-    console.log("submit");
+    console.log("submit", form.validate());
 
-    if (form.validate()) {
+    if (!form.validate().hasErrors) {
       onSubmitInitiate();
       mutationSubmit.mutate();
     }

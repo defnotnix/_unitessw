@@ -10,6 +10,7 @@ import {
   Center,
   Divider,
   Group,
+  NumberInput,
   Paper,
   Select,
   SimpleGrid,
@@ -28,7 +29,12 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@phosphor-icons/react";
-import { DateInput, DatePickerInput, YearPickerInput } from "@mantine/dates";
+import {
+  DateInput,
+  DatePickerInput,
+  MonthPickerInput,
+  YearPickerInput,
+} from "@mantine/dates";
 import { modals } from "@mantine/modals";
 import { apiEducation } from "../../module.api";
 //mantine
@@ -236,18 +242,64 @@ export function StepAcademics() {
               </Stack>
 
               <Stack gap={0}>
-                <DateInput
-                  placeholder="Select start date e.g. 2015"
-                  {...form.getInputProps(`education.${index}.start_date`)}
-                  styles={styles.top}
-                />
-                <DateInput
-                  disabled={!form.getValues().education[index].start_date}
-                  minDate={form.getValues().education[index].start_date}
-                  placeholder="Select end date e.g. 2018"
-                  {...form.getInputProps(`education.${index}.end_date`)}
-                  styles={styles.bot}
-                />
+                <SimpleGrid cols={2} spacing={0}>
+                  <NumberInput
+                    hideControls
+                    placeholder="Select Start Year"
+                    {...form.getInputProps(`education.${index}.start_year`)}
+                  />
+                  <Select
+                    disabled={!form.getValues().education[index].start_year}
+                    data={[
+                      "January",
+                      "February",
+                      "March",
+                      "April",
+                      "May",
+                      "June",
+                      "July",
+                      "August",
+                      "September",
+                      "October",
+                      "November",
+                      "December",
+                    ]}
+                    placeholder="Select Month"
+                    {...form.getInputProps(`education.${index}.start_month`)}
+                  />
+                </SimpleGrid>
+
+                <SimpleGrid cols={2} spacing={0}>
+                  <NumberInput
+                    min={form.getValues()?.education[index]?.start_year}
+                    disabled={
+                      !form.getValues().education[index].start_year ||
+                      !form.getValues().education[index].start_month
+                    }
+                    hideControls
+                    placeholder="Select End Year"
+                    {...form.getInputProps(`education.${index}.end_year`)}
+                  />
+                  <Select
+                    disabled={!form.getValues().education[index].end_year}
+                    data={[
+                      "January",
+                      "February",
+                      "March",
+                      "April",
+                      "May",
+                      "June",
+                      "July",
+                      "August",
+                      "September",
+                      "October",
+                      "November",
+                      "December",
+                    ]}
+                    placeholder="Select Month"
+                    {...form.getInputProps(`education.${index}.end_month`)}
+                  />
+                </SimpleGrid>
               </Stack>
             </SimpleGrid>
             <Divider my="sm" />

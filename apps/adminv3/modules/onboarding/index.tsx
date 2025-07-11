@@ -68,7 +68,7 @@ export function ModuleOnboarding() {
       >
         <Group justify="space-between" mb="xl">
           <Text size="xs">
-            <b> UNITE SSW</b>
+            <b> Manabiya HR Unity</b>
             <span
               style={{
                 opacity: 0.5,
@@ -142,7 +142,7 @@ export function ModuleOnboarding() {
           </Group>
 
           <Text size="sm" ta="center" opacity={0.5}>
-            Welcome to Unite SSW Team.
+            Welcome to Manabiya HR Unity Team.
           </Text>
         </Stack>
       </Center>
@@ -191,7 +191,7 @@ export function ModuleOnboarding() {
                       }}
                     />
                     <Text size="sm" c="white">
-                      UNITE SSW
+                      Manabiya HR Unity
                     </Text>
                   </Group>
 

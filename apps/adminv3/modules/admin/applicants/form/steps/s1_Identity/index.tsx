@@ -1,11 +1,14 @@
 "use client";
 
-import React, { useEffect } from "react";
 //next
 
 //mantine
 import {
+  Center,
+  Divider,
+  Grid,
   Group,
+  Image,
   Paper,
   Select,
   SimpleGrid,
@@ -15,13 +18,22 @@ import {
   TextInput,
   ThemeIcon,
 } from "@mantine/core";
+import { DateInput, DatePickerInput } from "@mantine/dates";
+import {
+  FacebookLogoIcon,
+  InfoIcon,
+  InstagramLogoIcon,
+  LinkedinLogoIcon,
+} from "@phosphor-icons/react";
+import { useQuery } from "@tanstack/react-query";
 import { FormHandler } from "@vframework/core";
 import { ImageUpload } from "@vframework/ui";
-import { ExclamationMark } from "@phosphor-icons/react";
-import { DatePickerInput } from "@mantine/dates";
 import { useParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
 import { apiCategory } from "../../module.api";
+
+import imgFemaileRef from "@/assets/img/female_reference.jpg";
+import imgMaleRef from "@/assets/img/male_reference.jpg";
+
 //mantine
 
 //icons
@@ -99,51 +111,146 @@ export function StepIdentity() {
         </div>
 
         <Space h="md" />
-        <ImageUpload
-          {...form.getInputProps("image")}
-          label="Profile Picture"
-          description="Upload a recent passport-size photo"
-          onChange={(image: any) => form.setFieldValue("image", image)}
-          value={form.getValues()?.image}
-        />
+
+        <Grid gutter="xs">
+          <Grid.Col span={{ base: 12, lg: 6 }}>
+            <ImageUpload
+              {...form.getInputProps("image")}
+              label="Profile Picture"
+              description="Upload a recent passport-size photo"
+              onChange={(image: any) => form.setFieldValue("image", image)}
+              value={form.getValues()?.image}
+              height={300}
+            />
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, lg: 6 }}>
+            <Paper bg="gray.1" withBorder>
+              <Paper bg="gray.3">
+                <Group h={50} px="md">
+                  <ThemeIcon>
+                    <InfoIcon />
+                  </ThemeIcon>
+                  <Text size="xs" fw={800}>
+                    <b>Profile Picture Guideline:</b>
+                  </Text>
+                </Group>
+              </Paper>
+              <Center h={250} p="md">
+                <Stack gap="xs">
+                  <Group>
+                    <div>
+                      <Image h={120} fit="contain" src={imgMaleRef.src} />
+                    </div>
+                    <div>
+                      <Image h={120} fit="contain" src={imgFemaileRef.src} />
+                    </div>
+                  </Group>
+                  <Text size="xs">
+                    <b>Dress Code:</b> Formal attire is required.
+                    <br />
+                    <b>Face Visibility:</b> Your face must be clearly visible
+                    and unobstructed.
+                    <br />
+                    <b>Background:</b> Use a plain, simple background.
+                    <br />
+                    <b>Subject:</b> The photo must feature only one person.
+                    <br />
+                    <b>For Males:</b> A tie is required.
+                    <br />
+                    <b>For Females:</b> No tie is necessary.
+                  </Text>
+                </Stack>
+              </Center>
+            </Paper>
+          </Grid.Col>
+        </Grid>
+
+        <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="xs">
+          <Stack gap={0}>
+            <TextInput
+              label="First Name"
+              placeholder="e.g. Taro Tanaka"
+              description="Enter your full legal name as in passport"
+              {...form.getInputProps("first_name")}
+              styles={styles.top}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  EN
+                </Text>
+              }
+            />
+            <TextInput
+              placeholder="e.g. タナカ タロウ"
+              {...form.getInputProps("jp_first_name")}
+              styles={styles.bot}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  JP
+                </Text>
+              }
+            />
+          </Stack>
+          <Stack gap={0}>
+            <TextInput
+              label="Middle Name"
+              placeholder="e.g. Tanaka"
+              description="Enter your full legal name as in passport"
+              {...form.getInputProps("middle_name")}
+              styles={styles.top}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  EN
+                </Text>
+              }
+            />
+            <TextInput
+              placeholder="e.g. タナカ タロウ"
+              {...form.getInputProps("jp_middle_name")}
+              styles={styles.bot}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  JP
+                </Text>
+              }
+            />
+          </Stack>
+          <Stack gap={0}>
+            <TextInput
+              label="Last Name"
+              placeholder="e.g. Tanaka"
+              description="Enter your full legal name as in passport"
+              {...form.getInputProps("last_name")}
+              styles={styles.top}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  EN
+                </Text>
+              }
+            />
+            <TextInput
+              placeholder="e.g. タナカ タロウ"
+              {...form.getInputProps("jp_last_name")}
+              styles={styles.bot}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  JP
+                </Text>
+              }
+            />
+          </Stack>
+        </SimpleGrid>
 
         <TextInput
           label="Youtube URL"
           placeholder="e.g. https://www.youtube.com/watch?v=nBydCvT195k"
-          description="Enter your full legal name as in passport"
-          {...form.getInputProps("youtube_url")}
-          styles={styles.top}
+          description="Under the video Click on Share > Embed > Copy the URL and paste it here"
+          {...form.getInputProps("youtube_link")}
           leftSection={
             <Text size="xs" fw={800}>
               EN
             </Text>
           }
         />
-
-        <Stack gap={0}>
-          <TextInput
-            label="Full Name"
-            placeholder="e.g. Taro Tanaka"
-            description="Enter your full legal name as in passport"
-            {...form.getInputProps("full_name")}
-            styles={styles.top}
-            leftSection={
-              <Text size="xs" fw={800}>
-                EN
-              </Text>
-            }
-          />
-          <TextInput
-            placeholder="e.g. タナカ タロウ"
-            {...form.getInputProps("furigana")}
-            styles={styles.bot}
-            leftSection={
-              <Text size="xs" fw={800}>
-                JP
-              </Text>
-            }
-          />
-        </Stack>
 
         <Stack gap={0}>
           <TextInput
@@ -181,7 +288,7 @@ export function StepIdentity() {
             }))}
             {...form.getInputProps("category")}
           />
-          <DatePickerInput
+          <DateInput
             label="Date of Birth"
             placeholder="Select your birth date"
             description="Your date of birth in YYYY-MM-DD format"
@@ -251,6 +358,7 @@ export function StepIdentity() {
 
         <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="xs">
           <TextInput
+            disabled
             label="Email"
             placeholder="e.g. user@example.com"
             description="A valid email address"
@@ -261,6 +369,37 @@ export function StepIdentity() {
             placeholder="e.g. +977 9813512312"
             description="Phone number of the person."
             {...form.getInputProps("contact")}
+          />
+        </SimpleGrid>
+
+        <Divider />
+
+        <div>
+          <Text size="2rem" lh="2.3rem">
+            <b>Socials</b>
+            <br />
+          </Text>
+          <Text size="xs">Link your socials across different platform.</Text>
+        </div>
+
+        <SimpleGrid cols={{ base: 2, lg: 4 }} spacing="xs">
+          <TextInput
+            leftSection={<InstagramLogoIcon />}
+            label="Instagram Handle"
+            placeholder="e.g. instagram url"
+            {...form.getInputProps("instagram_url")}
+          />
+          <TextInput
+            leftSection={<FacebookLogoIcon />}
+            label="Facebook Handle"
+            placeholder="e.g. facebook url"
+            {...form.getInputProps("facebook_url")}
+          />
+          <TextInput
+            leftSection={<LinkedinLogoIcon />}
+            label="LinkedIn Handle"
+            placeholder="e.g. linkedin url"
+            {...form.getInputProps("linkedin_url")}
           />
         </SimpleGrid>
       </Stack>

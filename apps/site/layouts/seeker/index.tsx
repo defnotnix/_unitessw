@@ -39,7 +39,7 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
                     }}
                   />
                   <Text size="xs" fw={800}>
-                    UNITE SSW{" "}
+                    Manabiya HR Unity{" "}
                     <span
                       style={{
                         opacity: 0.5,

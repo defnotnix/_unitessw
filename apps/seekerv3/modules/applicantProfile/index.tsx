@@ -33,6 +33,7 @@ import { useReactToPrint } from "react-to-print";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { apiPersonalInformation } from "./module.api";
+import { DateInput } from "@mantine/dates";
 
 const bread = [
   {
@@ -132,105 +133,6 @@ export function ModuleApplicantProfile() {
 
             <Grid.Col span={{ base: 12, lg: 9 }}>
               <Group justify="flex-end" gap="xs">
-                <Group gap={0}>
-                  {cvType == "7" && (
-                    <Select
-                      leftSection={<Text size="xs">L:</Text>}
-                      onChange={(e: any) => setCvLogo(e)}
-                      w={150}
-                      size="xs"
-                      data={[
-                        { value: "mb", label: "Manabiya" },
-                        { value: "us", label: "UniteSSW" },
-                      ]}
-                    />
-                  )}
-                  <Select
-                    leftSection={<Text size="xs">T:</Text>}
-                    w={150}
-                    value={cvType}
-                    onChange={(e: any) => setCvType(e)}
-                    size="xs"
-                    data={[
-                      { value: "1", label: "CV-1" },
-                      { value: "2", label: "CV-2" },
-                      { value: "3", label: "CV-3" },
-                      { value: "4", label: "CV-4" },
-                      { value: "5", label: "CV-5" },
-                      { value: "6", label: "CV-6" },
-                      { value: "7", label: "CV-Corporate" },
-                    ]}
-                  />
-
-                  <Select
-                    w={150}
-                    leftSection={
-                      <ColorSwatch
-                        size={12}
-                        color={`var(--mantine-color-${cvColor}-5)`}
-                      />
-                    }
-                    value={cvColor}
-                    onChange={(e: any) => setCvColor(e)}
-                    size="xs"
-                    data={[
-                      {
-                        value: "brand",
-                        label: "Default",
-                      },
-
-                      {
-                        value: "blue",
-                        label: "Blue",
-                      },
-                      {
-                        value: "cyan",
-                        label: "Cyan",
-                      },
-                      {
-                        value: "pink",
-                        label: "Pink",
-                      },
-                      {
-                        value: "grape",
-                        label: "Grape",
-                      },
-                      {
-                        value: "indigo",
-                        label: "Indigo",
-                      },
-                      {
-                        value: "teal",
-                        label: "Teal",
-                      },
-                      {
-                        value: "green",
-                        label: "Green",
-                      },
-                      {
-                        value: "lime",
-                        label: "Lime",
-                      },
-                      {
-                        value: "yellow",
-                        label: "Yellow",
-                      },
-                      {
-                        value: "orange",
-                        label: "Orange",
-                      },
-                      {
-                        value: "red",
-                        label: "Red",
-                      },
-                      {
-                        value: "gray",
-                        label: "Gray",
-                      },
-                    ]}
-                  />
-                </Group>
-
                 <ButtonGroup>
                   <Button
                     size="xs"
@@ -267,6 +169,75 @@ export function ModuleApplicantProfile() {
         </Container>
       </Paper>
 
+      <Paper withBorder>
+        <Container py="sm" size="xl">
+          <Group grow>
+            <DateInput
+              value={new Date()}
+              readOnly
+              size="xs"
+              leftSectionWidth={70}
+              leftSection={<Text size="xs">Print Date</Text>}
+            />
+            <Select
+              leftSectionWidth={70}
+              leftSection={<Text size="xs">Template</Text>}
+              w={150}
+              value={cvType}
+              onChange={(e: any) => setCvType(e)}
+              size="xs"
+              data={[
+                { value: "1", label: "CV-1" },
+                { value: "2", label: "CV-2" },
+                { value: "3", label: "CV-3" },
+                { value: "4", label: "CV-4" },
+                { value: "5", label: "CV-5" },
+                { value: "6", label: "CV-6" },
+                { value: "7", label: "CV-Corporate" },
+              ]}
+            />
+            <Select
+              w={150}
+              leftSection={
+                <ColorSwatch
+                  size={12}
+                  color={`var(--mantine-color-${cvColor}-5)`}
+                />
+              }
+              value={cvColor}
+              onChange={setCvColor}
+              size="xs"
+              data={[
+                { value: "brand", label: "Default" },
+                { value: "blue", label: "Blue" },
+                { value: "cyan", label: "Cyan" },
+                { value: "pink", label: "Pink" },
+                { value: "grape", label: "Grape" },
+                { value: "indigo", label: "Indigo" },
+                { value: "teal", label: "Teal" },
+                { value: "green", label: "Green" },
+                { value: "lime", label: "Lime" },
+                { value: "yellow", label: "Yellow" },
+                { value: "orange", label: "Orange" },
+                { value: "red", label: "Red" },
+                { value: "gray", label: "Gray" },
+                { value: "gray.0", label: "White" },
+              ]}
+            />
+            <Select
+              value="us"
+              disabled
+              leftSectionWidth={120}
+              leftSection={<Text size="xs">Logo/Watermark</Text>}
+              w={150}
+              size="xs"
+              data={[{ value: "us", label: "Manabiya HR Unity" }]}
+              onChange={(e: any) => setCvLogo(e)}
+            />
+          </Group>
+        </Container>
+      </Paper>
+
       <Center mt="md">
         {!cvType && (
           <>
@@ -285,6 +256,8 @@ export function ModuleApplicantProfile() {
           <div ref={contentRef}>
             {cvType == "1" && (
               <CV1
+                logo="us"
+                date={new Date()}
                 color={cvColor}
                 data={data}
                 language={language}
@@ -294,6 +267,8 @@ export function ModuleApplicantProfile() {
 
             {cvType == "2" && (
               <CV2
+                logo="us"
+                date={new Date()}
                 color={cvColor}
                 data={data}
                 language={language}
@@ -303,6 +278,8 @@ export function ModuleApplicantProfile() {
 
             {cvType == "3" && (
               <CV3
+                logo="us"
+                date={new Date()}
                 color={cvColor}
                 data={data}
                 language={language}
@@ -312,6 +289,8 @@ export function ModuleApplicantProfile() {
 
             {cvType == "4" && (
               <CV4
+                logo="us"
+                date={new Date()}
                 color={cvColor}
                 data={data}
                 language={language}
@@ -321,6 +300,8 @@ export function ModuleApplicantProfile() {
 
             {cvType == "5" && (
               <CV5
+                logo="us"
+                date={new Date()}
                 color={cvColor}
                 data={data}
                 language={language}
@@ -330,6 +311,8 @@ export function ModuleApplicantProfile() {
 
             {cvType == "6" && (
               <CV6
+                logo="us"
+                date={new Date()}
                 color={cvColor}
                 data={data}
                 language={language}
@@ -339,11 +322,12 @@ export function ModuleApplicantProfile() {
 
             {cvType == "7" && (
               <CVCorp
+                logo="us"
+                date={new Date()}
                 color={cvColor}
                 data={data}
                 language={language}
                 printSt={printSt}
-                logo={cvLogo}
               />
             )}
           </div>

@@ -2,12 +2,14 @@
 
 import {
   ActionIcon,
+  Badge,
   Box,
-  Breadcrumbs,
+  Button,
   Center,
   Container,
   Grid,
   Group,
+  Image,
   Loader,
   Paper,
   Stack,
@@ -19,16 +21,21 @@ import {
   ArrowRightIcon,
   CheckIcon as Check,
   CheckIcon,
+  ExclamationMarkIcon as ExclamationMark,
   InfoIcon,
 } from "@phosphor-icons/react";
 import { FormHandler } from "@vframework/core";
 import { PropsWithChildren, useState } from "react";
 import { formProps } from "./steps/s1_Identity/form.config";
 
+import z from "zod";
+
+import imgLogo from "@/assets/img/sswmini.png";
 import {
   apiBackground,
   apiEducation,
   apiIdentification,
+  apiJapanVisit,
   apiLicense,
   apiPersonalInformation,
   apiPhysical,
@@ -45,13 +52,19 @@ import { StepAcademics } from "./steps/s5_academics";
 import { StepWork } from "./steps/s6_work";
 import { StepCertificates } from "./steps/s7_certifications";
 
+import { endpoint } from "@/layouts/app";
+
 import { useForceUpdate } from "@mantine/hooks";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { jwtDecode } from "jwt-decode";
 import classes from "./_.module.css";
+import { StepVisit } from "./steps/s10_visit";
 import { StepIdentification } from "./steps/s8_identification";
 
 export function _Form() {
   const forceUpdate = useForceUpdate();
+
+  const Params = useParams();
 
   const Router = useRouter();
 
@@ -60,20 +73,22 @@ export function _Form() {
   const [holder, setHolder] = useState({});
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
 
-  const Params = useParams();
-  const queryParams = useSearchParams();
+  const [reEdit, setReEdit] = useState(false);
 
-  const queryClient = useQueryClient();
+  const [showForm, setShowForm] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "applicants", "edit"],
     queryFn: async () => {
-      if (Params?.id) {
-        const id = Params.id;
-        const res = await apiPersonalInformation.get(Params.id);
-        console.log("THIS", res);
+      const token: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
 
+      console.log("TOKEN", token);
+
+      if (token.user_id) {
+        const res = await apiPersonalInformation.get(Params.id);
         const data = res?.data || {};
+
+        console.log(data);
 
         setPersonId(data.id);
         setHolder((prev) => ({ ...prev, ...data }));
@@ -81,13 +96,17 @@ export function _Form() {
         const step = Array.from({ length: 8 }, (_, i) => i + 1).find(
           (i) => data[`is_step${i}`] === false
         );
+
         if (step) setCurrent(step);
 
         const completed = Array.from({ length: 8 }, (_, i) => i + 1).filter(
           (i) => data[`is_step${i}`] === true
         );
+
+        console.log(completed);
         setCompletedSteps(completed);
 
+        setShowForm(true);
         return {
           ...res?.data,
           ...res?.data?.a_background,
@@ -95,17 +114,26 @@ export function _Form() {
           ...res?.data?.a_physical,
           ...res?.data?.a_story,
           ...res?.data?.a_identification,
+
           category: String(res?.data?.category),
-          education: res?.data?.a_education,
-          work_experience: res?.data?.a_work_experience,
-          licenses: res?.data?.a_license_qualification,
+          education: res?.data?.a_education || [],
+          work_experience: res?.data?.a_work_experience || [],
+          licenses: res?.data?.a_license_qualification || [],
+          visithistory: res?.data?.a_japan_visit || [],
+
+          image: res?.data?.image ? res?.data?.image : null,
+          passport: res?.data?.a_identification?.passport
+            ? endpoint + res?.data?.a_identification?.passport
+            : null,
+          l_cert_image: res?.data?.a_identification?.l_cert_image
+            ? endpoint + res?.data?.a_identification?.l_cert_image
+            : null,
+          ssw_cert_image: res?.data?.a_identification?.ssw_cert_image
+            ? endpoint + res?.data?.a_identification?.ssw_cert_image
+            : null,
         };
       } else {
-        return {
-          education: [],
-          work_experience: [],
-          licenses: [],
-        };
+        return formProps.initial;
       }
     },
   });
@@ -114,21 +142,60 @@ export function _Form() {
     "Welcome",
     "Identity & Contact",
     "Background & Legal Status",
-    "Physical & Family Info",
+    "Physical & Emergency Contact",
     "Personal Story",
     "Academics",
     "Work History",
     "Certifications",
     "Identifications",
+    "Japan Visit History",
+    "Completed",
   ];
 
-  const InitiateStep = () => (
-    <Stack>
-      <Text size="2rem" lh="2.3rem" fw={800}>
-        Let's begin!
-      </Text>
-    </Stack>
-  );
+  const InitiateStep = () => {
+    return (
+      <Stack py={100} maw={550}>
+        <Text size="2rem" lh="2.3rem" fw={800}>
+          You can edit applicant details from here,
+          <br /> Please be careful while updating these details.
+        </Text>
+
+        <Group>
+          <ThemeIcon variant="light">
+            <ExclamationMark />
+          </ThemeIcon>
+          <Text size="sm" fw={600} c="brand.6">
+            Please Read before you proceed.
+          </Text>
+        </Group>
+
+        <Text size="xs" fw={600} mb="xl" maw={700}>
+          You’ll go through a few steps to complete your onboarding process.
+          This may take a little time, so make sure you’re in a comfortable
+          place before you begin.
+          <br />
+          <br />
+          Before you begin, You will need to be prepared with :{" "}
+          <b>
+            General Details, Medical Details like your Eye Examination,
+            Orthodontic Appliances, Academics, Work History, and Official
+            Documents (e.g. Citizenship/Passport/License).
+          </b>
+        </Text>
+      </Stack>
+    );
+  };
+
+  const CompletedStep = () => {
+    return (
+      <Stack py={100} maw={500}>
+        <Text size="2rem" lh="2.3rem" fw={800}>
+          You have successfully completed the onboarding application process for
+          the aplicant.
+        </Text>
+      </Stack>
+    );
+  };
 
   const stepConfig = [
     { component: <InitiateStep />, apiCreate: null, apiUpdate: null },
@@ -140,8 +207,20 @@ export function _Form() {
       transform: (formdata: any) => {
         const { image, ...res } = formdata;
 
+        var applicantId: any = "";
+
+        try {
+          var tokenDecoded: any = jwtDecode(
+            sessionStorage.getItem("sswtoken") || ""
+          );
+          applicantId = tokenDecoded?.user_id;
+        } catch (err) {
+          applicantId = "";
+        }
+
         return {
           ...res,
+          user: applicantId,
           ...(formdata.image instanceof File ? { image: formdata.image } : {}),
         };
       },
@@ -151,7 +230,14 @@ export function _Form() {
       apiCreate: apiBackground.create,
       apiUpdate: (body: any) =>
         apiBackground.update(body, data?.a_background?.id),
-      transform: (e: any) => ({ applicant: personId, ...e }),
+      transform: (e: any) => ({
+        applicant: personId,
+        ...e,
+        code:
+          "USW" +
+          "0000".substring(0, 4 - String(personId).length) +
+          String(personId),
+      }),
     },
     {
       component: <StepPhysical />,
@@ -184,8 +270,6 @@ export function _Form() {
         e.education.map((item: any) => ({
           applicant: personId,
           ...item,
-          from_year: item.year?.[0]?.substring(0, 4),
-          to_year: item.year?.[1]?.substring(0, 4),
         })),
     },
     {
@@ -206,14 +290,14 @@ export function _Form() {
         e.work_experience.map((item: any) => ({
           applicant: personId,
           ...item,
-          from_year: item.year?.[0]?.substring(0, 4),
-          end_year: item.year?.[1]?.substring(0, 4),
         })),
     },
     {
       component: <StepCertificates />,
       apiCreate: apiLicense.create,
       apiUpdate: async (body: any) => {
+        console.log(body);
+
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
         });
@@ -254,6 +338,49 @@ export function _Form() {
         };
       },
     },
+
+    {
+      component: <StepVisit />,
+      apiCreate: apiJapanVisit.create,
+      validation: [
+        {
+          visithistory: z.array(
+            z.object({
+              start_year: z.number(),
+
+              end_year: z.number(),
+
+              from_month: z.string().trim().max(15, {
+                message: "From month must be 15 characters or fewer",
+              }),
+
+              to_month: z.string().trim().max(15, {
+                message: "To month must be 15 characters or fewer",
+              }),
+
+              purpose: z.string().trim().max(100, {
+                message: "Purpose must be 100 characters or fewer",
+              }),
+
+              jp_purpose: z.string().trim().max(100, {
+                message: "Japanese purpose must be 100 characters or fewer",
+              }),
+            })
+          ),
+        },
+      ],
+      isFormData: false,
+      apiUpdate: (body: any) =>
+        apiJapanVisit.update(body, data?.a_identification?.id),
+
+      transform: (e: any) =>
+        e.visithistory.map((item: any) => ({
+          applicant: personId,
+          ...item,
+        })),
+    },
+
+    { component: <CompletedStep />, apiCreate: null, apiUpdate: null },
   ];
 
   const currentStepConfig = stepConfig[current];
@@ -263,6 +390,7 @@ export function _Form() {
     : currentStepConfig.apiCreate;
   const transformData = currentStepConfig.transform ?? ((e) => e);
   const submitFormData = currentStepConfig?.isFormData ?? false;
+  const validation = currentStepConfig?.validation || [];
 
   const FormLayout = ({ children }: PropsWithChildren) => {
     const { handleSubmit } = FormHandler.usePropContext();
@@ -322,13 +450,8 @@ export function _Form() {
             <ActionIcon
               color="teal"
               size="xl"
-              onClick={
-                apiSubmit
-                  ? handleSubmit
-                  : () => {
-                      setCurrent(current + 1);
-                    }
-              }
+              onClick={() => Router.push("/admin/applicants/all")}
+              disabled={completedSteps.length !== steps.length - 2}
             >
               <CheckIcon />
             </ActionIcon>
@@ -338,46 +461,17 @@ export function _Form() {
     );
   };
 
-  if (Params.id && !data) {
+  if (!showForm) {
     return (
       <>
-        <Paper>
-          <Container py="sm">
-            <Grid align="center">
-              <Grid.Col span={{ base: 12, lg: 3 }}>
-                <Group gap="xs">
-                  <ActionIcon
-                    onClick={() => {
-                      Router.back();
-                    }}
-                  >
-                    <ArrowLeftIcon />
-                  </ActionIcon>
-
-                  <Text size="xs" fw={700}>
-                    New CV
-                  </Text>
-                </Group>
-              </Grid.Col>
-
-              <Grid.Col span={{ base: 12, lg: 9 }}>
-                <Group gap={4} visibleFrom="lg" justify="flex-end">
-                  <Breadcrumbs separator={<Text size="xs">/</Text>}>
-                    <Text size="xs" opacity={0.4}>
-                      Admin
-                    </Text>
-                    <Text size="xs" opacity={0.4}>
-                      CV
-                    </Text>
-                    <Text size="xs">New</Text>
-                  </Breadcrumbs>
-                </Group>
-              </Grid.Col>
-            </Grid>
-          </Container>
-        </Paper>
-        <Center h={500}>
-          <Loader size="xs" />
+        <Center h={"100vh"} bg="dark.9">
+          <Paper p="md" bg="none">
+            <Stack>
+              <Center>
+                <Loader color="white" size="xs" />
+              </Center>
+            </Stack>
+          </Paper>
         </Center>
       </>
     );
@@ -385,95 +479,91 @@ export function _Form() {
 
   return (
     <section>
-      <Paper>
-        <Container py="sm">
-          <Grid align="center">
-            <Grid.Col span={{ base: 12, lg: 3 }}>
-              <Group gap="xs">
-                <ActionIcon
-                  onClick={() => {
-                    Router.back();
-                  }}
-                >
-                  <ArrowLeftIcon />
-                </ActionIcon>
-
-                <Text size="xs" fw={700}>
-                  New CV
-                </Text>
-              </Group>
-            </Grid.Col>
-
-            <Grid.Col span={{ base: 12, lg: 9 }}>
-              <Group gap={4} visibleFrom="lg" justify="flex-end">
-                <Breadcrumbs separator={<Text size="xs">/</Text>}>
-                  <Text size="xs" opacity={0.4}>
-                    Admin
-                  </Text>
-                  <Text size="xs" opacity={0.4}>
-                    CV
-                  </Text>
-                  <Text size="xs">New</Text>
-                </Breadcrumbs>
-              </Group>
-            </Grid.Col>
-          </Grid>
-        </Container>
-      </Paper>
-
       <Container p="md">
         <Grid gutter="sm">
           <Grid.Col visibleFrom="lg" span={{ base: 12, lg: 4 }}>
             <Paper
               radius="lg"
-              bg="brand.2"
+              bg="linear-gradient(to bottom, rgba(0,0,0,.7), rgba(0,0,0,.9))"
               py="xl"
               px={{ base: "xs", lg: "xl" }}
               style={{
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
+                backdropFilter: "blur(32px)",
                 position: "sticky",
                 top: ".8rem",
               }}
             >
               <Box>
-                <Text size="xs" opacity={0.5} mb="xl">
-                  Creating a new CV
-                </Text>
-                <Text size="2rem" fw={900}>
-                  Generate a new
+                <Button
+                  size="xs"
+                  mb="sm"
+                  variant="light"
+                  color="gray.0"
+                  leftSection={<ArrowLeftIcon />}
+                  onClick={() => {
+                    Router.back();
+                  }}
+                >
+                  Back to Applicants
+                </Button>
+
+                <Text size="2rem" fw={900} c="gray.0">
+                  Onboarding
                   <br />
                   <span style={{ opacity: 0.5 }}> Applicant CV.</span>
                 </Text>
                 <Stack gap="4" my="xl">
                   {steps.map((step, index) => (
                     <Paper
-                      className={classes.stepcard}
+                      className={
+                        current !== index ? classes.stepcard : undefined
+                      }
                       key={index}
                       radius="lg"
                       opacity={current >= index ? 1 : 0.5}
                       p="md"
                       bg={current === index ? "gray.0" : "none"}
                       onClick={() => {
-                        Params.id && setCurrent(index);
+                        if (
+                          [
+                            ...completedSteps,
+                            completedSteps.length + 1,
+                          ].includes(index)
+                        ) {
+                          setCurrent(index);
+                        }
                       }}
                     >
                       <Group justify="space-between">
                         <Group>
-                          <Text size="xs" fw={800}>
+                          <Text
+                            size="xs"
+                            fw={800}
+                            c={current === index ? "dark.9" : "gray.0"}
+                          >
                             Step {index + 1} : {step}
                           </Text>
                         </Group>
-                        {index < current ? (
-                          completedSteps.includes(index + 1) ? (
-                            <Check size={12} />
+                        <Group>
+                          {index == completedSteps.length + 1 ? (
+                            <Badge size="xs">CURRENT</Badge>
                           ) : (
-                            <></>
-                          )
-                        ) : index === current ? (
-                          <ArrowRightIcon size={12} />
-                        ) : null}
+                            ""
+                          )}
+
+                          {index < current ? (
+                            completedSteps.includes(index + 1) ? (
+                              <Check size={12} />
+                            ) : (
+                              <></>
+                            )
+                          ) : index === current ? (
+                            <ArrowRightIcon size={12} />
+                          ) : null}
+                        </Group>
                       </Group>
                     </Paper>
                   ))}
@@ -498,14 +588,16 @@ export function _Form() {
           <Grid.Col span={{ base: 12, lg: 8 }}>
             <FormHandler
               {...formProps}
+              resetOnSubmit={false}
               formType={isCompleted ? "edit" : "new"}
-              initial={Params.id ? data : formProps.initial}
+              initial={data || formProps.initial}
               apiSubmit={apiSubmit}
               submitFormData={submitFormData}
               transformDataOnSubmit={transformData}
+              validation={validation}
               onSubmitSuccess={(res) => {
-                if (!Params?.id && current == 8) {
-                  Router.push("/admin/applicants/all");
+                if (current == 9) {
+                  Router.push("/myprofile");
                 }
 
                 if (!res?.err && res?.data?.id && current === 1) {

@@ -123,7 +123,9 @@ export function ModuleSeekerApplicants() {
       gender: "Gender",
       genderPlaceholder: "Gender",
       ageRange: "Age Range (Min - Max)",
-      fullName: "Full Name (English)",
+      firstName: "First Name (English)",
+      middleName: "Middle Name (English)",
+      lastName: "Last Name (English)",
       furigana: "Full Name (Furigana)",
       min: "Min",
       max: "Max",
@@ -147,7 +149,9 @@ export function ModuleSeekerApplicants() {
       gender: "性別",
       genderPlaceholder: "性別を選択",
       ageRange: "年齢範囲（最小 - 最大）",
-      fullName: "氏名（英語）",
+      firstName: "氏名（英語）",
+      middleName: "氏名（英語）",
+      lastName: "氏名（英語）",
       furigana: "氏名（フリガナ）",
       min: "最小",
       max: "最大",
@@ -239,13 +243,26 @@ export function ModuleSeekerApplicants() {
               </div>
 
               <TextInput
-                label={translations.fullName}
+                label={translations.firstName}
                 size="sm"
-                placeholder={translations.fullName}
+                placeholder={translations.firstName}
                 radius="md"
-                {...form.getInputProps("full_name")}
+                {...form.getInputProps("first_name")}
               />
-
+              <TextInput
+                label={translations.middleName}
+                size="sm"
+                placeholder={translations.middleName}
+                radius="md"
+                {...form.getInputProps("middle_name")}
+              />
+              <TextInput
+                label={translations.lastName}
+                size="sm"
+                placeholder={translations.lastName}
+                radius="md"
+                {...form.getInputProps("last_name")}
+              />
               <TextInput
                 label={translations.furigana}
                 size="sm"

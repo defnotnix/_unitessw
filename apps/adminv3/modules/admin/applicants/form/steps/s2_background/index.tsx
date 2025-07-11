@@ -51,6 +51,16 @@ const styles = {
   },
 };
 
+const religions = [
+  { label: "Hinduism", value: "Hinduism", jp: "ヒンドゥー教" },
+  { label: "Buddhism", value: "Buddhism", jp: "仏教" },
+  { label: "Christianity", value: "Christianity", jp: "キリスト教" },
+  { label: "Islam", value: "Islam", jp: "イスラム教" },
+  { label: "Sikhism", value: "Sikhism", jp: "シク教" },
+  { label: "Jainism", value: "Jainism", jp: "ジャイナ教" },
+  { label: "Other", value: "Other", jp: "その他" },
+];
+
 export function StepBackground() {
   // * DEFINITIONS
 
@@ -95,11 +105,17 @@ export function StepBackground() {
         />
 
         <Stack gap={0}>
-          <TextInput
+          <Select
             label="Religion"
             placeholder="e.g. Hinduism"
             description="Enter your religion"
-            {...form.getInputProps("religion")}
+            data={religions}
+            value={form.values.religion}
+            onChange={(value) => {
+              const selected = religions.find((r) => r.value === value);
+              form.setFieldValue("religion", value);
+              form.setFieldValue("jp_religion", selected?.jp || "");
+            }}
             styles={styles.top}
             leftSection={
               <Text size="xs" fw={800}>
@@ -107,9 +123,11 @@ export function StepBackground() {
               </Text>
             }
           />
+
           <TextInput
-            placeholder="e.g. ヒンドゥー教"
-            {...form.getInputProps("jp_religion")}
+            value={form.values.jp_religion}
+            readOnly
+    
             styles={styles.bot}
             leftSection={
               <Text size="xs" fw={800}>

@@ -117,7 +117,7 @@ export function ModuleApplicantNotified() {
       <Paper>
         <Container size="xl" py="md">
           <Text size="sm" fw={900} ta="center">
-            Candidates that Unite SSW has been notified by you.
+            Candidates that Manabiya HR Unity has been notified by you.
           </Text>
         </Container>
       </Paper>

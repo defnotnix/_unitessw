@@ -152,10 +152,14 @@ export const apiJapanVisit = {
     });
   },
   create: async (body: any) => {
-    return await apiDispatch.post({
-      endpoint: "/applicant/japan/visit/",
-      body,
-    });
+    if (body?.length) {
+      return await apiDispatch.post({
+        endpoint: "/applicant/japan/visit/",
+        body,
+      });
+    } else {
+      return {};
+    }
   },
   update: async (body: any, id: any) => {
     return await moduleApiCall.editRecord("/applicant/japan/visit/", body, id);
@@ -175,10 +179,14 @@ export const apiLicense = {
     });
   },
   create: async (body: any) => {
-    return await apiDispatch.post({
-      endpoint: "/applicant/license/qualification/",
-      body,
-    });
+    if (body.length) {
+      return await apiDispatch.post({
+        endpoint: "/applicant/license/qualification/",
+        body,
+      });
+    } else {
+      return {};
+    }
   },
   update: async (body: any, id: any) => {
     return await moduleApiCall.editRecord(

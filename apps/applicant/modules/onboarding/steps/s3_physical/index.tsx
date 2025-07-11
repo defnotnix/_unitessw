@@ -164,17 +164,18 @@ export function StepPhysical() {
           <Switch
             label="Has Food Allergies"
             description="Indicate if you have food allergies"
-            {...form.getInputProps("has_food_allergies", { type: "checkbox" })}
+            {...form.getInputProps("has_food_allergy", { type: "checkbox" })}
             styles={{
               label: {
                 fontSize: "var(--mantine-font-size-xs)",
               },
             }}
           />
+
           <Switch
             label="Has Food Prohibitions"
             description="Indicate if you have food prohibitions"
-            {...form.getInputProps("has_food_prohibitions", {
+            {...form.getInputProps("has_food_prohibition", {
               type: "checkbox",
             })}
             styles={{
@@ -184,6 +185,64 @@ export function StepPhysical() {
             }}
           />
         </SimpleGrid>
+
+        {form.getValues().has_food_allergy && (
+          <Stack gap={0}>
+            <TextInput
+              rows={3}
+              label="Food Allergy Description"
+              placeholder="e.g. Peanuts, dairy, shellfish"
+              description="Mention any known food allergies"
+              {...form.getInputProps("food_allergy_desc")}
+              styles={styles.top}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  EN
+                </Text>
+              }
+            />
+            <TextInput
+              rows={3}
+              placeholder="例：ピーナッツ、乳製品、甲殻類など"
+              {...form.getInputProps("jp_food_allergy_desc")}
+              styles={styles.bot}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  JP
+                </Text>
+              }
+            />
+          </Stack>
+        )}
+
+        {form.getValues().has_food_prohibition && (
+          <Stack gap={0}>
+            <TextInput
+              rows={3}
+              label="Food Prohibition Description"
+              placeholder="e.g. Pork, beef, alcohol"
+              description="Foods the applicant is restricted from consuming"
+              {...form.getInputProps("food_prohibition_desc")}
+              styles={styles.top}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  EN
+                </Text>
+              }
+            />
+            <TextInput
+              rows={3}
+              placeholder="例：豚肉、牛肉、アルコールなど"
+              {...form.getInputProps("jp_food_prohibition_desc")}
+              styles={styles.bot}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  JP
+                </Text>
+              }
+            />
+          </Stack>
+        )}
 
         <Divider />
 

@@ -2,6 +2,7 @@
 
 import {
   ActionIcon,
+  Badge,
   Box,
   Center,
   Container,
@@ -24,6 +25,8 @@ import {
 import { FormHandler } from "@vframework/core";
 import { PropsWithChildren, useState } from "react";
 import { formProps } from "./steps/s1_Identity/form.config";
+
+import z from "zod";
 
 import imgLogo from "@/assets/img/sswmini.png";
 import {
@@ -96,9 +99,8 @@ export function ModuleOnboarding() {
           (i) => data[`is_step${i}`] === true
         );
 
-        if (completed.length == 8) {
-          setReEdit(true);
-        }
+        console.log(completed);
+        setCompletedSteps(completed);
 
         if (res?.data?.is_published) {
           Router.push("/myprofile");
@@ -301,6 +303,8 @@ export function ModuleOnboarding() {
       component: <StepCertificates />,
       apiCreate: apiLicense.create,
       apiUpdate: async (body: any) => {
+        console.log(body);
+
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
         });
@@ -345,6 +349,33 @@ export function ModuleOnboarding() {
     {
       component: <StepVisit />,
       apiCreate: apiJapanVisit.create,
+      validation: [
+        {
+          visithistory: z.array(
+            z.object({
+              start_year: z.number(),
+
+              end_year: z.number(),
+
+              from_month: z.string().trim().max(15, {
+                message: "From month must be 15 characters or fewer",
+              }),
+
+              to_month: z.string().trim().max(15, {
+                message: "To month must be 15 characters or fewer",
+              }),
+
+              purpose: z.string().trim().max(100, {
+                message: "Purpose must be 100 characters or fewer",
+              }),
+
+              jp_purpose: z.string().trim().max(100, {
+                message: "Japanese purpose must be 100 characters or fewer",
+              }),
+            })
+          ),
+        },
+      ],
       isFormData: false,
       apiUpdate: (body: any) =>
         apiJapanVisit.update(body, data?.a_identification?.id),
@@ -366,6 +397,7 @@ export function ModuleOnboarding() {
     : currentStepConfig.apiCreate;
   const transformData = currentStepConfig.transform ?? ((e) => e);
   const submitFormData = currentStepConfig?.isFormData ?? false;
+  const validation = currentStepConfig?.validation || [];
 
   const FormLayout = ({ children }: PropsWithChildren) => {
     const { handleSubmit } = FormHandler.usePropContext();
@@ -468,7 +500,7 @@ export function ModuleOnboarding() {
               }}
             />
             <Text size="xs" c="white">
-              Unite SSW | Applicant Onboarding
+              Manabiya HR Unity | Applicant Onboarding
             </Text>
           </Group>
 
@@ -514,7 +546,14 @@ export function ModuleOnboarding() {
                       p="md"
                       bg={current === index ? "gray.0" : "none"}
                       onClick={() => {
-                        setCurrent(index);
+                        if (
+                          [
+                            ...completedSteps,
+                            completedSteps.length + 1,
+                          ].includes(index)
+                        ) {
+                          setCurrent(index);
+                        }
                       }}
                     >
                       <Group justify="space-between">
@@ -527,15 +566,23 @@ export function ModuleOnboarding() {
                             Step {index + 1} : {step}
                           </Text>
                         </Group>
-                        {index < current ? (
-                          completedSteps.includes(index + 1) ? (
-                            <Check size={12} />
+                        <Group>
+                          {index == completedSteps.length + 1 ? (
+                            <Badge size="xs">CURRENT</Badge>
                           ) : (
-                            <></>
-                          )
-                        ) : index === current ? (
-                          <ArrowRightIcon size={12} />
-                        ) : null}
+                            ""
+                          )}
+
+                          {index < current ? (
+                            completedSteps.includes(index + 1) ? (
+                              <Check size={12} />
+                            ) : (
+                              <></>
+                            )
+                          ) : index === current ? (
+                            <ArrowRightIcon size={12} />
+                          ) : null}
+                        </Group>
                       </Group>
                     </Paper>
                   ))}
@@ -566,6 +613,7 @@ export function ModuleOnboarding() {
               apiSubmit={apiSubmit}
               submitFormData={submitFormData}
               transformDataOnSubmit={transformData}
+              validation={validation}
               onSubmitSuccess={(res) => {
                 if (current == 9) {
                   Router.push("/myprofile");

@@ -17,22 +17,20 @@ import {
   Select,
   Text,
 } from "@mantine/core";
-import { ArrowLeftIcon, HouseIcon } from "@phosphor-icons/react";
+import { ArrowLeftIcon, HouseIcon, PrinterIcon } from "@phosphor-icons/react";
 import { useRef, useState } from "react";
 
 import { CV } from "@vframework/ui";
-
 import { useReactToPrint } from "react-to-print";
-
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { apiPersonalInformation } from "../../form/module.api";
+import { DateInput } from "@mantine/dates";
 
 const bread = [
   {
     label: "Admin",
   },
-
   { label: "CV" },
   {
     label: "View CV",
@@ -63,6 +61,8 @@ export function _CV() {
     },
   });
 
+  const [date, setDate] = useState<Date>(new Date());
+
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "cv", String(Params.id)],
     queryFn: async () => {
@@ -72,7 +72,6 @@ export function _CV() {
         return {
           ...res?.data,
           ...res?.data?.a_background,
-
           ...res?.data?.a_physical,
           ...res?.data?.a_story,
           ...res?.data?.a_identification,
@@ -100,6 +99,36 @@ export function _CV() {
     );
   }
 
+  const cvProps = {
+    color: cvColor,
+    data: data,
+    language: language,
+    printSt: printSt,
+    logo: cvLogo,
+    date: date,
+  };
+
+  const renderCVTemplate = () => {
+    switch (cvType) {
+      case "1":
+        return <CV1 {...cvProps} />;
+      case "2":
+        return <CV2 {...cvProps} />;
+      case "3":
+        return <CV3 {...cvProps} />;
+      case "4":
+        return <CV4 {...cvProps} />;
+      case "5":
+        return <CV5 {...cvProps} />;
+      case "6":
+        return <CV6 {...cvProps} />;
+      case "7":
+        return <CVCorp {...cvProps} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
       <Paper>
@@ -123,10 +152,10 @@ export function _CV() {
                     size={12}
                     color="var(--mantine-color-brand-5)"
                   />
-                  {bread.map((breadinfo: any, index: number) => (
+                  {bread.map((breadinfo, index) => (
                     <Anchor
                       size="xs"
-                      c={index == bread.length - 1 ? "dark.9" : "gray.5"}
+                      c={index === bread.length - 1 ? "dark.9" : "gray.5"}
                       fw={600}
                       key={index}
                     >
@@ -139,133 +168,30 @@ export function _CV() {
 
             <Grid.Col span={{ base: 12, lg: 9 }}>
               <Group justify="flex-end" gap="xs">
-                <Group gap={0}>
-                  {cvType == "7" && (
-                    <Select
-                      leftSection={<Text size="xs">L:</Text>}
-                      onChange={(e: any) => setCvLogo(e)}
-                      w={150}
-                      size="xs"
-                      data={[
-                        { value: "mb", label: "Manabiya" },
-                        { value: "us", label: "UniteSSW" },
-                      ]}
-                    />
-                  )}
-                  <Select
-                    leftSection={<Text size="xs">T:</Text>}
-                    w={150}
-                    value={cvType}
-                    onChange={(e: any) => setCvType(e)}
-                    size="xs"
-                    data={[
-                      { value: "1", label: "CV-1" },
-                      { value: "2", label: "CV-2" },
-                      { value: "3", label: "CV-3" },
-                      { value: "4", label: "CV-4" },
-                      { value: "5", label: "CV-5" },
-                      { value: "6", label: "CV-6" },
-                      { value: "7", label: "CV-Corporate" },
-                    ]}
-                  />
-
-                  <Select
-                    w={150}
-                    leftSection={
-                      <ColorSwatch
-                        size={12}
-                        color={`var(--mantine-color-${cvColor}-5)`}
-                      />
-                    }
-                    value={cvColor}
-                    onChange={(e: any) => setCvColor(e)}
-                    size="xs"
-                    data={[
-                      {
-                        value: "brand",
-                        label: "Default",
-                      },
-
-                      {
-                        value: "blue",
-                        label: "Blue",
-                      },
-                      {
-                        value: "cyan",
-                        label: "Cyan",
-                      },
-                      {
-                        value: "pink",
-                        label: "Pink",
-                      },
-                      {
-                        value: "grape",
-                        label: "Grape",
-                      },
-                      {
-                        value: "indigo",
-                        label: "Indigo",
-                      },
-                      {
-                        value: "teal",
-                        label: "Teal",
-                      },
-                      {
-                        value: "green",
-                        label: "Green",
-                      },
-                      {
-                        value: "lime",
-                        label: "Lime",
-                      },
-                      {
-                        value: "yellow",
-                        label: "Yellow",
-                      },
-                      {
-                        value: "orange",
-                        label: "Orange",
-                      },
-                      {
-                        value: "red",
-                        label: "Red",
-                      },
-                      {
-                        value: "gray",
-                        label: "Gray",
-                      },
-                    ]}
-                  />
-                </Group>
-
                 <ButtonGroup>
                   <Button
                     size="xs"
-                    onClick={() => {
-                      setLanguage("en");
-                    }}
-                    variant={language == "en" ? "filled" : "light"}
+                    onClick={() => setLanguage("en")}
+                    variant={language === "en" ? "filled" : "light"}
                   >
                     EN
                   </Button>
                   <Button
                     size="xs"
-                    onClick={() => {
-                      setLanguage("jp");
-                    }}
-                    variant={language == "jp" ? "filled" : "light"}
+                    onClick={() => setLanguage("jp")}
+                    variant={language === "jp" ? "filled" : "light"}
                   >
                     JP
                   </Button>
                 </ButtonGroup>
 
-                <Divider mx="md" orientation="vertical" color="brand.4" />
-
-                <Text size="xs">Print :</Text>
-
                 <ButtonGroup>
-                  <Button size="xs" onClick={reactToPrintFn}>
-                    Current CV
+                  <Button
+                    size="xs"
+                    onClick={reactToPrintFn}
+                    leftSection={<PrinterIcon />}
+                  >
+                    Print CV
                   </Button>
                 </ButtonGroup>
               </Group>
@@ -274,13 +200,83 @@ export function _CV() {
         </Container>
       </Paper>
 
+      <Paper withBorder>
+        <Container py="sm" size="xl">
+          <Group grow>
+            <DateInput
+              value={date}
+              onChange={(e: any) => setDate(e)}
+              size="xs"
+              leftSectionWidth={70}
+              leftSection={<Text size="xs">Print Date</Text>}
+            />
+            <Select
+              leftSectionWidth={70}
+              leftSection={<Text size="xs">Template</Text>}
+              w={150}
+              value={cvType}
+              onChange={(e: any) => setCvType(e)}
+              size="xs"
+              data={[
+                { value: "1", label: "CV-1" },
+                { value: "2", label: "CV-2" },
+                { value: "3", label: "CV-3" },
+                { value: "4", label: "CV-4" },
+                { value: "5", label: "CV-5" },
+                { value: "6", label: "CV-6" },
+                { value: "7", label: "CV-Corporate" },
+              ]}
+            />
+            <Select
+              w={150}
+              leftSection={
+                <ColorSwatch
+                  size={12}
+                  color={`var(--mantine-color-${cvColor}-5)`}
+                />
+              }
+              value={cvColor}
+              onChange={setCvColor}
+              size="xs"
+              data={[
+                { value: "brand", label: "Default" },
+                { value: "blue", label: "Blue" },
+                { value: "cyan", label: "Cyan" },
+                { value: "pink", label: "Pink" },
+                { value: "grape", label: "Grape" },
+                { value: "indigo", label: "Indigo" },
+                { value: "teal", label: "Teal" },
+                { value: "green", label: "Green" },
+                { value: "lime", label: "Lime" },
+                { value: "yellow", label: "Yellow" },
+                { value: "orange", label: "Orange" },
+                { value: "red", label: "Red" },
+                { value: "gray", label: "Gray" },
+                { value: "gray.0", label: "White" },
+              ]}
+            />
+            <Select
+              leftSectionWidth={120}
+              leftSection={<Text size="xs">Logo/Watermark</Text>}
+              w={150}
+              size="xs"
+              data={[
+                { value: "na", label: "None" },
+                { value: "mb", label: "Manabiya" },
+                { value: "us", label: "Manabiya HR Unity" },
+              ]}
+              value={cvLogo}
+              onChange={(e: any) => setCvLogo(e)}
+            />
+          </Group>
+        </Container>
+      </Paper>
+
       <Center mt="md">
         {!cvType && (
-          <>
-            <Text my={100} size="xs">
-              Please select a CV Template
-            </Text>
-          </>
+          <Text my={100} size="xs">
+            Please select a CV Template
+          </Text>
         )}
 
         <Paper
@@ -289,71 +285,7 @@ export function _CV() {
             wordWrap: "break-word",
           }}
         >
-          <div ref={contentRef}>
-            {cvType == "1" && (
-              <CV1
-                color={cvColor}
-                data={data}
-                language={language}
-                printSt={printSt}
-              />
-            )}
-
-            {cvType == "2" && (
-              <CV2
-                color={cvColor}
-                data={data}
-                language={language}
-                printSt={printSt}
-              />
-            )}
-
-            {cvType == "3" && (
-              <CV3
-                color={cvColor}
-                data={data}
-                language={language}
-                printSt={printSt}
-              />
-            )}
-
-            {cvType == "4" && (
-              <CV4
-                color={cvColor}
-                data={data}
-                language={language}
-                printSt={printSt}
-              />
-            )}
-
-            {cvType == "5" && (
-              <CV5
-                color={cvColor}
-                data={data}
-                language={language}
-                printSt={printSt}
-              />
-            )}
-
-            {cvType == "6" && (
-              <CV6
-                color={cvColor}
-                data={data}
-                language={language}
-                printSt={printSt}
-              />
-            )}
-
-            {cvType == "7" && (
-              <CVCorp
-                color={cvColor}
-                data={data}
-                language={language}
-                printSt={printSt}
-                logo={cvLogo}
-              />
-            )}
-          </div>
+          <div ref={contentRef}>{renderCVTemplate()}</div>
         </Paper>
       </Center>
     </>

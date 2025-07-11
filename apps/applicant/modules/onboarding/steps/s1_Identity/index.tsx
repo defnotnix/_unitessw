@@ -18,7 +18,7 @@ import {
   TextInput,
   ThemeIcon,
 } from "@mantine/core";
-import { DatePickerInput } from "@mantine/dates";
+import { DateInput, DatePickerInput } from "@mantine/dates";
 import {
   FacebookLogoIcon,
   InfoIcon,
@@ -165,6 +165,81 @@ export function StepIdentity() {
           </Grid.Col>
         </Grid>
 
+        <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="xs">
+          <Stack gap={0}>
+            <TextInput
+              label="First Name"
+              placeholder="e.g. Taro Tanaka"
+              description="Enter your full legal name as in passport"
+              {...form.getInputProps("first_name")}
+              styles={styles.top}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  EN
+                </Text>
+              }
+            />
+            <TextInput
+              placeholder="e.g. タナカ タロウ"
+              {...form.getInputProps("jp_first_name")}
+              styles={styles.bot}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  JP
+                </Text>
+              }
+            />
+          </Stack>
+          <Stack gap={0}>
+            <TextInput
+              label="Middle Name"
+              placeholder="e.g. Tanaka"
+              description="Enter your full legal name as in passport"
+              {...form.getInputProps("middle_name")}
+              styles={styles.top}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  EN
+                </Text>
+              }
+            />
+            <TextInput
+              placeholder="e.g. タナカ タロウ"
+              {...form.getInputProps("jp_middle_name")}
+              styles={styles.bot}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  JP
+                </Text>
+              }
+            />
+          </Stack>
+          <Stack gap={0}>
+            <TextInput
+              label="Last Name"
+              placeholder="e.g. Tanaka"
+              description="Enter your full legal name as in passport"
+              {...form.getInputProps("last_name")}
+              styles={styles.top}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  EN
+                </Text>
+              }
+            />
+            <TextInput
+              placeholder="e.g. タナカ タロウ"
+              {...form.getInputProps("jp_last_name")}
+              styles={styles.bot}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  JP
+                </Text>
+              }
+            />
+          </Stack>
+        </SimpleGrid>
+
         <TextInput
           label="Youtube URL"
           placeholder="e.g. https://www.youtube.com/watch?v=nBydCvT195k"
@@ -176,31 +251,6 @@ export function StepIdentity() {
             </Text>
           }
         />
-
-        <Stack gap={0}>
-          <TextInput
-            label="Full Name"
-            placeholder="e.g. Taro Tanaka"
-            description="Enter your full legal name as in passport"
-            {...form.getInputProps("full_name")}
-            styles={styles.top}
-            leftSection={
-              <Text size="xs" fw={800}>
-                EN
-              </Text>
-            }
-          />
-          <TextInput
-            placeholder="e.g. タナカ タロウ"
-            {...form.getInputProps("furigana")}
-            styles={styles.bot}
-            leftSection={
-              <Text size="xs" fw={800}>
-                JP
-              </Text>
-            }
-          />
-        </Stack>
 
         <Stack gap={0}>
           <TextInput
@@ -238,7 +288,7 @@ export function StepIdentity() {
             }))}
             {...form.getInputProps("category")}
           />
-          <DatePickerInput
+          <DateInput
             label="Date of Birth"
             placeholder="Select your birth date"
             description="Your date of birth in YYYY-MM-DD format"

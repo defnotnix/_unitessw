@@ -381,7 +381,7 @@ export function _AdminNavLayoutSidenav({
       >
         <Group justify="space-between" h={60} px="xl">
           <Text size="sm" c="gray.0">
-            Unite SSW.Admin
+            Manabiya HR Unity.Admin
           </Text>
           <Burger
             size={18}
@@ -400,7 +400,7 @@ export function _AdminNavLayoutSidenav({
         }}
         title={
           <Text size="sm" c="gray.0">
-            Unite SSW.Admin
+            Manabiya HR Unity.Admin
           </Text>
         }
         styles={{

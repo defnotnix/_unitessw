@@ -17,7 +17,8 @@ import "@/public/styles/global.css";
 
 //oauthF
 
-export const endpoint = "https://api.unitessw.com";
+//export const endpoint = "https://api.unitessw.com";
+export const endpoint = "http://10.0.0.4:8000";
 
 export function LayoutApp({ children }: PropsWithChildren) {
   return (
@@ -37,7 +38,7 @@ export function LayoutApp({ children }: PropsWithChildren) {
         theme={configThemeMantine}
         defaultColorScheme={"light"}
         classNames={classes}
-        title="Admin-Unite SSW"
+        title="Admin-Manabiya HR Unity"
         extraHeadTags={
           <>
             <link rel="preconnect" href="https://fonts.googleapis.com" />

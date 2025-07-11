@@ -20,7 +20,7 @@ import imgLogo from "@/assets/img/sswmini.png";
 export function LayoutAuth({ children }: PropsWithChildren) {
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<></>}>
         <section
           style={{
             minHeight: "100vh",
@@ -43,7 +43,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                     }}
                   />
                   <Text size="xs" c="white" fw={600}>
-                    UNITE SSW
+                    Manabiya HR Unity
                     <span
                       style={{
                         opacity: 0.5,
@@ -81,7 +81,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                         }}
                       />
                       <Text size="xs" c="white" fw={600}>
-                        UNITE SSW{" "}
+                        Manabiya HR Unity{" "}
                         <span
                           style={{
                             opacity: 0.5,
@@ -140,7 +140,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
 
                       <Group justify="space-between">
                         <Text size="xs" c="gray.0" fw={600}>
-                          UNITE SSW
+                          Manabiya HR Unity
                         </Text>
 
                         <Text size="xs" c="gray.0">
@@ -178,7 +178,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                 >
                   <div>
                     <Text size="xs" ta="center">
-                      <b> UNITE SSW</b>
+                      <b> Manabiya HR Unity</b>
                       <span
                         style={{
                           opacity: 0.5,

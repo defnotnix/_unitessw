@@ -42,7 +42,7 @@ export default function PageTerms() {
               <Group gap={"xs"}>
                 <Image h={24} w={24} fit="contain" src={imgLogo.src} />
                 <Text size="sm" fw={800}>
-                  Unite SSW
+                  Manabiya HR Unity
                 </Text>
               </Group>
 
@@ -186,7 +186,7 @@ export default function PageTerms() {
           </Section>
 
           <Section title="📬 Contact Information">
-            <strong>Unite SSW Data Protection Officer</strong>
+            <strong>Manabiya HR Unity Data Protection Officer</strong>
             <br />
             Email: [Insert Email]
             <br />

@@ -39,7 +39,7 @@ function LogoWithText({ size = "xs" }: { size?: string }) {
     <Group gap={4}>
       <Image src={imgLogo.src} h={16} w={30} style={{ objectFit: "contain" }} />
       <Text size={size} fw={800} c="gray.0">
-        Unite SSW{" "}
+        Manabiya HR Unity{" "}
         <span style={{ opacity: 0.8, color: "var(--mantine-color-brand-4)" }}>
           {language === "en" ? "| Seeker Portal" : "| 求職者ポータル"}
         </span>
@@ -90,7 +90,7 @@ function AnnouncementList() {
               both recruiters and candidates.
             </Text>
             <Text size="xs" opacity={0.5}>
-              Administration, Unite SSW.
+              Administration, Manabiya HR Unity.
             </Text>
           </Paper>
         ))}

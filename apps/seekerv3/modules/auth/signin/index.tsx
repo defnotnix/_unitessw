@@ -357,7 +357,7 @@ export function ModuleAuthSignIn() {
             }}
           >
             {language == "en"
-              ? "  Based on vFramework"
+              ? " Based on vFramework"
               : " vFramework によるベース"}
           </span>{" "}
         </Text>
@@ -367,7 +367,7 @@ export function ModuleAuthSignIn() {
               <Badge variant="light" size="lg">
                 <Group gap={3}>
                   <Text fw={500} size="11" lh={5} tt="none">
-                    English (United States)
+                    {language === "en" ? "English (United States)" : "日本語"}
                   </Text>
                   <CaretDownIcon size="11" />
                 </Group>

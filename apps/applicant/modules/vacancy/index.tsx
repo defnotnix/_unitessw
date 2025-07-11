@@ -4,6 +4,7 @@ import { images } from "@/public/img";
 import {
   ActionIcon,
   Button,
+  Center,
   Container,
   Group,
   Image,
@@ -13,6 +14,7 @@ import {
   Space,
   Stack,
   Text,
+  ThemeIcon,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -20,6 +22,7 @@ import {
   CaretRightIcon,
   Icon,
   ScrollIcon,
+  SmileyIcon,
 } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
 import { moduleApiCall } from "@vframework/core";
@@ -80,7 +83,7 @@ export function ModuleApplicantVacancy() {
               <Group>
                 <Image h={24} w={24} fit="contain" src={images.logoMini} />
                 <Text size="xs" c="gray.0">
-                  Unite SSW
+                  Manabiya HR Unity
                 </Text>
                 <Text size="xs" c="gray.0" opacity={0.5}>
                   Applicant Portal
@@ -111,7 +114,35 @@ export function ModuleApplicantVacancy() {
               <VacancyCard data={item} key={index} />
             ))}
           </SimpleGrid>
-        </Container>{" "}
+
+          {queryData?.data?.length == 0 && (
+            <Center h={400}>
+              <Stack>
+                <Group justify="center">
+                  <SmileyIcon
+                    size={100}
+                    weight="duotone"
+                    color="var(--mantine-color-brand-3)"
+                  />
+                </Group>
+                <Text size="xl" ta="center">
+                  Unfortunately, there are no active
+                  <br /> vacancies at the moment. Please check back later!
+                </Text>
+
+                <Group justify="center">
+                  <Button
+                    onClick={() => {
+                      Router.push("/myprofile");
+                    }}
+                  >
+                    Go back
+                  </Button>
+                </Group>
+              </Stack>
+            </Center>
+          )}
+        </Container>
       </section>
     </>
   );

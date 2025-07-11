@@ -54,7 +54,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                 }}
               />
               <Text size="xs" c="white" fw={600}>
-                Unite SSW
+                Manabiya HR Unity
                 <span
                   style={{
                     opacity: 0.5,
@@ -98,7 +98,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                     }}
                   />
                   <Text size="xs" c="white" fw={600}>
-                    Unite SSW
+                    Manabiya HR Unity
                     <span
                       style={{
                         opacity: 0.5,
@@ -201,13 +201,13 @@ export function LayoutAuth({ children }: PropsWithChildren) {
 
                   <Group justify="space-between">
                     <Text size="xs" c="gray.0" fw={600}>
-                      Unite SSW Pvt. Ltd.
+                      Manabiya HR Unity Pvt. Ltd.
                     </Text>
 
                     <Text size="xs" c="gray.0">
                       {language === "en"
-                        ? `Copyright © ${String(new Date()).slice(10, 15)} Unite SSW. All rights reserved.`
-                        : `著作権 © ${String(new Date()).slice(10, 15)} Unite SSW。全著作権所有。`}
+                        ? `Copyright © ${String(new Date()).slice(10, 15)} Manabiya HR Unity. All rights reserved.`
+                        : `著作権 © ${String(new Date()).slice(10, 15)} Manabiya HR Unity。全著作権所有。`}
                     </Text>
                   </Group>
                 </Paper>
@@ -246,7 +246,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
             >
               <div>
                 <Text size="xs" ta="center">
-                  <b> Unite SSW</b>
+                  <b> Manabiya HR Unity</b>
                   <span
                     style={{
                       opacity: 0.5,
@@ -311,8 +311,8 @@ export function LayoutAuth({ children }: PropsWithChildren) {
               <Group justify="center">
                 <Text size="xs" c="gray.0">
                   {language === "en"
-                    ? `Copyright © ${String(new Date()).slice(10, 15)} Unite SSW. All rights reserved.`
-                    : `著作権 © ${String(new Date()).slice(10, 15)} Unite SSW。全著作権所有。`}
+                    ? `Copyright © ${String(new Date()).slice(10, 15)} Manabiya HR Unity. All rights reserved.`
+                    : `著作権 © ${String(new Date()).slice(10, 15)} Manabiya HR Unity。全著作権所有。`}
                 </Text>
               </Group>
             </Paper>

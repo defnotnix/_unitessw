@@ -55,7 +55,7 @@ export function ModuleSeekerHome() {
       <Container size="lg" py={100}>
         <Stack gap="md">
           <Text size="xs" ta="center">
-            UNITE SSW
+            Manabiya HR Unity
           </Text>
           <Title size="4rem" lh="4.3rem" ta="center" visibleFrom="lg">
             {language === "en" ? (

@@ -21,7 +21,8 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 
 //oauth
 
-export const endpoint = "https://api.unitessw.com/";
+//export const endpoint = "https://api.unitessw.com/";
+export const endpoint = "http://10.0.0.4:8000";
 
 export function LayoutApp({ children }: PropsWithChildren) {
   return (
@@ -38,7 +39,7 @@ export function LayoutApp({ children }: PropsWithChildren) {
       }}
     >
       <AppWrapper
-        title="Seeker-Unite SSW"
+        title="Seeker-Manabiya HR Unity"
         theme={configThemeMantine}
         defaultColorScheme={"light"}
         classNames={classes}
@@ -56,8 +57,8 @@ export function LayoutApp({ children }: PropsWithChildren) {
         {" "}
         <GoogleOAuthProvider clientId="891191709922-oqundf96vqb74d9ubv0nd5urhn5eh072.apps.googleusercontent.com">
           <LanguageProvider>
-            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-          </LanguageProvider>{" "}
+            <Suspense fallback={<div></div>}>{children}</Suspense>
+          </LanguageProvider>
         </GoogleOAuthProvider>
       </AppWrapper>
     </QueryWrapper>

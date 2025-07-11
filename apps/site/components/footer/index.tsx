@@ -146,7 +146,7 @@ export function LayoutSiteFooter() {
               <Image src={imgLogo.src} h={32} w={54} fit="contain" alt="x" />
               <div>
                 <Text size="xl" c="gray.0" tt="uppercase">
-                  {state.language == "en" ? "Unite SSW" : "マナビヤネパール"}
+                  {state.language == "en" ? "Manabiya HR Unity" : "マナビヤネパール"}
                 </Text>
               </div>
             </Group>
@@ -233,14 +233,14 @@ export function LayoutSiteFooter() {
         <Group justify="space-between">
           <Text size="xs" c="gray.0" opacity={0.5}>
             {state?.language == "en"
-              ? "All rights reserved by Unite SSW."
+              ? "All rights reserved by Manabiya HR Unity."
               : "マナビヤネパールが全ての権利を保有しています。"}
           </Text>
           <Text size="xs" c="gray.0" opacity={0.5}>
             {state?.language == "en"
               ? "No part of this material may be reproduced without permission. © " +
                 new Date().getFullYear() +
-                " Unite SSW."
+                " Manabiya HR Unity."
               : "この資料の一部も許可なく複製することはできません。© " +
                 new Date().getFullYear() +
                 " マナビヤネパール。"}

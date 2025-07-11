@@ -16,7 +16,7 @@ export function CVCorp({
   data: any;
   language: any;
   printSt: boolean;
-  logo: any;
+  logo?: any;
 }) {
   useEffect(() => {}, [color]);
 
