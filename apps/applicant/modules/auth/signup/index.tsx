@@ -320,18 +320,6 @@ export function ModuleAuthSignUp() {
           {...form.getInputProps("password")}
         />
 
-        <Group justify="space-between">
-          <Checkbox
-            disabled
-            //disabled={form.getValues()?.fLoading}
-            size="xs"
-            label="Remember me"
-          />
-          <Anchor size="xs" c="dark" fw={600}>
-            Forgot Password?
-          </Anchor>
-        </Group>
-
         {mutation.isError && <RenderAlert />}
 
         <Stack gap={0}>
