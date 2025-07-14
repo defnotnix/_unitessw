@@ -56,7 +56,7 @@ export function LayoutApp({ children }: PropsWithChildren) {
           </>
         }
       >
-        <GoogleOAuthProvider clientId="891191709922-oqundf96vqb74d9ubv0nd5urhn5eh072.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId="242445348415-tp2tbac850cjumv4v6che5k0fgg7lp2m.apps.googleusercontent.com">
           <LanguageProvider>
             <Suspense fallback={<div></div>}>{children}</Suspense>
           </LanguageProvider>
