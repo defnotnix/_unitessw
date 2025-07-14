@@ -345,7 +345,7 @@ export function ModuleAuthSignUp() {
           </Button>
         </Stack>
 
-        <Text size="xs" ta="center" my="xl">
+        <Text size="xs" ta="center" my="md" fw={700}>
           By signing up, you agree to our{" "}
           <Anchor
             href="https://unitessw.com/terms"
