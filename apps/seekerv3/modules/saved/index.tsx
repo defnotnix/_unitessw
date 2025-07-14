@@ -1,54 +1,28 @@
 "use client";
 
 import { UserCard } from "@/components/UserCard/page";
+import { endpoint } from "@/layouts/app";
 import { useLanguage } from "@/layouts/app/app.context";
 import {
-  ActionIcon,
-  Anchor,
-  Avatar,
-  Badge,
-  Box,
-  Breadcrumbs,
   Burger,
-  Button,
-  ButtonGroupSection,
   Center,
-  CheckIcon,
   Container,
-  Divider,
-  Drawer,
   Grid,
   Group,
-  Image,
   Loader,
-  Menu,
-  NumberInput,
-  Pagination,
   Paper,
-  Select,
-  SimpleGrid,
   Stack,
-  Switch,
   Text,
-  TextInput,
   ThemeIcon,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
-import {
-  ArrowClockwiseIcon,
-  CaretDownIcon,
-  CheckCircleIcon,
-  MagnifyingGlassIcon,
-} from "@phosphor-icons/react";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { SmileyIcon } from "@phosphor-icons/react";
+import { useQuery } from "@tanstack/react-query";
 import { moduleApiCall } from "@vframework/core";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { getJobCategory } from "../home/module.api";
-import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
-import { endpoint } from "@/layouts/app";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const inputStyle = {
   label: {
@@ -128,24 +102,40 @@ export function ModuleSeekerApplicantsSaved() {
       <Paper>
         <Container size="xl" py="md">
           <Text size="sm" fw={900} ta="center">
-            My Saved Canddiates
+            {language === "en"
+              ? "My Saved Candidates"
+              : "あなたの保存済み候補者"}
           </Text>
         </Container>
       </Paper>
       <Container size="xl" py="md">
         <Grid gutter="4px">
           <Grid.Col span={{ base: 12, lg: 8.5 }} offset={{ lg: 1.75 }}>
-            <Group justify="space-between">
-              <Group gap={2}>
-                <ThemeIcon hiddenFrom="lg">
-                  <Burger
-                    size="xs"
-                    color="white"
-                    onClick={() => handleOpen.open()}
-                  />
-                </ThemeIcon>
-              </Group>
-            </Group>
+            {queryData?.data?.length <= 0 && (
+              <Center h={400}>
+                <Stack gap="0">
+                  <Group justify="center" opacity={0.2}>
+                    <SmileyIcon
+                      size={100}
+                      weight="fill"
+                      color="var(--mantine-color-brand-6)"
+                    />
+                  </Group>
+
+                  <Text size="xl" fw={800} ta="center" mt="xs">
+                    {language === "en"
+                      ? "It looks like you haven’t saved any candidates yet."
+                      : "まだ候補者を保存していないようです。"}
+                  </Text>
+
+                  <Text size="xs" fw={500} ta="center">
+                    {language === "en"
+                      ? "You can save candidates directly from their profiles."
+                      : "プロフィールから候補者を直接保存できます。"}
+                  </Text>
+                </Stack>
+              </Center>
+            )}
 
             <Stack mt="lg" gap="4px">
               {queryData.data?.map((item: any, index: number) => (

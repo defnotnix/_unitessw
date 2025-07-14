@@ -2,9 +2,7 @@
 
 import {
   ActionIcon,
-  Alert,
   Anchor,
-  Avatar,
   Badge,
   Breadcrumbs,
   Button,
@@ -12,28 +10,20 @@ import {
   Center,
   ColorSwatch,
   Container,
-  Divider,
   Grid,
   Group,
   Image,
   Loader,
-  Menu,
-  Modal,
   Paper,
   ScrollArea,
   Select,
   Stack,
   Text,
-  TextInput,
 } from "@mantine/core";
 import {
-  ArrowLeft,
   ArrowLeftIcon,
-  CaretDownIcon,
   CaretRightIcon,
-  House,
   HouseIcon,
-  KeyIcon,
   PencilIcon,
   PowerIcon,
   PrinterIcon,
@@ -44,17 +34,16 @@ import { CV } from "@vframework/ui";
 
 import { useReactToPrint } from "react-to-print";
 
+import { endpoint } from "@/layouts/app";
+import { images } from "@/public/img";
 import { useQuery } from "@tanstack/react-query";
+import { jwtDecode } from "jwt-decode";
 import { useParams, useRouter } from "next/navigation";
 import { apiPersonalInformation } from "./applicant.api";
-import { endpoint } from "@/layouts/app";
-import { jwtDecode } from "jwt-decode";
-import { images } from "@/public/img";
 
-import { motion } from "framer-motion";
-import { useDisclosure } from "@mantine/hooks";
-import { FormHandler } from "@vframework/core";
 import { DateInput } from "@mantine/dates";
+import { useDisclosure } from "@mantine/hooks";
+import { motion } from "framer-motion";
 
 const bread = [
   {
@@ -286,7 +275,7 @@ export function ModuleApplicant() {
                 </Text>
               </Group>
 
-              <Group gap={6}>
+              <Group gap={6} visibleFrom="lg">
                 <Text size="xs" c="gray.0">
                   Explore Job Vacancies from different companies in Japan.
                 </Text>
@@ -364,7 +353,7 @@ export function ModuleApplicant() {
               </Grid.Col>
 
               <Grid.Col span={{ base: 12, lg: 9 }}>
-                <Group justify="flex-end" gap="xs">
+                <Group justify="flex-end" gap="xs" visibleFrom="lg">
                   <ButtonGroup>
                     <Button
                       size="xs"
@@ -397,7 +386,51 @@ export function ModuleApplicant() {
                     <Button
                       size="xs"
                       onClick={() => {
-                        Router.push("/onboarding");
+                        Router.push("/myprofile/edit");
+                      }}
+                      disabled={data?.is_published}
+                      variant="light"
+                      leftSection={<PencilIcon />}
+                    >
+                      Update Profile
+                    </Button>
+                  </ButtonGroup>
+                </Group>
+
+                <Group justify="space-between" gap="xs" hiddenFrom="lg">
+                  <ButtonGroup>
+                    <Button
+                      size="xs"
+                      onClick={() => {
+                        setLanguage("en");
+                      }}
+                      variant={language == "en" ? "filled" : "light"}
+                    >
+                      EN
+                    </Button>
+                    <Button
+                      size="xs"
+                      onClick={() => {
+                        setLanguage("jp");
+                      }}
+                      variant={language == "jp" ? "filled" : "light"}
+                    >
+                      JP
+                    </Button>
+                  </ButtonGroup>
+
+                  <ButtonGroup>
+                    <Button
+                      size="xs"
+                      onClick={reactToPrintFn}
+                      leftSection={<PrinterIcon />}
+                    >
+                      Print CV
+                    </Button>
+                    <Button
+                      size="xs"
+                      onClick={() => {
+                        Router.push("/myprofile/edit");
                       }}
                       disabled={data?.is_published}
                       variant="light"
@@ -414,14 +447,7 @@ export function ModuleApplicant() {
 
         <Paper withBorder>
           <Container py="sm">
-            <Group grow>
-              <DateInput
-                value={new Date()}
-                readOnly
-                size="xs"
-                leftSectionWidth={70}
-                leftSection={<Text size="xs">Print Date</Text>}
-              />
+            <Group grow gap="xs">
               <Select
                 leftSectionWidth={70}
                 leftSection={<Text size="xs">Template</Text>}
@@ -467,16 +493,6 @@ export function ModuleApplicant() {
                   { value: "gray.0", label: "White" },
                 ]}
               />
-              <Select
-                value="us"
-                disabled
-                leftSectionWidth={120}
-                leftSection={<Text size="xs">Logo/Watermark</Text>}
-                w={150}
-                size="xs"
-                data={[{ value: "us", label: "Manabiya HR Unity" }]}
-                onChange={(e: any) => setCvLogo(e)}
-              />
             </Group>
           </Container>
         </Paper>
@@ -502,6 +518,41 @@ export function ModuleApplicant() {
           )}
           <RenderCV />
         </ScrollArea>
+
+        <Paper p="xl" bg="gray.9" radius={0}>
+          <Group justify="center">
+            <Group gap={6} hiddenFrom="lg">
+              <Button
+                size="xs"
+                p={0}
+                h={24}
+                px="xs"
+                rightSection={<CaretRightIcon size={12} />}
+                color="indigo.6"
+                onClick={() => {
+                  Router.push("/vacancy");
+                }}
+              >
+                Explore Job Vacancy
+              </Button>
+              <Button
+                size="xs"
+                p={0}
+                h={24}
+                px="xs"
+                leftSection={<PowerIcon size={12} />}
+                variant="outline"
+                c="brand.3"
+                onClick={() => {
+                  sessionStorage.removeItem("sswtoken");
+                  Router.push("/");
+                }}
+              >
+                Sign Out
+              </Button>
+            </Group>
+          </Group>
+        </Paper>
       </section>
     </>
   );

@@ -98,23 +98,23 @@ export function ModuleAuthSignIn() {
 
   function handleRedirect(res: any) {
     const decoded: any = jwtDecode(res.data?.access_token);
-    console.log(decoded);
+    console.log("Decoded", decoded);
 
-    if (decoded?.is_applicant == "True" && decoded?.is_completed == "True") {
+    if (decoded?.is_step9 == true) {
       Router.push("/applicant");
-    } else if (decoded?.is_step5 == "True") {
+    } else if (decoded?.is_step5 == true) {
       Router.push("/onboarding?step=5");
       sessionStorage.setItem("ssw_onboarding", "5");
-    } else if (decoded?.is_step4 == "True") {
+    } else if (decoded?.is_step4 == true) {
       Router.push("/onboarding?step=4");
       sessionStorage.setItem("ssw_onboarding", "4");
-    } else if (decoded?.is_step3 == "True") {
+    } else if (decoded?.is_step3 == true) {
       Router.push("/onboarding?step=3");
       sessionStorage.setItem("ssw_onboarding", "3");
-    } else if (decoded?.is_step2 == "True") {
+    } else if (decoded?.is_step2 == true) {
       Router.push("/onboarding?step=2");
       sessionStorage.setItem("ssw_onboarding", "2");
-    } else if (decoded?.is_step1 == "True") {
+    } else if (decoded?.is_step1 == true) {
       Router.push("/onboarding?step=1");
       sessionStorage.setItem("ssw_onboarding", "1");
     } else {

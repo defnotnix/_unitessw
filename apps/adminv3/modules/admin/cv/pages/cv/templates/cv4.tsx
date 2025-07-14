@@ -350,8 +350,7 @@ export function CV4({
             {false && (
               <AspectRatio ratio={16 / 9} mt={-16}>
                 <iframe
-                  src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"
-                  title="YouTube video player"
+  src={data?.youtube_link}                  title="YouTube video player"
                   style={{ border: 0 }}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen

@@ -1,20 +1,16 @@
 "use client";
 
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 //next
 
 //mantine
+import { navItems } from "@/config/nav";
 import {
   ActionIcon,
   Alert,
-  Anchor,
   Avatar,
-  Box,
-  Breadcrumbs,
   Burger,
   Button,
-  ButtonGroup,
-  Center,
   Container,
   Divider,
   Drawer,
@@ -24,51 +20,34 @@ import {
   Menu,
   Modal,
   NavLink,
-  Notification,
   Paper,
-  SimpleGrid,
   Stack,
   Text,
   TextInput,
-  Tooltip,
 } from "@mantine/core";
-import { AdminNavLayout, triggerNotification } from "@vframework/ui";
-import { navItems, navModules } from "@/config/nav";
 import {
-  CheckIcon,
-  BellIcon,
-  Calendar,
   CaretDownIcon,
-  CaretRight,
-  Check,
-  Cricket,
-  GearSixIcon,
+  CheckIcon,
   InfoIcon,
   KeyIcon,
-  Note,
-  NotificationIcon,
+  LockIcon,
   PlusIcon,
   PowerIcon,
-  ScrollIcon,
-  UserCheck,
   UserIcon,
-  UserPlus,
-  UserPlusIcon,
-  LockIcon,
 } from "@phosphor-icons/react";
-import { usePathname, useRouter } from "next/navigation";
 import { FormHandler, moduleApiCall } from "@vframework/core";
+import { usePathname, useRouter } from "next/navigation";
 //mantine
 
 //icons
 
 //styles
 
-import classes from "./admin.module.css";
 import { images } from "@/assets/images";
+import { RBACCheck } from "@/components/RBACCheck";
 import { useDisclosure } from "@mantine/hooks";
 import { jwtDecode } from "jwt-decode";
-import { RBACCheck } from "@/components/RBACCheck";
+import classes from "./admin.module.css";
 
 //components
 
@@ -594,7 +573,8 @@ export function LayoutAdmin({ children }: PropsWithChildren) {
                   <Menu.Target>
                     <Button
                       size="xs"
-                      variant="light"
+                      variant="fill"
+                      bg="dark.6"
                       c="white"
                       rightSection={<CaretDownIcon size={12} />}
                     >

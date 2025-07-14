@@ -152,10 +152,12 @@ export function ModuleSeekerHome() {
                     value: String(item.id),
                   };
                 })}
-                label="Job Category"
+                label={language === "en" ? "Job Category" : "職種"}
                 variant="filled"
                 size="xl"
-                placeholder="Select Job Category"
+                placeholder={
+                  language === "en" ? "Select Job Category" : "職種を選択"
+                }
                 radius="md"
                 {...form.getInputProps("category")}
               />
@@ -166,10 +168,10 @@ export function ModuleSeekerHome() {
                     { value: "Female", label: "Female" },
                     { value: "Other", label: "Other" },
                   ]}
-                  label="Gender"
+                  label={language === "en" ? "Gender" : "性別"}
                   variant="filled"
                   size="xl"
-                  placeholder="Gender"
+                  placeholder={language === "en" ? "Gender" : "性別"}
                   radius="md"
                   {...form.getInputProps("gender")}
                 />
@@ -211,35 +213,35 @@ export function ModuleSeekerHome() {
                 overflow: "hidden",
               }}
             >
-              <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="xs">
+              <SimpleGrid cols={{ base: 1, lg: 1 }} spacing="xs">
                 <TextInput
-                  label="Full Name (English)"
+                  label={
+                    language === "en" ? "Full Name (English)" : "氏名（英語）"
+                  }
                   variant="filled"
                   size="xl"
-                  placeholder="Select Job Category"
+                  placeholder={
+                    language === "en"
+                      ? "Enter Candidate's Name"
+                      : "氏名を入力してください"
+                  }
                   radius="md"
-                  {...form.getInputProps("full_name")}
-                />
-                <TextInput
-                  label="Full Name (Furigana)"
-                  variant="filled"
-                  size="xl"
-                  placeholder="Select Job Category"
-                  radius="md"
-                  {...form.getInputProps("furigana")}
+                  {...form.getInputProps("name")}
                 />
               </SimpleGrid>
               <SimpleGrid cols={{ base: 1, md: 2, lg: 4 }} mt="xs">
                 <div>
                   <Text size="xs" my={4}>
-                    Weight (Min - Max)
+                    {language === "en"
+                      ? "Weight (Min - Max)"
+                      : "体重（最小 - 最大）"}
                   </Text>
                   <SimpleGrid cols={2} spacing={2}>
                     <NumberInput
                       hideControls
                       variant="filled"
                       size="xl"
-                      placeholder="Min"
+                      placeholder={language === "en" ? "Min" : "最小"}
                       radius="md"
                       {...form.getInputProps("min_weight")}
                       rightSectionWidth={50}
@@ -254,7 +256,7 @@ export function ModuleSeekerHome() {
                       hideControls
                       variant="filled"
                       size="xl"
-                      placeholder="Max"
+                      placeholder={language === "en" ? "Max" : "最大"}
                       radius="md"
                       {...form.getInputProps("max_weight")}
                       rightSectionWidth={50}
@@ -264,14 +266,16 @@ export function ModuleSeekerHome() {
                 </div>
                 <div>
                   <Text size="xs" my={4}>
-                    Height (Min - Max)
+                    {language === "en"
+                      ? "Height (Min - Max)"
+                      : "身長（最小 - 最大）"}
                   </Text>
                   <SimpleGrid cols={2} spacing={2}>
                     <NumberInput
                       hideControls
                       variant="filled"
                       size="xl"
-                      placeholder="Min"
+                      placeholder={language === "en" ? "Min" : "最小"}
                       radius="md"
                       {...form.getInputProps("min_height")}
                       rightSectionWidth={50}
@@ -286,7 +290,7 @@ export function ModuleSeekerHome() {
                       hideControls
                       variant="filled"
                       size="xl"
-                      placeholder="Max"
+                      placeholder={language === "en" ? "Max" : "最大"}
                       radius="md"
                       {...form.getInputProps("max_height")}
                       rightSectionWidth={50}
@@ -305,23 +309,30 @@ export function ModuleSeekerHome() {
                     { label: "O+", value: "O+" },
                     { label: "O-", value: "O-" },
                   ]}
-                  label="Blood Group"
+                  label={language === "en" ? "Blood Group" : "血液型"}
                   variant="filled"
                   size="xl"
-                  placeholder="Select"
+                  placeholder={
+                    language === "en" ? "Select Blood Group" : "選択"
+                  }
                   radius="md"
                   {...form.getInputProps("blood_group")}
                 />
                 <Select
                   data={[
-                    { value: "Male", label: "Male" },
-                    { value: "Female", label: "Female" },
-                    { value: "Other", label: "Other" },
+                    { value: "Single", label: "Single" },
+                    { value: "Married", label: "Married" },
+                    { value: "Divorced", label: "Divorced" },
+                    { value: "Widowed", label: "Widowed" },
+                    { value: "Separated", label: "Separated" },
+                    { value: "Partnered", label: "Partnered" },
                   ]}
-                  label="Martial Status"
+                  label={language === "en" ? "Martial Status" : "配偶者の有無"}
                   variant="filled"
                   size="xl"
-                  placeholder="Select"
+                  placeholder={
+                    language === "en" ? "Select Martial Status" : "選択"
+                  }
                   radius="md"
                   {...form.getInputProps("martial_status")}
                 />

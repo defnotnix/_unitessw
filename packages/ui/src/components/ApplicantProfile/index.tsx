@@ -9,7 +9,7 @@ import {
   Text,
 } from "@mantine/core";
 import { info } from "console";
-import React from "react";
+import React, { ReactNode } from "react";
 
 export const personalDetails = {
   basicInfo: [
@@ -149,7 +149,15 @@ export const personalDetails = {
   ],
 };
 
-export function ApplicantProfile({ info, lang }: { info: any; lang: string }) {
+export function ApplicantProfile({
+  info,
+  lang,
+  extra,
+}: {
+  info: any;
+  lang: string;
+  extra?: ReactNode;
+}) {
   return (
     <>
       <Paper
@@ -172,6 +180,8 @@ export function ApplicantProfile({ info, lang }: { info: any; lang: string }) {
               {lang === "en" ? "Registration Code : " : "候補者コード : "}
               {info.code}
             </Text>
+
+            {extra}
           </Stack>
 
           {/* YouTube Video */}
@@ -398,7 +408,7 @@ export function ApplicantProfile({ info, lang }: { info: any; lang: string }) {
           </SimpleGrid>
         </Paper>
 
-        <Text size="xl" fw={800} px="lg">
+        <Text size="lg" fw={800} px="lg">
           {lang === "en" ? "Academics" : "学歴"}
         </Text>
 
@@ -406,6 +416,7 @@ export function ApplicantProfile({ info, lang }: { info: any; lang: string }) {
           <Table
             striped
             withTableBorder
+            withColumnBorders
             style={{
               fontSize: "var(--mantine-font-size-xs)",
             }}
@@ -447,7 +458,7 @@ export function ApplicantProfile({ info, lang }: { info: any; lang: string }) {
           </Table>
         </Paper>
 
-        <Text size="xl" fw={800} px="lg">
+        <Text size="lg" fw={800} px="lg">
           {lang === "en" ? "Work History" : "勤務履歴"}
         </Text>
 
@@ -455,6 +466,7 @@ export function ApplicantProfile({ info, lang }: { info: any; lang: string }) {
           <Table
             striped
             withTableBorder
+            withColumnBorders
             style={{
               fontSize: "var(--mantine-font-size-xs)",
             }}
@@ -493,13 +505,14 @@ export function ApplicantProfile({ info, lang }: { info: any; lang: string }) {
           </Table>
         </Paper>
 
-        <Text size="xl" fw={800} px="lg">
+        <Text size="lg" fw={800} px="lg">
           {lang === "en" ? "License Qualification" : "証明書"}
         </Text>
 
         <Paper withBorder>
           <Table
             striped
+            withColumnBorders
             withTableBorder
             style={{
               fontSize: "var(--mantine-font-size-xs)",
@@ -508,7 +521,7 @@ export function ApplicantProfile({ info, lang }: { info: any; lang: string }) {
             <Table.Thead>
               <Table.Tr>
                 <Table.Th w={50}>#</Table.Th>
-                <Table.Th w={120}>{lang == "en" ? "Date" : "日付"}</Table.Th>
+                <Table.Th w={200}>{lang == "en" ? "Date" : "日付"}</Table.Th>
                 <Table.Th w={200}>
                   {lang == "en" ? "License/Qualification" : "証明書"}
                 </Table.Th>
@@ -539,13 +552,14 @@ export function ApplicantProfile({ info, lang }: { info: any; lang: string }) {
           </Table>
         </Paper>
 
-        <Text size="xl" fw={800} px="lg">
+        <Text size="lg" fw={800} px="lg">
           {lang === "en" ? "Prevous Japan Visits" : "前回到日本の訪問履歴"}
         </Text>
 
         <Paper withBorder>
           <Table
             striped
+            withColumnBorders
             withTableBorder
             style={{
               fontSize: "var(--mantine-font-size-xs)",

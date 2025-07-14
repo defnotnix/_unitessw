@@ -174,7 +174,7 @@ export function ModuleAuthSignIn() {
           <Text size="xl" lh="lg" ta="center">
             Welcome Back!
             <br />
-            Give me a moment while i arrange few things.
+            <i>Give me a moment while I arrange few things.</i>
           </Text>
 
           <Group justify="center" mt="xl">

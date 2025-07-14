@@ -14,6 +14,7 @@ import {
   Group,
   Loader,
   Paper,
+  ScrollArea,
   Select,
   Text,
 } from "@mantine/core";
@@ -114,7 +115,7 @@ export function ModuleApplicantProfile() {
       <Paper>
         <Container size="xl" py="sm">
           <Grid align="center">
-            <Grid.Col span={{ base: 12, lg: 3 }}>
+            <Grid.Col span={{ base: 4, lg: 6 }}>
               <Group wrap="nowrap">
                 <ActionIcon
                   size="sm"
@@ -126,12 +127,12 @@ export function ModuleApplicantProfile() {
                   <ArrowLeftIcon size={12} />
                 </ActionIcon>
                 <Text size="sm" fw={800}>
-                  Applicant CV
+                  Applicant
                 </Text>
               </Group>
             </Grid.Col>
 
-            <Grid.Col span={{ base: 12, lg: 9 }}>
+            <Grid.Col span={{ base: 8, lg: 6 }}>
               <Group justify="flex-end" gap="xs">
                 <ButtonGroup>
                   <Button
@@ -160,7 +161,7 @@ export function ModuleApplicantProfile() {
                     onClick={reactToPrintFn}
                     leftSection={<PrinterIcon />}
                   >
-                    Print Current CV
+                    Print CV
                   </Button>
                 </ButtonGroup>
               </Group>
@@ -171,14 +172,7 @@ export function ModuleApplicantProfile() {
 
       <Paper withBorder>
         <Container py="sm" size="xl">
-          <Group grow>
-            <DateInput
-              value={new Date()}
-              readOnly
-              size="xs"
-              leftSectionWidth={70}
-              leftSection={<Text size="xs">Print Date</Text>}
-            />
+          <Group grow gap="xs">
             <Select
               leftSectionWidth={70}
               leftSection={<Text size="xs">Template</Text>}
@@ -224,16 +218,6 @@ export function ModuleApplicantProfile() {
                 { value: "gray.0", label: "White" },
               ]}
             />
-            <Select
-              value="us"
-              disabled
-              leftSectionWidth={120}
-              leftSection={<Text size="xs">Logo/Watermark</Text>}
-              w={150}
-              size="xs"
-              data={[{ value: "us", label: "Manabiya HR Unity" }]}
-              onChange={(e: any) => setCvLogo(e)}
-            />
           </Group>
         </Container>
       </Paper>
@@ -248,6 +232,7 @@ export function ModuleApplicantProfile() {
         )}
 
         <Paper
+          visibleFrom="lg"
           withBorder
           style={{
             wordWrap: "break-word",
@@ -332,6 +317,94 @@ export function ModuleApplicantProfile() {
             )}
           </div>
         </Paper>
+
+        <ScrollArea hiddenFrom="lg">
+          <Paper
+            withBorder
+            style={{
+              wordWrap: "break-word",
+            }}
+          >
+            <div ref={contentRef}>
+              {cvType == "1" && (
+                <CV1
+                  logo="us"
+                  date={new Date()}
+                  color={cvColor}
+                  data={data}
+                  language={language}
+                  printSt={printSt}
+                />
+              )}
+
+              {cvType == "2" && (
+                <CV2
+                  logo="us"
+                  date={new Date()}
+                  color={cvColor}
+                  data={data}
+                  language={language}
+                  printSt={printSt}
+                />
+              )}
+
+              {cvType == "3" && (
+                <CV3
+                  logo="us"
+                  date={new Date()}
+                  color={cvColor}
+                  data={data}
+                  language={language}
+                  printSt={printSt}
+                />
+              )}
+
+              {cvType == "4" && (
+                <CV4
+                  logo="us"
+                  date={new Date()}
+                  color={cvColor}
+                  data={data}
+                  language={language}
+                  printSt={printSt}
+                />
+              )}
+
+              {cvType == "5" && (
+                <CV5
+                  logo="us"
+                  date={new Date()}
+                  color={cvColor}
+                  data={data}
+                  language={language}
+                  printSt={printSt}
+                />
+              )}
+
+              {cvType == "6" && (
+                <CV6
+                  logo="us"
+                  date={new Date()}
+                  color={cvColor}
+                  data={data}
+                  language={language}
+                  printSt={printSt}
+                />
+              )}
+
+              {cvType == "7" && (
+                <CVCorp
+                  logo="us"
+                  date={new Date()}
+                  color={cvColor}
+                  data={data}
+                  language={language}
+                  printSt={printSt}
+                />
+              )}
+            </div>
+          </Paper>
+        </ScrollArea>
       </Center>
     </>
   );

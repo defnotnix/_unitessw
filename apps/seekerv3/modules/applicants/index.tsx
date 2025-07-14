@@ -123,7 +123,7 @@ export function ModuleSeekerApplicants() {
       gender: "Gender",
       genderPlaceholder: "Gender",
       ageRange: "Age Range (Min - Max)",
-      firstName: "First Name (English)",
+      name: "Name",
       middleName: "Middle Name (English)",
       lastName: "Last Name (English)",
       furigana: "Full Name (Furigana)",
@@ -149,7 +149,7 @@ export function ModuleSeekerApplicants() {
       gender: "性別",
       genderPlaceholder: "性別を選択",
       ageRange: "年齢範囲（最小 - 最大）",
-      firstName: "氏名（英語）",
+      name: "氏名",
       middleName: "氏名（英語）",
       lastName: "氏名（英語）",
       furigana: "氏名（フリガナ）",
@@ -243,32 +243,11 @@ export function ModuleSeekerApplicants() {
               </div>
 
               <TextInput
-                label={translations.firstName}
+                label={translations.name}
                 size="sm"
-                placeholder={translations.firstName}
+                placeholder={translations.name}
                 radius="md"
-                {...form.getInputProps("first_name")}
-              />
-              <TextInput
-                label={translations.middleName}
-                size="sm"
-                placeholder={translations.middleName}
-                radius="md"
-                {...form.getInputProps("middle_name")}
-              />
-              <TextInput
-                label={translations.lastName}
-                size="sm"
-                placeholder={translations.lastName}
-                radius="md"
-                {...form.getInputProps("last_name")}
-              />
-              <TextInput
-                label={translations.furigana}
-                size="sm"
-                placeholder={translations.furigana}
-                radius="md"
-                {...form.getInputProps("furigana")}
+                {...form.getInputProps("name")}
               />
             </SimpleGrid>
 

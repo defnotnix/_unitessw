@@ -98,6 +98,12 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                     </Text>
                   </Group>
 
+                  <Text size="6rem" opacity={0.05} c="gray.0">
+                    Admin
+                    <br />
+                    Portal
+                  </Text>
+
                   <Box>
                     <Text size="3rem" c="gray.0">
                       A platform to bridge{" "}
@@ -140,7 +146,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
 
                       <Group justify="space-between">
                         <Text size="xs" c="gray.0" fw={600}>
-                          Manabiya HR Unity
+                          Manabiya HR Unity Pvt. Ltd.
                         </Text>
 
                         <Text size="xs" c="gray.0">

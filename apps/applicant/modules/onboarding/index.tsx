@@ -41,7 +41,12 @@ import {
   apiWork,
 } from "./module.api";
 
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { StepIdentity } from "./steps/s1_Identity";
 import { StepBackground } from "./steps/s2_background";
 import { StepPhysical } from "./steps/s3_physical";
@@ -63,6 +68,7 @@ export function ModuleOnboarding() {
   const forceUpdate = useForceUpdate();
 
   const Router = useRouter();
+  const Pathname = usePathname();
 
   const [current, setCurrent] = useState(0);
   const [personId, setPersonId] = useState(null);
@@ -102,7 +108,10 @@ export function ModuleOnboarding() {
         console.log(completed);
         setCompletedSteps(completed);
 
-        if (res?.data?.is_published) {
+        if (
+          (res?.data?.is_published || res?.data?.is_step9) &&
+          Pathname !== "/myprofile/edit"
+        ) {
           Router.push("/myprofile");
           return formProps.initial;
         } else {

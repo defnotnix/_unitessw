@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 //next
 
 //mantine
@@ -11,31 +10,16 @@ import {
   Divider,
   Group,
   NumberInput,
-  Paper,
   Select,
   SimpleGrid,
   Stack,
-  Switch,
   Text,
-  Textarea,
   TextInput,
-  ThemeIcon,
 } from "@mantine/core";
-import { FormHandler } from "@vframework/core";
-import { FormElement, ImageUpload } from "@vframework/ui";
-import {
-  ExclamationMark,
-  Plus,
-  PlusIcon,
-  TrashIcon,
-} from "@phosphor-icons/react";
-import {
-  DateInput,
-  DatePickerInput,
-  MonthPickerInput,
-  YearPickerInput,
-} from "@mantine/dates";
 import { modals } from "@mantine/modals";
+import { PlusIcon, TrashIcon } from "@phosphor-icons/react";
+import { FormHandler } from "@vframework/core";
+import { FormElement } from "@vframework/ui";
 import { apiEducation } from "../../module.api";
 //mantine
 

@@ -28,7 +28,6 @@ import {
 } from "@mantine/core";
 import { ArrowUpRightIcon, Pen } from "@phosphor-icons/react";
 import { moduleConfig } from "../../module.config";
-import { columns } from "./list.columns";
 
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
@@ -36,7 +35,7 @@ import { _Form as Form } from "../../form/form";
 import { formProps } from "../../form/form.config";
 
 import { apiPersonalInformation } from "@/modules/admin/applicants/form/module.api";
-import { personalDetails } from "@/modules/admin/applicants/pages/list";
+import { personalDetails } from "@vframework/ui";
 
 import { modals } from "@mantine/modals";
 import { useMutation } from "@tanstack/react-query";

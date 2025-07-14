@@ -18,13 +18,24 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { BagIcon, BookmarkIcon, CheckCircleIcon } from "@phosphor-icons/react";
+import {
+  BagIcon,
+  BellIcon,
+  BookmarkIcon,
+  CameraIcon,
+  CheckCircleIcon,
+  HeartIcon,
+  XIcon,
+} from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
-import { ApplicantProfile } from "@vframework/ui";
+import { ApplicantProfile, triggerNotification } from "@vframework/ui";
 import dayjs from "dayjs";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { apiCancelInterview, apiUnnotify, markInterested } from "./module.api";
+import { modals } from "@mantine/modals";
+import { moduleApiCall } from "@vframework/core";
 
 // --------------------
 // TypeO
@@ -270,7 +281,342 @@ export function UserCard({
           },
         }}
       >
-        <ApplicantProfile info={info} lang={lang} />
+        <ApplicantProfile
+          info={info}
+          lang={lang}
+          extra={
+            <>
+              <Group gap="2px">
+                <Button
+                  variant={!info?.interest ? "filled" : "white"}
+                  size="xs"
+                  leftSection={<BellIcon />}
+                  onClick={() => {
+                    const isNotified = info?.interest;
+                    const titleText = isNotified
+                      ? lang === "en"
+                        ? "Remove Notification?"
+                        : "通知を削除しますか？"
+                      : lang === "en"
+                        ? "Notify Candidate?"
+                        : "候補者に通知しますか？";
+
+                    const bodyText = isNotified
+                      ? lang === "en"
+                        ? "This candidate will be removed from your notification list."
+                        : "この候補者は通知リストから削除されます。"
+                      : lang === "en"
+                        ? "The Unite SSW team will be notified of your interest in this candidate."
+                        : "Unite SSW チームにあなたの関心が通知されます。";
+
+                    const confirmText = isNotified
+                      ? lang === "en"
+                        ? "Remove"
+                        : "削除"
+                      : lang === "en"
+                        ? "Notify"
+                        : "通知";
+
+                    modals.openConfirmModal({
+                      title: (
+                        <Group wrap="nowrap">
+                          <ActionIcon size="sm" color="brand" variant="light">
+                            <BellIcon />
+                          </ActionIcon>
+                          <Text size="sm" fw={600}>
+                            {titleText}
+                          </Text>
+                        </Group>
+                      ),
+                      children: (
+                        <Text size="xs" my="md">
+                          {bodyText}
+                          <br />
+                          <br />
+                          <b>
+                            {lang === "en"
+                              ? "Proceed with this action?"
+                              : "この操作を実行しますか？"}
+                          </b>
+                        </Text>
+                      ),
+                      labels: {
+                        confirm: confirmText,
+                        cancel: lang === "en" ? "Cancel" : "キャンセル",
+                      },
+                      confirmProps: { color: "brand", size: "xs" },
+                      cancelProps: { size: "xs" },
+                      size: "sm",
+                      styles: {
+                        header: {
+                          background: "var(--mantine-color-brand-1)",
+                        },
+                      },
+                      onConfirm: async () => {
+                        triggerNotification.form.isLoading({});
+
+                        if (!isNotified) {
+                          // Notify
+                          try {
+                            const res = await markInterested({
+                              intent: "Interested",
+                              seeker: tokenData?.user_id,
+                              applicant: info?.mainId,
+                            });
+                            if (!res.error) {
+                              setInfo({ ...info, interest: true });
+                              triggerNotification.form.isSuccess({
+                                message:
+                                  lang === "en"
+                                    ? "Candidate notified!"
+                                    : "候補者に通知しました！",
+                              });
+                            } else {
+                              throw new Error();
+                            }
+                          } catch {
+                            triggerNotification.form.isError({
+                              message:
+                                lang === "en"
+                                  ? "Notification failed!"
+                                  : "通知に失敗しました！",
+                            });
+                          }
+                        } else {
+                          // Remove notification
+                          try {
+                            const res = await apiUnnotify(info?.mainId);
+                            if (!res.error) {
+                              if (onSuccessInterest) {
+                                onSuccessInterest();
+                              }
+                              setInfo({ ...info, interest: false });
+                              triggerNotification.form.isSuccess({
+                                message:
+                                  lang === "en"
+                                    ? "Candidate removed from your notify list!"
+                                    : "候補者は通知リストから削除されました！",
+                              });
+                            } else {
+                              throw new Error();
+                            }
+                          } catch {
+                            triggerNotification.form.isError({
+                              message:
+                                lang === "en"
+                                  ? "Already Removed"
+                                  : "すでに削除されています",
+                            });
+                          }
+                        }
+                      },
+                    });
+                  }}
+                >
+                  {!info?.interest
+                    ? lang === "en"
+                      ? "Notify"
+                      : "候補者に通知する"
+                    : lang === "en"
+                      ? "Remove Notify"
+                      : "通知を削除する"}
+                </Button>
+
+                <Button
+                  size="xs"
+                  leftSection={<CameraIcon />}
+                  variant={!info?.interview ? "filled" : "white"}
+                  onClick={() => {
+                    const isBooked = info?.interview;
+
+                    const titleText = isBooked
+                      ? lang === "en"
+                        ? "Cancel Interview?"
+                        : "面接をキャンセルしますか？"
+                      : lang === "en"
+                        ? "Book for Interview?"
+                        : "面接を予約しますか？";
+
+                    const bodyText = isBooked
+                      ? lang === "en"
+                        ? "This will cancel the interview request for this candidate."
+                        : "この候補者の面接リクエストをキャンセルします。"
+                      : lang === "en"
+                        ? "The Unite SSW team will be notified to arrange an interview with this candidate."
+                        : "Unite SSW チームに面接の手配を依頼します。";
+
+                    const confirmText = isBooked
+                      ? lang === "en"
+                        ? "Confirm"
+                        : "キャンセル"
+                      : lang === "en"
+                        ? "Book"
+                        : "予約";
+
+                    modals.openConfirmModal({
+                      title: (
+                        <Group wrap="nowrap">
+                          <ActionIcon size="sm" color="brand" variant="light">
+                            <CameraIcon />
+                          </ActionIcon>
+                          <Text size="sm" fw={600}>
+                            {titleText}
+                          </Text>
+                        </Group>
+                      ),
+                      children: (
+                        <Text size="xs" my="md">
+                          {bodyText}
+                          <br />
+                          <br />
+                          <b>
+                            {lang === "en"
+                              ? "Proceed with this action?"
+                              : "この操作を実行しますか？"}
+                          </b>
+                        </Text>
+                      ),
+                      labels: {
+                        confirm: confirmText,
+                        cancel: lang === "en" ? "Cancel" : "キャンセル",
+                      },
+                      confirmProps: { color: "brand", size: "xs" },
+                      cancelProps: { size: "xs" },
+                      size: "sm",
+                      styles: {
+                        header: {
+                          background: "var(--mantine-color-brand-1)",
+                        },
+                      },
+                      onConfirm: async () => {
+                        triggerNotification.form.isLoading({});
+
+                        try {
+                          const res = isBooked
+                            ? await apiCancelInterview(info?.mainId)
+                            : await markInterested({
+                                intent: "Interview",
+                                seeker: tokenData?.user_id,
+                                applicant: info?.mainId,
+                              });
+
+                          if (!res?.error) {
+                            setInfo({ ...info, interview: !isBooked });
+                            if (onSuccessBooking) {
+                              onSuccessBooking();
+                            }
+                            triggerNotification.form.isSuccess({
+                              message: isBooked
+                                ? lang === "en"
+                                  ? "Interview cancelled."
+                                  : "面接はキャンセルされました。"
+                                : lang === "en"
+                                  ? "Interview booked!"
+                                  : "面接を予約しました！",
+                            });
+                          } else {
+                            throw new Error();
+                          }
+                        } catch {
+                          triggerNotification.form.isError({
+                            message:
+                              lang === "en"
+                                ? "Action failed."
+                                : "操作に失敗しました。",
+                          });
+                        }
+                      },
+                    });
+                  }}
+                >
+                  {lang === "en"
+                    ? info?.interview
+                      ? "Cancel Interview"
+                      : "Book for Interview"
+                    : info?.interview
+                      ? "面接をキャンセルする"
+                      : "面接を予約する"}
+                </Button>
+
+                <Button
+                  leftSection={
+                    !info?.wishlist ? (
+                      <HeartIcon weight="duotone" size={12} />
+                    ) : (
+                      <XIcon weight="duotone" size={12} />
+                    )
+                  }
+                  size="xs"
+                  color="pink"
+                  onClick={() => {
+                    if (!info?.wishlist) {
+                      triggerNotification.form.isLoading({
+                        message: "Adding to Wishlist",
+                      });
+
+                      moduleApiCall
+                        .createRecord("/logs/seeker/wishlist/", {
+                          seeker: tokenData?.user_id,
+                          applicant: info?.mainId,
+                        })
+                        .then(() => {
+                          setInfo({
+                            ...info,
+                            wishlist: true,
+                          });
+                          if (onSuccessWishlist) {
+                            onSuccessWishlist();
+                          }
+                          triggerNotification.form.isSuccess({
+                            message: "Added to Wishlist",
+                          });
+                        })
+                        .catch(() => {
+                          triggerNotification.form.isInfo({
+                            message:
+                              "This applicant has already been added to your wishlist",
+                          });
+                        });
+                    } else {
+                      triggerNotification.form.isLoading({
+                        message: "Removing from Wishlist",
+                      });
+
+                      moduleApiCall
+                        .deleteRecord("/logs/discard/wishlist/", info?.mainId)
+                        .then(() => {
+                          setInfo({
+                            ...info,
+                            wishlist: false,
+                          });
+                          triggerNotification.form.isSuccess({
+                            message: "Removed from Wishlist",
+                          });
+                          if (onSuccessWishlist) {
+                            onSuccessWishlist();
+                          }
+                        })
+                        .catch(() => {
+                          triggerNotification.form.isInfo({
+                            message:
+                              "This applicant has already been removed from your wishlist",
+                          });
+                        });
+                    }
+                  }}
+                >
+                  {!info?.wishlist
+                    ? lang == "en"
+                      ? "Save"
+                      : "ブックマーク"
+                    : lang == "en"
+                      ? "Remove from Saved"
+                      : "保存から削除"}
+                </Button>
+              </Group>
+            </>
+          }
+        />
       </Drawer>
     </>
   );

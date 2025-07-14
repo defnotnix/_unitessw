@@ -37,6 +37,16 @@ const bread = [
   },
 ];
 
+const cvTypes = [
+  { value: "1", label: "CV-1" },
+  { value: "2", label: "CV-2" },
+  { value: "3", label: "CV-3" },
+  { value: "4", label: "CV-4" },
+  { value: "5", label: "CV-5" },
+  { value: "6", label: "CV-6" },
+  { value: "7", label: "CV-Corporate" },
+];
+
 export function _CV() {
   const { CV1, CV2, CV3, CV4, CV5, CV6, CVCorp } = CV;
 
@@ -134,7 +144,7 @@ export function _CV() {
       <Paper>
         <Container py="sm">
           <Grid align="center">
-            <Grid.Col span={{ base: 12, lg: 3 }}>
+            <Grid.Col span={{ base: 12, lg: 4 }}>
               <Group wrap="nowrap">
                 <ActionIcon size="sm" variant="light">
                   <ArrowLeftIcon size={12} />
@@ -166,7 +176,16 @@ export function _CV() {
               </Group>
             </Grid.Col>
 
-            <Grid.Col span={{ base: 12, lg: 9 }}>
+            <Grid.Col span={{ base: 12, lg: 4 }}>
+              <Text size="xs" ta="center" fw={600}>
+                Applicant CV /{" "}
+                <b>
+                  {data?.first_name} {data?.middle_name} {data?.last_name}
+                </b>
+              </Text>
+            </Grid.Col>
+
+            <Grid.Col span={{ base: 12, lg: 4 }}>
               <Group justify="flex-end" gap="xs">
                 <ButtonGroup>
                   <Button
@@ -191,7 +210,8 @@ export function _CV() {
                     onClick={reactToPrintFn}
                     leftSection={<PrinterIcon />}
                   >
-                    Print CV
+                    Print CV (
+                    {cvTypes.find((item: any) => item.value == cvType)?.label})
                   </Button>
                 </ButtonGroup>
               </Group>
@@ -201,8 +221,8 @@ export function _CV() {
       </Paper>
 
       <Paper withBorder>
-        <Container py="sm" size="xl">
-          <Group grow>
+        <Container py="sm">
+          <Group grow gap="xs">
             <DateInput
               value={date}
               onChange={(e: any) => setDate(e)}
@@ -217,15 +237,7 @@ export function _CV() {
               value={cvType}
               onChange={(e: any) => setCvType(e)}
               size="xs"
-              data={[
-                { value: "1", label: "CV-1" },
-                { value: "2", label: "CV-2" },
-                { value: "3", label: "CV-3" },
-                { value: "4", label: "CV-4" },
-                { value: "5", label: "CV-5" },
-                { value: "6", label: "CV-6" },
-                { value: "7", label: "CV-Corporate" },
-              ]}
+              data={cvTypes}
             />
             <Select
               w={150}

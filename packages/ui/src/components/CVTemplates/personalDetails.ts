@@ -1,5 +1,11 @@
 export const personalDetails = [
   {
+    label: "Applicant ID",
+    label_jp: "生年月日",
+    enKey: "code",
+    jpKey: "code",
+  },
+  {
     label: "Date of Birth",
     label_jp: "生年月日",
     enKey: "date_of_birth",
@@ -70,7 +76,7 @@ export const personalDetails = [
     jpKey: "clothing_size",
   },
   {
-    label: "Show Size",
+    label: "Shoe Size",
     label_jp: "表示サイズ",
     enKey: "shoe_size",
     jpKey: "shoe_size",

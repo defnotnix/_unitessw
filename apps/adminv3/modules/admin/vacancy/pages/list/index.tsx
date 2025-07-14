@@ -1,55 +1,34 @@
 "use client";
 
-import { ModuleModalFormLayout, ModuleTableLayout } from "@vframework/ui";
+import { ListHandler } from "@vframework/core";
+import { ModuleTableLayout } from "@vframework/ui";
 import { useRouter } from "next/navigation";
-import { FormHandler, ListHandler } from "@vframework/core";
 import {
   createRecord,
   deleteRecord,
-  updateRecord,
   getRecords,
+  updateRecord,
 } from "../../module.api";
 
-import { columns } from "./list.columns";
 import {
   ActionIcon,
-  Badge,
-  Box,
+  Center,
   Container,
   Group,
   Image,
-  LoadingOverlay,
-  Menu,
-  Modal,
   Paper,
   SimpleGrid,
-  Space,
   Stack,
   Text,
 } from "@mantine/core";
-import {
-  Calendar,
-  Chair,
-  Check,
-  Cricket,
-  DotsThree,
-  Invoice,
-  Pen,
-  PenIcon,
-  Trash,
-  TrashIcon,
-  UserPlus,
-  Users,
-} from "@phosphor-icons/react";
+import { PenIcon, SmileyNervousIcon, TrashIcon } from "@phosphor-icons/react";
 import { moduleConfig } from "../../module.config";
+import { columns } from "./list.columns";
 
-import { _Form as Form } from "../../form/form";
-import { formProps } from "../../form/form.config";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
-
-import { RBACCheck } from "@/components/RBACCheck";
-import { endpoint } from "@/layouts/app";
+import { _Form as Form } from "../../form/form";
+import { formProps } from "../../form/form.config";
 
 export function _List() {
   const router = useRouter();
@@ -96,6 +75,31 @@ export function _List() {
             const RenderEdit = renderEdit;
             return (
               <Container py="md">
+                {data?.length == 0 && (
+                  <Center py={200}>
+                    <Stack>
+                      <Center>
+                        <SmileyNervousIcon
+                          size={48}
+                          weight="duotone"
+                          color="var(--mantine-color-brand-2)"
+                        />
+                      </Center>
+
+                      <div>
+                        <Text size="lg" c="gray.4" ta="center">
+                          Seems like you have not added any{" "}
+                          {moduleConfig.moduleTerm} yet.
+                        </Text>
+                        <Text size="xs" c="gray.4" ta="center">
+                          Start by adding from "New {moduleConfig.moduleTerm}"
+                          above
+                        </Text>
+                      </div>
+                    </Stack>
+                  </Center>
+                )}
+
                 <SimpleGrid spacing="xs" cols={{ base: 1, lg: 3 }}>
                   {data?.map((item: any, index: any) => {
                     return (

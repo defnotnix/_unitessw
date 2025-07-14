@@ -50,8 +50,8 @@ export function CV6({
           <Text size="10px" fw={700} w={300} mt={-20} mb="xs">
             Printed :{" "}
             {language == "en"
-              ? date.toLocaleDateString()
-              : date.toLocaleDateString("ja")}
+              ? new Date(date).toLocaleDateString()
+              : new Date(date).toLocaleDateString("ja")}
           </Text>
 
           <SimpleGrid cols={2}>
@@ -98,23 +98,31 @@ export function CV6({
               </Text>
             </div>
 
-            <div>
-              <Text size="11px" fw={800}>
-                {language === "en" ? "Strong Points" : "動機とは"}
-              </Text>
-              <Text size="10px" lh="13px" mt="sm">
-                {language === "en" ? data?.strong_point : data?.jp_strong_point}
-              </Text>
-            </div>
+            {data?.strong_point && data?.weakpoint ? (
+              <>
+                <div>
+                  <Text size="11px" fw={800}>
+                    {language === "en" ? "Strong Points" : "動機とは"}
+                  </Text>
+                  <Text size="10px" lh="13px" mt="sm">
+                    {language === "en"
+                      ? data?.strong_point
+                      : data?.jp_strong_point}
+                  </Text>
+                </div>
 
-            <div>
-              <Text size="11px" fw={800}>
-                {language === "en" ? "Weak Points" : "動機とは"}
-              </Text>
-              <Text size="10px" lh="13px" mt="sm">
-                {language === "en" ? data?.weak_point : data?.jp_weak_point}
-              </Text>
-            </div>
+                <div>
+                  <Text size="11px" fw={800}>
+                    {language === "en" ? "Weak Points" : "動機とは"}
+                  </Text>
+                  <Text size="10px" lh="13px" mt="sm">
+                    {language === "en" ? data?.weak_point : data?.jp_weak_point}
+                  </Text>
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
           </SimpleGrid>
 
           <Divider my="md" />
@@ -274,10 +282,10 @@ export function CV6({
           <Stack gap="xl">
             <Image src={data?.image} />
 
-            {!printSt && (
+            {!printSt && data?.youtube_link && (
               <AspectRatio ratio={16 / 9} mt={-16}>
                 <iframe
-                  src="https://www.youtube.com/embed/nBydCvT195k?si=OgzJYNdx5yQkgNaZ"
+                  src={data?.youtube_link}
                   title="YouTube video player"
                   style={{ border: 0 }}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

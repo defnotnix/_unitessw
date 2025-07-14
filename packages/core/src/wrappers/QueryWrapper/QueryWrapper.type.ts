@@ -4,4 +4,5 @@ export interface PropQueryWrapper {
   apiProvider: string;
   queryProps?: any;
   children: React.ReactNode;
+  portalType?: string;
 }

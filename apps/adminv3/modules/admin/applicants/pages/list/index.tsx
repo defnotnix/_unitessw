@@ -230,99 +230,97 @@ export function _List() {
                     label="Full Name (English)"
                     placeholder="Name of the Applicant"
                     radius="md"
-                    {...form.getInputProps("full_name")}
+                    {...form.getInputProps("name")}
                   />
-                  <TextInput
-                    label="Full Name (Furigana)"
-                    placeholder="Applicant Name in Japanese"
-                    radius="md"
-                    {...form.getInputProps("furigana")}
-                  />
-                </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, md: 2, lg: 4 }} mt="xs">
-                  <div>
-                    <Text size="xs" my={4}>
-                      Weight (Min - Max)
-                    </Text>
-                    <SimpleGrid cols={2} spacing={2}>
-                      <NumberInput
-                        hideControls
-                        placeholder="Min"
-                        radius="md"
-                        {...form.getInputProps("min_weight")}
-                        rightSectionWidth={50}
-                        rightSection={<Text size="xs">kg</Text>}
-                      />
-                      <NumberInput
-                        min={
-                          form.getValues()?.min_weight
-                            ? form.getValues()?.min_weight + 1
-                            : null
-                        }
-                        hideControls
-                        placeholder="Max"
-                        radius="md"
-                        {...form.getInputProps("max_weight")}
-                        rightSectionWidth={50}
-                        rightSection={<Text size="xs">kg</Text>}
-                      />
-                    </SimpleGrid>
-                  </div>
-                  <div>
-                    <Text size="xs" my={4}>
-                      Height (Min - Max)
-                    </Text>
-                    <SimpleGrid cols={2} spacing={2}>
-                      <NumberInput
-                        hideControls
-                        placeholder="Min"
-                        radius="md"
-                        {...form.getInputProps("min_height")}
-                        rightSectionWidth={50}
-                        rightSection={<Text size="xs">cm</Text>}
-                      />
-                      <NumberInput
-                        min={
-                          form.getValues()?.min_height
-                            ? form.getValues()?.min_height + 1
-                            : null
-                        }
-                        hideControls
-                        placeholder="Max"
-                        radius="md"
-                        {...form.getInputProps("max_height")}
-                        rightSectionWidth={50}
-                        rightSection={<Text size="xs">cm</Text>}
-                      />
-                    </SimpleGrid>
-                  </div>
-                  <Select
-                    data={[
-                      { label: "A+", value: "A+" },
-                      { label: "A-", value: "A-" },
-                      { label: "B+", value: "B+" },
-                      { label: "B-", value: "B-" },
-                      { label: "AB+", value: "AB+" },
-                      { label: "AB-", value: "AB-" },
-                      { label: "O+", value: "O+" },
-                      { label: "O-", value: "O-" },
-                    ]}
-                    label="Blood Group"
-                    placeholder="Select"
-                    radius="md"
-                    {...form.getInputProps("blood_group")}
-                  />
-                  <Select
-                    data={[
-                      { value: "Male", label: "Male" },
-                      { value: "Female", label: "Female" },
-                      { value: "Other", label: "Other" },
-                    ]}
-                    label="Martial Status"
-                    placeholder="Select"
-                    radius="md"
-                    {...form.getInputProps("martial_status")}
-                  />
+
+                  <SimpleGrid cols={{ base: 1, md: 2, lg: 4 }}>
+                    <div>
+                      <Text size="xs" my={4}>
+                        Weight (Min - Max)
+                      </Text>
+                      <SimpleGrid cols={2} spacing={2}>
+                        <NumberInput
+                          hideControls
+                          placeholder="Min"
+                          radius="md"
+                          {...form.getInputProps("min_weight")}
+                          rightSectionWidth={50}
+                          rightSection={<Text size="xs">kg</Text>}
+                        />
+                        <NumberInput
+                          min={
+                            form.getValues()?.min_weight
+                              ? form.getValues()?.min_weight + 1
+                              : null
+                          }
+                          hideControls
+                          placeholder="Max"
+                          radius="md"
+                          {...form.getInputProps("max_weight")}
+                          rightSectionWidth={50}
+                          rightSection={<Text size="xs">kg</Text>}
+                        />
+                      </SimpleGrid>
+                    </div>
+                    <div>
+                      <Text size="xs" my={4}>
+                        Height (Min - Max)
+                      </Text>
+                      <SimpleGrid cols={2} spacing={2}>
+                        <NumberInput
+                          hideControls
+                          placeholder="Min"
+                          radius="md"
+                          {...form.getInputProps("min_height")}
+                          rightSectionWidth={50}
+                          rightSection={<Text size="xs">cm</Text>}
+                        />
+                        <NumberInput
+                          min={
+                            form.getValues()?.min_height
+                              ? form.getValues()?.min_height + 1
+                              : null
+                          }
+                          hideControls
+                          placeholder="Max"
+                          radius="md"
+                          {...form.getInputProps("max_height")}
+                          rightSectionWidth={50}
+                          rightSection={<Text size="xs">cm</Text>}
+                        />
+                      </SimpleGrid>
+                    </div>
+                    <Select
+                      data={[
+                        { label: "A+", value: "A+" },
+                        { label: "A-", value: "A-" },
+                        { label: "B+", value: "B+" },
+                        { label: "B-", value: "B-" },
+                        { label: "AB+", value: "AB+" },
+                        { label: "AB-", value: "AB-" },
+                        { label: "O+", value: "O+" },
+                        { label: "O-", value: "O-" },
+                      ]}
+                      label="Blood Group"
+                      placeholder="Select"
+                      radius="md"
+                      {...form.getInputProps("blood_group")}
+                    />
+                    <Select
+                      data={[
+                        { value: "Single", label: "Single" },
+                        { value: "Married", label: "Married" },
+                        { value: "Divorced", label: "Divorced" },
+                        { value: "Widowed", label: "Widowed" },
+                        { value: "Separated", label: "Separated" },
+                        { value: "Partnered", label: "Partnered" },
+                      ]}
+                      label="Martial Status"
+                      placeholder="Select"
+                      radius="md"
+                      {...form.getInputProps("martial_status")}
+                    />
+                  </SimpleGrid>
                 </SimpleGrid>
 
                 <Space h="md" />
@@ -351,7 +349,7 @@ export function _List() {
               <Group gap="xs">
                 <Button
                   onClick={() => {
-                    form.reset();
+                    form.initialize({});
                     setSearchVal({});
                   }}
                   leftSection={<XIcon />}

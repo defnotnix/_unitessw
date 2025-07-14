@@ -114,7 +114,7 @@ export function _List() {
                   size="sm"
                   radius="md"
                   placeholder="e.g. Ramesh Shah"
-                  {...form.getInputProps("full_name")}
+                  {...form.getInputProps("name")}
                 />
                 <SimpleGrid cols={{ base: 1, lg: 2 }}>
                   <TextInput
@@ -138,6 +138,7 @@ export function _List() {
 
             <Group justify="space-between">
               <Button
+                disabled
                 size="xs"
                 radius="xl"
                 leftSection={

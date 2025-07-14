@@ -177,7 +177,7 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
                       });
                   }}
                 >
-                  Sign Out
+                  {language === "en" ? "Sign Out" : "サインアウト"}
                 </Button>
               </Group>
             </Grid.Col>
@@ -189,7 +189,24 @@ export function LayoutSeeker({ children }: PropsWithChildren) {
       {children}
 
       <Drawer
-        title={<LogoWithText />}
+        title={
+          <Group gap={4}>
+            <Image
+              src={imgLogo.src}
+              h={16}
+              w={30}
+              style={{ objectFit: "contain" }}
+            />
+            <Text size={"xs"} fw={800}>
+              Manabiya HR Unity{" "}
+              <span
+                style={{ opacity: 0.8, color: "var(--mantine-color-brand-4)" }}
+              >
+                {language === "en" ? "| Seeker Portal" : "| 求職者ポータル"}
+              </span>
+            </Text>
+          </Group>
+        }
         opened={opened}
         onClose={close}
         padding="xl"

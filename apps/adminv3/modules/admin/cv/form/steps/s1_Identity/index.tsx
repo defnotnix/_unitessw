@@ -86,30 +86,80 @@ export function StepIdentity() {
           value={form.getValues()?.image}
         />
 
-        <Stack gap={0}>
-          <TextInput
-            label="Full Name"
-            placeholder="e.g. Taro Tanaka"
-            description="Enter your full legal name as in passport"
-            {...form.getInputProps("full_name")}
-            styles={styles.top}
-            leftSection={
-              <Text size="xs" fw={800}>
-                EN
-              </Text>
-            }
-          />
-          <TextInput
-            placeholder="e.g. タナカ タロウ"
-            {...form.getInputProps("furigana")}
-            styles={styles.bot}
-            leftSection={
-              <Text size="xs" fw={800}>
-                JP
-              </Text>
-            }
-          />
-        </Stack>
+        <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="xs">
+          <Stack gap={0}>
+            <TextInput
+              label="First Name"
+              placeholder="e.g. Taro Tanaka"
+              description="Enter your full legal name as in passport"
+              {...form.getInputProps("first_name")}
+              styles={styles.top}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  EN
+                </Text>
+              }
+            />
+            <TextInput
+              placeholder="e.g. タナカ タロウ"
+              {...form.getInputProps("jp_first_name")}
+              styles={styles.bot}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  JP
+                </Text>
+              }
+            />
+          </Stack>
+          <Stack gap={0}>
+            <TextInput
+              label="Middle Name"
+              placeholder="e.g. Tanaka"
+              description="Enter your full legal name as in passport"
+              {...form.getInputProps("middle_name")}
+              styles={styles.top}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  EN
+                </Text>
+              }
+            />
+            <TextInput
+              placeholder="e.g. タナカ タロウ"
+              {...form.getInputProps("jp_middle_name")}
+              styles={styles.bot}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  JP
+                </Text>
+              }
+            />
+          </Stack>
+          <Stack gap={0}>
+            <TextInput
+              label="Last Name"
+              placeholder="e.g. Tanaka"
+              description="Enter your full legal name as in passport"
+              {...form.getInputProps("last_name")}
+              styles={styles.top}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  EN
+                </Text>
+              }
+            />
+            <TextInput
+              placeholder="e.g. タナカ タロウ"
+              {...form.getInputProps("jp_last_name")}
+              styles={styles.bot}
+              leftSection={
+                <Text size="xs" fw={800}>
+                  JP
+                </Text>
+              }
+            />
+          </Stack>
+        </SimpleGrid>
 
         <Stack gap={0}>
           <TextInput
