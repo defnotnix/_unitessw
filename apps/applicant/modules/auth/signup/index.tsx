@@ -365,7 +365,7 @@ export function ModuleAuthSignUp() {
         </Text>
       </Stack>
 
-      <Group gap={0} justify="space-between" px="lg">
+      <Group gap={0} justify="center" px="lg">
         <Text size="11" lh={5} fw={900}>
           <span
             style={{
@@ -376,28 +376,6 @@ export function ModuleAuthSignUp() {
           </span>{" "}
           vFramework
         </Text>
-        <Menu>
-          <Menu.Target>
-            <UnstyledButton>
-              <Badge variant="light" size="lg">
-                <Group gap={3}>
-                  <Text fw={500} size="11" lh={5} tt="none">
-                    English (United States)
-                  </Text>
-                  <CaretDown size="11" />
-                </Group>
-              </Badge>
-            </UnstyledButton>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item leftSection={<Check />}>
-              <Text size="xs">English (United States)</Text>
-            </Menu.Item>
-            <Menu.Item>
-              <Text size="xs">Japanese ( 日本語 )</Text>
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
       </Group>
     </>
   );

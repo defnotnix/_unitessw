@@ -387,7 +387,7 @@ export function ModuleAuthSignIn() {
         </Stack>
       </Stack>
 
-      <Group gap={0} justify="space-between" px="lg">
+      <Group gap={0} justify="center" px="lg">
         <Text size="11" lh={5} fw={900}>
           <span
             style={{
@@ -399,7 +399,7 @@ export function ModuleAuthSignIn() {
               : " vFramework によるベース"}
           </span>{" "}
         </Text>
-        <Menu>
+        {/* <Menu>
           <Menu.Target>
             <UnstyledButton>
               <Badge variant="light" size="lg">
@@ -429,7 +429,7 @@ export function ModuleAuthSignIn() {
               <Text size="xs">Japanese ( 日本語 )</Text>
             </Menu.Item>
           </Menu.Dropdown>
-        </Menu>
+        </Menu> */}
       </Group>
     </>
   );
