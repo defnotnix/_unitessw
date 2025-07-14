@@ -3,7 +3,6 @@
 
 import {
   ActionIcon,
-  Anchor,
   AspectRatio,
   Button,
   ButtonGroup,
@@ -565,7 +564,7 @@ export default function PageHome() {
           <Grid align="center">
             <Grid.Col span={{ base: 12, lg: 2 }}></Grid.Col>
             <Grid.Col span={{ base: 12, lg: 6 }}>
-              <Text size="xl" fw={500} c="gray.0" >
+              <Text size="xl" fw={500} c="gray.0">
                 {language === "en"
                   ? "Ready to become part of the Manabiya HR Unity family? Start your journey today!"
                   : "Manabiya HR Unityファミリーの一員になる準備はできていますか？さあ、今日から旅を始めましょう！"}
