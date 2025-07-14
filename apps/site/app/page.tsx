@@ -51,44 +51,43 @@ const companyStats = [
   {
     title: { en: "Company Name", jp: "会社名" },
     details: {
-      en: "Manabiya Nepal Institutions Consultancy Pvt. Ltd.",
-      jp: "マナビヤ・ネパール・インスティチューションズ・コンサルタンシー・プライベート・リミテッド",
+      en: "Manabiya H.R. Unity Pvt. Ltd.",
+      jp: "マナビヤ・H.R・ユニティ株式会社",
     },
   },
   {
     title: { en: "Establishment", jp: "設立" },
-    details: { en: "2022-06-03 A.D.", jp: "2022年6月3日" },
+    details: {
+      en: "2025-06-25 A.D.",
+      jp: "2025年6月25日",
+    },
   },
   {
     title: { en: "Representative Director", jp: "代表取締役名" },
-    details: { en: "Mr. Pukar Shrestha", jp: "プカール・シュレスタ氏" },
+    details: {
+      en: "Mrs. Nabina Dallakoti Burlakoti",
+      jp: "ナビナ・ダラコティ・ブルラコティ氏",
+    },
   },
   {
     title: { en: "Telephone", jp: "電話番号" },
     details: {
-      en: "+977-9802376205",
-      jp: "+977-9802376205",
+      en: "+977-9768896744",
+      jp: "+977-9768896744",
     },
   },
   {
     title: { en: "Business Description", jp: "事業内容" },
     details: {
-      en: "Manabiya Nepal, affiliated with Manabiya Co., Ltd., specializes in guiding students for higher education in Japan. Since our establishment in 2020, we have collaborated directly with our Japanese head office to ensure that students are well-prepared academically, culturally, and socially for their journey.",
-      jp: "マナビヤ・ネパールは、マナビヤ株式会社と提携し、日本での高等教育を目指す学生のサポートを専門としています。2020年に設立され、日本の本社と直接連携し、学生が学問的、文化的、社会的に準備万端で日本へ出発できるようにしています。",
+      en: "Manabiya H.R. Unity Pvt. Ltd. is dedicated to connecting skilled, semi-skilled, and unskilled workers with the right opportunities across the international market. We meet the unique demands of various industries including construction, hospitality, healthcare, manufacturing, agriculture, airport ground handling, and more.",
+      jp: "マナビヤ・H.R・ユニティ株式会社は、熟練・準熟練・未熟練労働者を国際市場の適切な機会と結びつけることに注力しています。建設、ホスピタリティ、医療、製造業、農業、空港地上業務など、さまざまな業界のニーズに応えています。",
     },
   },
   {
     title: { en: "Corporate Philosophy", jp: "企業理念" },
     details: {
-      en: '"Empowering Dreams, Bridging Cultures" – At Manabiya Nepal, we strive to foster a seamless transition for students seeking academic and personal growth in Japan.',
-      jp: '"夢を力に、文化を橋渡し" – マナビヤ・ネパールでは、日本での学問的および個人的な成長を目指す学生が円滑に移行できるようサポートします。',
-    },
-  },
-  {
-    title: { en: "Core Values", jp: "基本価値観" },
-    details: {
-      en: "Integrity, Excellence, Cultural Harmony",
-      jp: "誠実、優秀、文化の調和",
+      en: "", // If you have the philosophy, I can fill it in.
+      jp: "",
     },
   },
   {
@@ -101,15 +100,15 @@ const companyStats = [
   {
     title: { en: "Phone", jp: "電話番号" },
     details: {
-      en: "+977 9851338205, +977 15917178",
-      jp: "+977 9851338205、+977 15917178",
+      en: "", // Leave blank if not provided
+      jp: "",
     },
   },
   {
     title: { en: "Email", jp: "メールアドレス" },
     details: {
-      en: "info@manabiyanepal.com.np",
-      jp: "info@manabiyanepal.com.np",
+      en: "", // Leave blank if not provided
+      jp: "",
     },
   },
   {
@@ -122,8 +121,8 @@ const companyStats = [
   {
     title: { en: "Total Staff", jp: "総スタッフ数" },
     details: {
-      en: "7",
-      jp: "7",
+      en: "5",
+      jp: "5",
     },
   },
   {
@@ -136,8 +135,8 @@ const companyStats = [
   {
     title: { en: "Opening Hours", jp: "営業時間" },
     details: {
-      en: "7:00 AM - 5:00 PM",
-      jp: "午前7時～午後5時",
+      en: "9:00 AM - 5:00 PM",
+      jp: "午前9時～午後5時",
     },
   },
   {
@@ -150,22 +149,8 @@ const companyStats = [
   {
     title: { en: "Corporate Motto", jp: "企業のモットー" },
     details: {
-      en: '"Your journey, our commitment."',
-      jp: '"あなたの旅路、私たちの誓い。"',
-    },
-  },
-  {
-    title: { en: "Certifications & Recognitions", jp: "認証および認定" },
-    details: {
-      en: "Certified by [Insert Relevant Accrediting Bodies], Recognized by the Japanese Embassy in Nepal",
-      jp: "[挿入関連認定機関] によって認定、日本大使館ネパール支部に認められています",
-    },
-  },
-  {
-    title: { en: "Social Responsibility", jp: "社会的責任" },
-    details: {
-      en: "Manabiya Nepal is committed to community development through scholarships and educational support programs for underprivileged students.",
-      jp: "マナビヤ・ネパールは、恵まれない学生への奨学金および教育支援プログラムを通じて、地域社会の発展に貢献しています。",
+      en: "", // Add if you have the motto
+      jp: "",
     },
   },
 ];
@@ -199,6 +184,28 @@ export default function PageHome() {
     }),
   };
 
+  const translations = {
+    platformTagline: {
+      en: "A platform to bridge career opportunities in Japan",
+      jp: "日本でのキャリアの機会をつなぐプラットフォーム",
+    },
+    platformMission: {
+      en: `We are building a dynamic platform designed to bridge the gap between skilled individuals actively seeking meaningful work and companies eager to discover top-tier talent. Whether you're a craftsman, technician, creative, or specialist, our mission is to help you showcase your expertise and connect with organizations that value your skills.`,
+      jp: `私たちは、意欲的に意味のある仕事を求める優秀な人材と、優れた才能を求める企業とのギャップを埋めるための、ダイナミックなプラットフォームを構築しています。あなたが職人、技術者、クリエイター、または専門職であれ、私たちの使命は、あなたの専門性を発信し、それを必要とする企業とつなぐことです。`,
+    },
+    applyProcessIntro: {
+      en: "Submit an online application with all crucial information about you and your background.",
+      jp: "あなたとあなたの背景に関する全ての重要な情報をオンラインで申し込む",
+    },
+    aboutPlatformShort: {
+      en: `A platform that connects skilled workers seeking opportunities with companies in search of qualified candidates`,
+      jp: `意欲的に意味のある仕事を求める優秀な人材と企業とのギャップを埋めるためのプラットフォーム`,
+    },
+  };
+
+  const t = (key: keyof typeof translations, lang: string) =>
+    translations[key][lang as "en" | "jp"] ?? "";
+
   return (
     <>
       <header>
@@ -212,9 +219,7 @@ export default function PageHome() {
                 </Text>
 
                 <Text size="sm" fw={800} opacity={0.3}>
-                  {language == "en"
-                    ? "A platform to bridge career opportunities in Japan"
-                    : "日本でのキャリアの機会をつなぐプラットフォーム"}
+                  {t("platformTagline", language)}
                 </Text>
               </Group>
 
@@ -225,14 +230,14 @@ export default function PageHome() {
               <Group gap="6px" visibleFrom="lg">
                 <MapPinIcon weight="duotone" />
                 <Text size="xs" fw={800}>
-                  Satdobato, Kathmandu, Nepal.
+                  New plaza,Putalisadak,Kathmandu,Nepal
                 </Text>
               </Group>
 
               <Group gap="6px" visibleFrom="lg">
                 <PhoneIcon weight="duotone" />
                 <Text size="xs" fw={800}>
-                  +977 9813512312
+                  +977 9768896744
                 </Text>
               </Group>
 
@@ -346,11 +351,13 @@ export default function PageHome() {
           <Grid align="flex-end">
             <Grid.Col span={{ base: 12, lg: 2 }}>
               <Text size="xs" fw={800}>
-                {language == "en" ? "What Manabiya HR Unity is." : "Manabiya HR Unityとは"}
+                {language == "en"
+                  ? "What Manabiya HR Unity is."
+                  : "Manabiya HR Unityとは"}
               </Text>
             </Grid.Col>
             <Grid.Col span={{ base: 12, lg: 5 }}>
-              <Text size="xs" fw={800}>
+              <Text size="sm" fw={800}>
                 {language == "en"
                   ? ` We are building a dynamic platform designed to bridge the gap
                 between skilled individuals actively seeking meaningful work and
@@ -393,28 +400,15 @@ export default function PageHome() {
             <Grid.Col span={{ base: 12, lg: 6 }}>
               <Stack>
                 <Text size="3rem" fw={700} visibleFrom="lg">
-                  {language == "en"
-                    ? ` A platform that connects skilled workers seeking opportunities
-                  with companies in search of qualified candidates`
-                    : `私たちは、意欲的に意味のある仕事を求める優秀な人材と、優れた才能を求める企業とのギャップを埋めるための、ダイナミックなプラットフォームを構築しています。`}
+                  {t("aboutPlatformShort", language)}
                 </Text>
 
                 <Text size="2rem" fw={700} hiddenFrom="lg">
-                  {language == "en"
-                    ? ` A platform that connects skilled workers seeking opportunities
-                  with companies in search of qualified candidates`
-                    : `私たちは、意欲的に意味のある仕事を求める優秀な人材と、優れた才能を求める企業とのギャップを埋めるための、ダイナミックなプラットフォームを構築しています。`}
+                  {t("aboutPlatformShort", language)}
                 </Text>
 
-                <Text size="xs" fw={700} maw={500}>
-                  {language == "en"
-                    ? ` We are building a dynamic platform designed to bridge the gap
-                between skilled individuals actively seeking meaningful work and
-                companies eager to discover top-tier talent. Whether you&apos;re
-                a craftsman, technician, creative, or specialist, our mission is
-                to help you showcase your expertise and connect with
-                organizations that value your skills.`
-                    : `私たちは、意欲的に意味のある仕事を求める優秀な人材と、優れた才能を求める企業とのギャップを埋めるための、ダイナミックなプラットフォームを構築しています。あなたが職人、技術者、クリエイター、または専門職であれ、私たちの使命は、あなたの専門性を発信し、それを必要とする企業とつなぐことです。`}
+                <Text size="sm" fw={700} maw={500}>
+                  {t("platformMission", language)}
                 </Text>
 
                 <Text size="xs" fw={700} maw={500}>
@@ -443,11 +437,11 @@ export default function PageHome() {
                   src="https://images.unsplash.com/photo-1514336979248-0d11928b751d?q=80&w=1631&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 />
 
-                <Text size="xs" fw={700} maw={200}>
+                {/* <Text size="xs" fw={700} maw={200}>
                   {language == "en"
                     ? "We are building a dynamic platform."
                     : `私たちは、ダイナミックなプラットフォームを構築しています。`}
-                </Text>
+                </Text> */}
               </Stack>
             </Grid.Col>
           </Grid>
@@ -474,7 +468,7 @@ export default function PageHome() {
               <Stack>
                 <Text size="3rem" fw={600} c="gray.0" mt={-8} visibleFrom="lg">
                   {language == "en"
-                    ? `  Ready to take your career to Japan? Here&apos;s how we help
+                    ? `  Ready to take your career to Japan? Here's how we help
                   make it happen.`
                     : `日本でキャリアを築く準備はできていますか？私たちは、その実現を全力でサポートし`}
                 </Text>
@@ -495,7 +489,7 @@ export default function PageHome() {
             </Grid.Col>
             <Grid.Col span={{ base: 12, lg: 4 }}>
               <Stack>
-                <Text size="xs" fw={600} c="gray.0" opacity={0.6}>
+                <Text size="sm" fw={600} c="gray.0" opacity={0.6}>
                   {language == "en"
                     ? `  From job matching and interview preparation to visa guidance
                   and cultural support — we provide end-to-end assistance to
@@ -571,10 +565,10 @@ export default function PageHome() {
           <Grid align="center">
             <Grid.Col span={{ base: 12, lg: 2 }}></Grid.Col>
             <Grid.Col span={{ base: 12, lg: 6 }}>
-              <Text size="lg" fw={500} c="gray.0" opacity={0.5}>
-                {language == "en"
-                  ? "Ready to join the Manabiya HR Unity family? Get started today!"
-                  : "日本でキャリアを築く準備はできていますか？私たちは、その実現を全力でサポートし"}
+              <Text size="xl" fw={500} c="gray.0" >
+                {language === "en"
+                  ? "Ready to become part of the Manabiya HR Unity family? Start your journey today!"
+                  : "Manabiya HR Unityファミリーの一員になる準備はできていますか？さあ、今日から旅を始めましょう！"}
               </Text>
             </Grid.Col>
             <Grid.Col span={{ base: 12, lg: 4 }}>

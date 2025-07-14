@@ -145,8 +145,10 @@ export function LayoutSiteFooter() {
             <Group wrap="nowrap">
               <Image src={imgLogo.src} h={32} w={54} fit="contain" alt="x" />
               <div>
-                <Text size="xl" c="gray.0" tt="uppercase">
-                  {state.language == "en" ? "Manabiya HR Unity" : "マナビヤネパール"}
+                <Text size="xl" c="gray.0" >
+                  {state.language == "en"
+                    ? "Manabiya HR Unity Pvt. Ltd."
+                    : "マナビヤネパール"}
                 </Text>
               </div>
             </Group>
