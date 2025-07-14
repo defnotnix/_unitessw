@@ -410,16 +410,7 @@ export default function PageHome() {
                   {t("platformMission", language)}
                 </Text>
 
-                <Text size="xs" fw={700} maw={500}>
-                  {language == "en"
-                    ? ` We are building a dynamic platform designed to bridge the gap
-                between skilled individuals actively seeking meaningful work and
-                companies eager to discover top-tier talent. Whether you&apos;re
-                a craftsman, technician, creative, or specialist, our mission is
-                to help you showcase your expertise and connect with
-                organizations that value your skills.`
-                    : `私たちは、意欲的に意味のある仕事を求める優秀な人材と、優れた才能を求める企業とのギャップを埋めるための、ダイナミックなプラットフォームを構築しています。あなたが職人、技術者、クリエイター、または専門職であれ、私たちの使命は、あなたの専門性を発信し、それを必要とする企業とつなぐことです。`}
-                </Text>
+             
               </Stack>
             </Grid.Col>
             <Grid.Col span={{ base: 12, lg: 4 }}>
