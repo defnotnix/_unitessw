@@ -345,10 +345,36 @@ export function ModuleAuthSignUp() {
           >
             Sign Up
           </Button>
-          <Button radius="lg" size="lg" variant="subtle">
+          <Button
+            radius="lg"
+            size="lg"
+            variant="subtle"
+            onClick={() => {
+              Router.push("/");
+            }}
+          >
             Already have an account? Sign In Here
           </Button>
         </Stack>
+
+        <Text size="xs" ta="center" my="xl">
+          By signing up, you agree to our{" "}
+          <Anchor
+            href="https://unitessw.com/terms"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Terms of Service
+          </Anchor>{" "}
+          and{" "}
+          <Anchor
+            href="https://unitessw.com/terms"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Privacy Policy
+          </Anchor>
+        </Text>
       </Stack>
 
       <Group gap={0} justify="space-between" px="lg">
