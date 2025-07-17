@@ -178,13 +178,13 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                     <Text size="xs" c="gray.0">
                       {language === "en" ? (
                         <>
-                          +977 9851338205
-                          <br /> +977 1 5917178
+                 <br />
+                +977 15917178
                         </>
                       ) : (
                         <>
-                          +977 9851338205
-                          <br /> +977 1 5917178
+                 <br />
+                +977 15917178
                         </>
                       )}
                     </Text>

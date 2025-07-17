@@ -133,12 +133,12 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                         </Stack>
 
                         <Text size="xs" c="gray.0">
-                          +977 9851338205
-                          <br /> +977 1 5917178
+                          <br />
+                          +977 15917178
                         </Text>
 
                         <Text size="xs" c="gray.0">
-                          info@manabiyanepal.com.np
+                          info@unitessw.com
                         </Text>
                       </SimpleGrid>
 
@@ -150,8 +150,8 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                         </Text>
 
                         <Text size="xs" c="gray.0">
-                          Copyright © {String(new Date()).slice(10, 15)} Unite
-                          SSW. All rights reserved.
+                          Copyright © {String(new Date()).slice(10, 15)}{" "}
+                          Manabiya HR Unity. All rights reserved.
                         </Text>
                       </Group>
                     </Paper>
@@ -206,8 +206,8 @@ export function LayoutAuth({ children }: PropsWithChildren) {
 
                   <Group justify="center">
                     <Text size="xs" c="gray.0">
-                      Copyright © ${String(new Date()).slice(10, 15)} Unite
-                      SSW. All rights reserved.
+                      Copyright © ${String(new Date()).slice(10, 15)} Manabiya
+                      HR Unity . All rights reserved.
                     </Text>
                   </Group>
                 </Paper>

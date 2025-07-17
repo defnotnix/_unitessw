@@ -145,7 +145,7 @@ export function LayoutSiteFooter() {
             <Group wrap="nowrap">
               <Image src={imgLogo.src} h={32} w={54} fit="contain" alt="x" />
               <div>
-                <Text size="xl" c="gray.0" >
+                <Text size="xl" c="gray.0">
                   {state.language == "en"
                     ? "Manabiya HR Unity Pvt. Ltd."
                     : "マナビヤネパール"}
@@ -211,9 +211,7 @@ export function LayoutSiteFooter() {
             </Text>
             <Stack mt="md" gap="xs">
               <Text size="md" c="gray.0">
-                +977 9851338205
-                <br />
-                +977 15917178
+                +977 9768896744
               </Text>
             </Stack>
           </Grid.Col>
@@ -223,7 +221,7 @@ export function LayoutSiteFooter() {
             </Text>
             <Stack mt="md" gap="xs">
               <Text size="md" c="gray.0">
-                info@manabiyanepal.com.np
+                info@unitessw.com
               </Text>
             </Stack>
           </Grid.Col>
