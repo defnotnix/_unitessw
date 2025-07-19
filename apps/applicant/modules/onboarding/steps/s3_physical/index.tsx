@@ -108,13 +108,13 @@ export function StepPhysical() {
             {...form.getInputProps("blood_type")}
           />
           <NumberInput
-            label="Eyesight Left"
+            label="Left Eye Glass Power"
             placeholder="e.g. 1.0"
             description="Visual acuity of your left eye"
             {...form.getInputProps("eyesight_left")}
           />
           <NumberInput
-            label="Eyesight Right"
+            label="Right Eye Glass Power"
             placeholder="e.g. 1.2"
             description="Visual acuity of your right eye"
             {...form.getInputProps("eyesight_right")}
@@ -145,7 +145,7 @@ export function StepPhysical() {
           <NumberInput
             label="Shoe Size"
             placeholder="e.g. 26.5"
-            description="Your shoe size in centimeters"
+            description="Your shoe size based on Japanese standards"
             {...form.getInputProps("shoe_size")}
           />
         </SimpleGrid>
@@ -165,6 +165,11 @@ export function StepPhysical() {
             label="Has Food Allergies"
             description="Indicate if you have food allergies"
             {...form.getInputProps("has_food_allergy", { type: "checkbox" })}
+            onChange={(e) => {
+              form.setFieldValue("food_allergy_desc", "");
+              form.setFieldValue("jp_food_allergy_desc", "");
+              form.setFieldValue("has_food_allergy", e.currentTarget.checked);
+            }}
             styles={{
               label: {
                 fontSize: "var(--mantine-font-size-xs)",
@@ -178,6 +183,14 @@ export function StepPhysical() {
             {...form.getInputProps("has_food_prohibition", {
               type: "checkbox",
             })}
+            onChange={(e) => {
+              form.setFieldValue("food_prohibition_desc", "");
+              form.setFieldValue("jp_food_prohibition_desc", "");
+              form.setFieldValue(
+                "has_food_prohibition",
+                e.currentTarget.checked
+              );
+            }}
             styles={{
               label: {
                 fontSize: "var(--mantine-font-size-xs)",

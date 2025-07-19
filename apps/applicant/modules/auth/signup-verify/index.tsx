@@ -6,25 +6,17 @@ import React, { useState } from "react";
 //mantine
 import {
   Alert,
-  Anchor,
   Badge,
   Button,
   Center,
-  Checkbox,
-  Container,
-  Divider,
   Group,
+  Loader,
   Menu,
-  Paper,
-  PasswordInput,
-  SimpleGrid,
+  PinInput,
   Stack,
   Text,
   TextInput,
-  ThemeIcon,
   UnstyledButton,
-  PinInput,
-  Loader,
 } from "@mantine/core";
 //mantine-form
 import { useForm } from "@mantine/form";
@@ -32,26 +24,15 @@ import { useForm } from "@mantine/form";
 import { triggerNotification } from "@vframework/ui";
 
 //icons
-import {
-  AppleLogo,
-  Atom,
-  GoogleLogo,
-  Info,
-  X,
-  Warning,
-  CaretDown,
-  Check,
-  CaretDownIcon,
-} from "@phosphor-icons/react";
+import { CaretDownIcon, Check, Info, Warning, X } from "@phosphor-icons/react";
 
 //styles
-import classes from "./auth.module.css";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
 
 //api
-import { apiLogin, apiResetPassword } from "./auth.api";
 import { apiDispatch } from "@vframework/core";
+import { apiLogin, apiResetPassword } from "./auth.api";
 
 //components
 
@@ -96,20 +77,26 @@ export function ModuleAuthOTP() {
 
   const [errorType, setErrorType] = useState<string>("nan");
   const [completed, setCompleted] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
 
   React.useEffect(() => {
-    if (cooldown > 0) {
-      const interval = setInterval(() => {
-        setCooldown((prev) => prev - 1);
-      }, 1000);
-      setTimerId(interval);
+    if (sessionStorage.getItem("ssw_otp") == "true") {
+      setIsChecking(false);
+      if (cooldown > 0) {
+        const interval = setInterval(() => {
+          setCooldown((prev) => prev - 1);
+        }, 1000);
+        setTimerId(interval);
 
-      return () => clearInterval(interval);
-    }
+        return () => clearInterval(interval);
+      }
 
-    if (cooldown === 0 && timerId) {
-      clearInterval(timerId);
-      setTimerId(null);
+      if (cooldown === 0 && timerId) {
+        clearInterval(timerId);
+        setTimerId(null);
+      }
+    } else {
+      Router.push("/");
     }
   }, [cooldown]);
 
@@ -158,25 +145,24 @@ export function ModuleAuthOTP() {
       // if (form.values.remember) {
       //   handleRememberMe();
       // }
-
+ sessionStorage.removeItem("ssw_otp");
       form.setFieldValue("fLoading", false);
       triggerNotification.auth.isSuccess({});
     },
     onError: (err: any) => {
-      console.log(err);
-      const { detail } = err.object;
+      console.log(err.object);
+      const { detail, type } = err.object.response.data;
       form.setErrors({
         otp: detail?.data?.otp[0] || "Invalid OTP",
       });
 
-      console.log("ERROR", detail);
-      setErrorType(err?.type || "nan");
+      setErrorType(type || "nan");
       form.setFieldValue("fLoading", false);
       triggerNotification.auth.isError({
         title: "Cannot verify OTP",
         message:
           detail?.data?.otp[0] ||
-          "Invalid OTP" ||
+          "Incorred OTP Entered, Please try again." ||
           "Cannot Reach Server, Try Again!",
       });
     },
@@ -193,6 +179,7 @@ export function ModuleAuthOTP() {
       });
     },
     onSuccess: (res) => {
+      sessionStorage.removeItem("ssw_otp");
       Router.push("/");
     },
     onError: (err: any) => {
@@ -225,43 +212,20 @@ export function ModuleAuthOTP() {
 
   const RenderAlert = () => {
     switch (errorType) {
-      case "info":
+      case "Validation Error":
         return (
-          <Alert py="xs" color="blue" icon={<Info weight="bold" />}>
-            <Text size="xs" c="blue.8" fw={500} py="2">
-              Server under Maintainance, Try Later!
-            </Text>
-          </Alert>
-        );
-      case "pending":
-        return (
-          <Alert py="xs" color="indigo" icon={<Info weight="bold" />}>
-            <Text size="xs" c="indigo.8" fw={500} py="2">
-              Verification Pending, Try Later!
-            </Text>
-          </Alert>
-        );
-      case "blocked":
-        return (
-          <Alert py="xs" color="red" icon={<X weight="bold" />}>
+          <Alert py="xs" color="red" icon={<Warning weight="bold" />}>
             <Text size="xs" c="red.8" fw={500} py="2">
-              Account Blocked! Contact Admin
+              The OTP you entered is incorrect. Try again.
             </Text>
           </Alert>
         );
-      case "nan":
-        return (
-          <Alert py="xs" color="red" icon={<X weight="bold" />}>
-            <Text size="xs" c="red.8" fw={500} py="2">
-              Cannot Reach Server, Try Again!
-            </Text>
-          </Alert>
-        );
+
       default:
         return (
           <Alert py="xs" color="red" icon={<Warning weight="bold" />}>
             <Text size="xs" c="red.8" fw={500} py="2">
-              Invalid Credentials. Try Again!
+              Something went wrong. Please try again later.
             </Text>
           </Alert>
         );
@@ -354,6 +318,16 @@ export function ModuleAuthOTP() {
 
   // * ANIMATIONS
 
+  if (isChecking) {
+    return (
+      <Stack gap="sm">
+        <Center>
+          <Loader size={24} py={64} />
+        </Center>
+      </Stack>
+    );
+  }
+
   return (
     <>
       <Stack gap="sm">
@@ -421,7 +395,7 @@ export function ModuleAuthOTP() {
           vFramework
         </Text>
 
-        <Group justify="center">
+        {/* <Group justify="center">
           <Menu>
             <Menu.Target>
               <UnstyledButton>
@@ -444,7 +418,7 @@ export function ModuleAuthOTP() {
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>
-        </Group>
+        </Group> */}
       </Group>
     </>
   );

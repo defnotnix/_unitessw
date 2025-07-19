@@ -462,7 +462,6 @@ export function ModuleApplicant() {
                   { value: "4", label: "CV-4" },
                   { value: "5", label: "CV-5" },
                   { value: "6", label: "CV-6" },
-                  { value: "7", label: "CV-Corporate" },
                 ]}
               />
               <Select

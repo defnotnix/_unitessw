@@ -102,17 +102,21 @@ export function ModuleAuthSignUp() {
 
       form.setFieldValue("fLoading", false);
       triggerNotification.auth.isSuccess({});
+
+      sessionStorage.setItem("ssw_otp", "true");
+
       setTimeout(() => {
         Router.push("/signup-verify?id=" + form.getValues()?.email);
       }, 1000);
     },
     onError: (err: any) => {
-      const { response } = err.object;
+      console.log("ERR", err?.object);
 
-      form.setErrors(response?.data);
+      const { detail, type } = err.object?.response?.data;
 
-      console.log("ERROR", response);
-      setErrorType(response?.data?.type || "nan");
+      form.setErrors(detail);
+
+      setErrorType(type || "nan");
       form.setFieldValue("fLoading", false);
       triggerNotification.auth.isError({
         message: err.message || "Cannot Reach Server, Try Again!",
@@ -190,7 +194,7 @@ export function ModuleAuthSignUp() {
         return (
           <Alert py="xs" color="red" icon={<Warning weight="bold" />}>
             <Text size="xs" c="red.8" fw={500} py="2">
-              Invalid Credentials. Try Again!
+              Fields incorrect or missing, Please check.
             </Text>
           </Alert>
         );
@@ -261,7 +265,13 @@ export function ModuleAuthSignUp() {
       <Stack gap="sm">
         <div>
           <Text size="1.6rem" lh="2rem" ta="center">
-            <b>New Applicant Account.</b>
+            <b
+              style={{
+                fontSize: "var(--mantine-font-size-md)",
+              }}
+            >
+              New Applicant Account.
+            </b>
             <br />
             Create your
             <br /> Manabiya HR Unity Account.
@@ -334,14 +344,16 @@ export function ModuleAuthSignUp() {
             Sign Up
           </Button>
           <Button
+            mt={4}
             radius="lg"
             size="lg"
-            variant="subtle"
+            color="red.6"
+            variant="light"
             onClick={() => {
               Router.push("/");
             }}
           >
-            Already have an account? Sign In Here
+            Already have an account? Sign In
           </Button>
         </Stack>
 

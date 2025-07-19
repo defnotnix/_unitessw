@@ -279,6 +279,7 @@ export function StepIdentity() {
 
         <SimpleGrid cols={{ base: 1, lg: 3 }}>
           <Select
+            clearable={false}
             label="Job Category"
             placeholder="Select your job category"
             description="Choose your job category"
@@ -356,21 +357,12 @@ export function StepIdentity() {
           />
         </Stack>
 
-        <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="xs">
-          <TextInput
-            disabled
-            label="Email"
-            placeholder="e.g. user@example.com"
-            description="A valid email address"
-            {...form.getInputProps("email")}
-          />
-          <TextInput
-            label="Contact Number"
-            placeholder="e.g. +977 9813512312"
-            description="Phone number of the person."
-            {...form.getInputProps("contact")}
-          />
-        </SimpleGrid>
+        <TextInput
+          label="Contact Number"
+          placeholder="e.g. +977 9813512312"
+          description="Phone number of the person."
+          {...form.getInputProps("contact")}
+        />
 
         <Divider />
 

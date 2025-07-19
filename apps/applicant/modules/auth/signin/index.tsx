@@ -1,30 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 //next
 
 //mantine
 import {
   Alert,
   Anchor,
-  Badge,
   Button,
-  Center,
   Checkbox,
-  CheckIcon,
-  Container,
   Divider,
   Group,
-  Loader,
-  Menu,
-  Paper,
   PasswordInput,
   SimpleGrid,
   Stack,
   Text,
   TextInput,
-  ThemeIcon,
-  UnstyledButton,
 } from "@mantine/core";
 //mantine-form
 import { useForm } from "@mantine/form";
@@ -32,24 +23,18 @@ import { useForm } from "@mantine/form";
 import { triggerNotification } from "@vframework/ui";
 
 //icons
-import {
-  CaretDownIcon,
-  InfoIcon,
-  WarningIcon,
-  XIcon,
-} from "@phosphor-icons/react";
+import { InfoIcon, WarningIcon, XIcon } from "@phosphor-icons/react";
 
 //styles
-import classes from "./auth.module.css";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
 
 //api
 import { apiLogin, googleLogin } from "./auth.api";
 
-import { jwtDecode } from "jwt-decode";
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import { useLanguage } from "@/layouts/app/app.context";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 //components
 
@@ -359,7 +344,7 @@ export function ModuleAuthSignIn() {
 
         {mutation.isError && <RenderAlert />}
 
-        <Stack gap={0}>
+        <Stack gap={0} mt="md">
           <Button
             radius="lg"
             size="lg"
@@ -373,19 +358,39 @@ export function ModuleAuthSignIn() {
             {language == "en" ? "Sign In" : "サインイン"}
           </Button>
           <Button
+            mt="4px"
             radius="lg"
             size="lg"
-            variant="subtle"
+            color="red.6"
             onClick={() => {
               Router.push("/signup");
             }}
           >
             {language == "en"
-              ? "Don't have an account? Sign Up Here"
-              : "アカウントをお持ちでない場合は、こちらからサインアップしてください。"}
+              ? "Register a new Account."
+              : "アカウントを登録する。"}
           </Button>
         </Stack>
       </Stack>
+
+      <Text size="xs" ta="center" my="md" fw={700}>
+        By continuing, you agree to our{" "}
+        <Anchor
+          href="https://unitessw.com/terms"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Terms of Service
+        </Anchor>{" "}
+        and{" "}
+        <Anchor
+          href="https://unitessw.com/terms"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Privacy Policy
+        </Anchor>
+      </Text>
 
       <Group gap={0} justify="center" px="lg">
         <Text size="11" lh={5} fw={900}>

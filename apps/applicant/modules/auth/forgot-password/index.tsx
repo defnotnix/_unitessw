@@ -102,6 +102,7 @@ export function ModuleAuthForgotPassword() {
 
       form.setFieldValue("fLoading", false);
       triggerNotification.auth.isSuccess({});
+      sessionStorage.setItem("ssw_otp", "true");
       setTimeout(() => {
         Router.push(
           "/signup-verify?id=" + form.getValues()?.email + "&type=forgot"

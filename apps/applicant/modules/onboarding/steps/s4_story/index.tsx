@@ -185,8 +185,8 @@ export function StepStory() {
         <Stack gap={0}>
           <TextInput
             label="Strong Point"
-            placeholder="e.g. I am a good listener"
-            description="A short personal statement describing your motivation"
+            placeholder="e.g. Good Listener, Quick Learner, Team Player"
+            description="A short personal statement describing your motivation seperated by commmas"
             {...form.getInputProps("strong_point")}
             styles={styles.top}
             leftSection={
@@ -210,7 +210,7 @@ export function StepStory() {
         <Stack gap={0}>
           <TextInput
             label="Weak Point"
-            placeholder="e.g. I am a bad listener"
+            placeholder="e.g. Anxious, Light Sleepr, Perfectionist"
             description="A short personal statement describing your motivation"
             {...form.getInputProps("weak_point")}
             styles={styles.top}
@@ -221,7 +221,7 @@ export function StepStory() {
             }
           />
           <TextInput
-            placeholder="e.g. いつもあなたにおすすめできるように、あなたのリスナーとして、あなたをより良くしてください"
+            placeholder="e.g. 不安、軽い睡眠、完璧主義"
             {...form.getInputProps("jp_weak_point")}
             styles={styles.bot}
             leftSection={

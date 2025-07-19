@@ -4,6 +4,7 @@ import {
   ActionIcon,
   Badge,
   Box,
+  Button,
   Center,
   Container,
   Grid,
@@ -19,12 +20,14 @@ import {
   ArrowRightIcon,
   CheckIcon as Check,
   CheckIcon,
-  ExclamationMarkIcon as ExclamationMark,
   InfoIcon,
+  PowerIcon,
 } from "@phosphor-icons/react";
 import { FormHandler } from "@vframework/core";
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useRef, useState } from "react";
 import { formProps } from "./steps/s1_Identity/form.config";
+
+import { InitialStep } from "./steps/s0_terms";
 
 import z from "zod";
 
@@ -41,12 +44,7 @@ import {
   apiWork,
 } from "./module.api";
 
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { StepIdentity } from "./steps/s1_Identity";
 import { StepBackground } from "./steps/s2_background";
 import { StepPhysical } from "./steps/s3_physical";
@@ -79,71 +77,83 @@ export function ModuleOnboarding() {
 
   const [showForm, setShowForm] = useState(false);
 
-  const { data, isLoading } = useQuery({
+  const queryClient = useQueryClient();
+
+  const isInitialLoad = useRef(true);
+
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["admin", "applicants", "edit"],
     queryFn: async () => {
-      const token: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
-
-      console.log("TOKEN", token);
-
-      if (token.user_id) {
-        const res = await apiPersonalInformation.get(token.user_id);
-        const data = res?.data || {};
-
-        console.log(data);
-
-        setPersonId(data.id);
-        setHolder((prev) => ({ ...prev, ...data }));
-
-        const step = Array.from({ length: 8 }, (_, i) => i + 1).find(
-          (i) => data[`is_step${i}`] === false
-        );
-
-        if (step) setCurrent(step);
-
-        const completed = Array.from({ length: 8 }, (_, i) => i + 1).filter(
-          (i) => data[`is_step${i}`] === true
-        );
-
-        console.log(completed);
-        setCompletedSteps(completed);
-
-        if (
-          (res?.data?.is_published || res?.data?.is_step9) &&
-          Pathname !== "/myprofile/edit"
-        ) {
-          Router.push("/myprofile");
-          return formProps.initial;
-        } else {
-          setShowForm(true);
-          return {
-            ...res?.data,
-            ...res?.data?.a_background,
-
-            ...res?.data?.a_physical,
-            ...res?.data?.a_story,
-            ...res?.data?.a_identification,
-
-            category: String(res?.data?.category),
-            education: res?.data?.a_education || [],
-            work_experience: res?.data?.a_work_experience || [],
-            licenses: res?.data?.a_license_qualification || [],
-            visithistory: res?.data?.a_japan_visit || [],
-
-            image: res?.data?.image ? endpoint + res?.data?.image : null,
-            passport: res?.data?.a_identification?.passport
-              ? endpoint + res?.data?.a_identification?.passport
-              : null,
-            l_cert_image: res?.data?.a_identification?.l_cert_image
-              ? endpoint + res?.data?.a_identification?.l_cert_image
-              : null,
-            ssw_cert_image: res?.data?.a_identification?.ssw_cert_image
-              ? endpoint + res?.data?.a_identification?.ssw_cert_image
-              : null,
-          };
-        }
-      } else {
+      if (!sessionStorage.getItem("sswtoken")) {
+        Router.push("/");
         return formProps.initial;
+      } else {
+        const token: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
+
+        console.log("TOKEN", token);
+        if (token.user_id) {
+          const res = await apiPersonalInformation.get(token.user_id);
+          const data = res?.data || {};
+
+          console.log(data);
+
+          setPersonId(data.id);
+          setHolder((prev) => ({ ...prev, ...data }));
+
+          if (isInitialLoad.current) {
+            const step = Array.from({ length: 8 }, (_, i) => i + 1).find(
+              (i) => data[`is_step${i}`] === false
+            );
+
+            if (step) setCurrent(step);
+
+            const completed = Array.from({ length: 8 }, (_, i) => i + 1).filter(
+              (i) => data[`is_step${i}`] === true
+            );
+
+            setCompletedSteps(completed);
+          }
+
+          // mark initial load complete
+          isInitialLoad.current = false;
+
+          if (
+            (res?.data?.is_published || res?.data?.is_step9) &&
+            Pathname !== "/myprofile/edit"
+          ) {
+            Router.push("/myprofile");
+            return formProps.initial;
+          } else {
+            setShowForm(true);
+            return {
+              ...res?.data,
+              ...res?.data?.a_background,
+
+              ...res?.data?.a_physical,
+              ...res?.data?.a_story,
+              ...res?.data?.a_identification,
+
+              category: String(res?.data?.category),
+              education: res?.data?.a_education || [],
+              work_experience: res?.data?.a_work_experience || [],
+              licenses: res?.data?.a_license_qualification || [],
+              visithistory: res?.data?.a_japan_visit || [],
+
+              image: res?.data?.image ? endpoint + res?.data?.image : null,
+              passport: res?.data?.a_identification?.passport
+                ? endpoint + res?.data?.a_identification?.passport
+                : null,
+              l_cert_image: res?.data?.a_identification?.l_cert_image
+                ? endpoint + res?.data?.a_identification?.l_cert_image
+                : null,
+              ssw_cert_image: res?.data?.a_identification?.ssw_cert_image
+                ? endpoint + res?.data?.a_identification?.ssw_cert_image
+                : null,
+            };
+          }
+        } else {
+          return formProps.initial;
+        }
       }
     },
   });
@@ -161,40 +171,6 @@ export function ModuleOnboarding() {
     "Japan Visit History",
     "Completed",
   ];
-
-  const InitiateStep = () => {
-    return (
-      <Stack py={100} maw={550}>
-        <Text size="2rem" lh="2.3rem" fw={800}>
-          We're glad you've decided to join us.
-          <br /> Welcome aboard!
-        </Text>
-
-        <Group>
-          <ThemeIcon variant="light">
-            <ExclamationMark />
-          </ThemeIcon>
-          <Text size="sm" fw={600} c="brand.6">
-            Please Read before you proceed.
-          </Text>
-        </Group>
-
-        <Text size="xs" fw={600} mb="xl" maw={700}>
-          You’ll go through a few steps to complete your onboarding process.
-          This may take a little time, so make sure you’re in a comfortable
-          place before you begin.
-          <br />
-          <br />
-          Before you begin, You will need to be prepared with :{" "}
-          <b>
-            General Details, Medical Details like your Eye Examination,
-            Orthodontic Appliances, Academics, Work History, and Official
-            Documents (e.g. Citizenship/Passport/License).
-          </b>
-        </Text>
-      </Stack>
-    );
-  };
 
   const CompletedStep = () => {
     return (
@@ -214,7 +190,7 @@ export function ModuleOnboarding() {
   };
 
   const stepConfig = [
-    { component: <InitiateStep />, apiCreate: null, apiUpdate: null },
+    { component: <InitialStep />, apiCreate: null, apiUpdate: null },
     {
       component: <StepIdentity />,
       apiCreate: apiPersonalInformation.create,
@@ -270,7 +246,23 @@ export function ModuleOnboarding() {
     },
     {
       component: <StepAcademics />,
-      apiCreate: apiEducation.create,
+      apiCreate: async (body: any) => {
+        const _forCreate = body?.filter((e: any) => {
+          return !e.id;
+        });
+        const _forEdit = body?.filter((e: any) => {
+          return e.id;
+        });
+
+        if (_forCreate.length > 0) {
+          const res = await apiEducation.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiEducation.update(e, e.id));
+
+        return {};
+      },
       apiUpdate: async (body: any) => {
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
@@ -279,8 +271,14 @@ export function ModuleOnboarding() {
           return e.id;
         });
 
-        await apiEducation.create(_forCreate);
-        _forEdit.map((e: any) => apiEducation.update(e, e.id));
+        if (_forCreate.length > 0) {
+          const res = await apiEducation.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiEducation.update(e, e.id));
+
+        return {};
       },
       transform: (e: any) =>
         e.education.map((item: any) => ({
@@ -290,7 +288,23 @@ export function ModuleOnboarding() {
     },
     {
       component: <StepWork />,
-      apiCreate: apiWork.create,
+      apiCreate: async (body: any) => {
+        const _forCreate = body?.filter((e: any) => {
+          return !e.id;
+        });
+        const _forEdit = body?.filter((e: any) => {
+          return e.id;
+        });
+
+        if (_forCreate.length > 0) {
+          const res = await apiWork.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiWork.update(e, e.id));
+
+        return {};
+      },
       apiUpdate: async (body: any) => {
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
@@ -299,8 +313,14 @@ export function ModuleOnboarding() {
           return e.id;
         });
 
-        await apiWork.create(_forCreate);
-        _forEdit.map((e: any) => apiWork.update(e, e.id));
+        if (_forCreate.length > 0) {
+          const res = await apiWork.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiWork.update(e, e.id));
+
+        return {};
       },
       transform: (e: any) =>
         e.work_experience.map((item: any) => ({
@@ -310,7 +330,25 @@ export function ModuleOnboarding() {
     },
     {
       component: <StepCertificates />,
-      apiCreate: apiLicense.create,
+      apiCreate: async (body: any) => {
+        console.log(body);
+
+        const _forCreate = body?.filter((e: any) => {
+          return !e.id;
+        });
+        const _forEdit = body?.filter((e: any) => {
+          return e.id;
+        });
+
+        if (_forCreate.length > 0) {
+          const res = await apiLicense.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiLicense.update(e, e.id));
+
+        return {};
+      },
       apiUpdate: async (body: any) => {
         console.log(body);
 
@@ -321,8 +359,13 @@ export function ModuleOnboarding() {
           return e.id;
         });
 
-        await apiLicense.create(_forCreate);
-        _forEdit.map((e: any) => apiLicense.update(e, e.id));
+        if (_forCreate.length > 0) {
+          const res = await apiLicense.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiLicense.update(e, e.id));
+        return {};
       },
       transform: (e: any) =>
         e.licenses.map((item: any) => ({
@@ -357,15 +400,11 @@ export function ModuleOnboarding() {
 
     {
       component: <StepVisit />,
-      apiCreate: apiJapanVisit.create,
+
       validation: [
         {
           visithistory: z.array(
             z.object({
-              start_year: z.number(),
-
-              end_year: z.number(),
-
               from_month: z.string().trim().max(15, {
                 message: "From month must be 15 characters or fewer",
               }),
@@ -386,8 +425,43 @@ export function ModuleOnboarding() {
         },
       ],
       isFormData: false,
-      apiUpdate: (body: any) =>
-        apiJapanVisit.update(body, data?.a_identification?.id),
+      apiCreate: async (body: any) => {
+        console.log(body);
+
+        const _forCreate = body?.filter((e: any) => {
+          return !e.id;
+        });
+        const _forEdit = body?.filter((e: any) => {
+          return e.id;
+        });
+
+        if (_forCreate.length > 0) {
+          const res = await apiJapanVisit.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiJapanVisit.update(e, e.id));
+
+        return {};
+      },
+      apiUpdate: async (body: any) => {
+        console.log(body);
+
+        const _forCreate = body?.filter((e: any) => {
+          return !e.id;
+        });
+        const _forEdit = body?.filter((e: any) => {
+          return e.id;
+        });
+
+        if (_forCreate.length > 0) {
+          const res = await apiJapanVisit.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiJapanVisit.update(e, e.id));
+        return {};
+      },
 
       transform: (e: any) =>
         e.visithistory.map((item: any) => ({
@@ -498,7 +572,7 @@ export function ModuleOnboarding() {
   return (
     <section>
       <Container p="md">
-        <Group justify="center" mb="xl" my="lg">
+        <Group justify="space-between" mb="xl" my="lg">
           <Group gap="xs">
             <Image
               src={imgLogo.src}
@@ -508,14 +582,24 @@ export function ModuleOnboarding() {
                 objectFit: "contain",
               }}
             />
-            <Text size="xs" c="white">
-              Manabiya HR Unity | Applicant Onboarding
-            </Text>
+            <Text size="xs">Manabiya HR Unity | Applicant Onboarding</Text>
           </Group>
 
-          <Text size="xs" c="gray.0" opacity={0.5}>
-            Authorized to provide the services listed.
-          </Text>
+          <Group>
+            <Text size="xs" fw={600}>
+              Complete this later?
+            </Text>
+            <Button
+              size="sm"
+              leftSection={<PowerIcon size={12} />}
+              onClick={() => {
+                sessionStorage.removeItem("sswtoken");
+                Router.push("/");
+              }}
+            >
+              Sign Out
+            </Button>
+          </Group>
         </Group>
 
         <Grid gutter="sm">
@@ -535,9 +619,6 @@ export function ModuleOnboarding() {
               }}
             >
               <Box>
-                <Text size="xs" opacity={0.5} mb="xl" c="gray.0">
-                  User
-                </Text>
                 <Text size="2rem" fw={900} c="gray.0">
                   Onboarding
                   <br />
@@ -615,6 +696,7 @@ export function ModuleOnboarding() {
           </Grid.Col>
           <Grid.Col span={{ base: 12, lg: 8 }}>
             <FormHandler
+              key={JSON.stringify(data)}
               {...formProps}
               resetOnSubmit={false}
               formType={isCompleted ? "edit" : "new"}
@@ -624,7 +706,34 @@ export function ModuleOnboarding() {
               transformDataOnSubmit={transformData}
               validation={validation}
               onSubmitSuccess={(res) => {
-                if (current == 9) {
+                console.log("res", res);
+
+                if (res.data && current > 1) {
+                  queryClient.setQueryData(
+                    ["admin", "applicants", "edit"],
+                    (old: any) => {
+                      return {
+                        ...old,
+                        ...(current == 2 ? { a_background: res?.data } : {}),
+                        ...(current == 3 ? { a_physical: res?.data } : {}),
+                        ...(current == 4 ? { a_story: res?.data } : {}),
+                        ...(current == 5 ? { a_education: res?.data } : {}),
+                        ...(current == 6
+                          ? { a_work_experience: res?.data }
+                          : {}),
+                        ...(current == 7
+                          ? { a_license_qualification: res?.data }
+                          : {}),
+                        ...(current == 8
+                          ? { a_identification: res?.data }
+                          : {}),
+                        ...(current == 9 ? { a_japan_visit: res?.data } : {}),
+                      };
+                    }
+                  );
+                }
+
+                if (current == 10) {
                   Router.push("/myprofile");
                 }
 
@@ -637,6 +746,7 @@ export function ModuleOnboarding() {
                 }
 
                 if (!completedSteps.includes(current)) {
+                  console.log("updating current", [...completedSteps, current]);
                   setCompletedSteps([...completedSteps, current]);
                 }
               }}
