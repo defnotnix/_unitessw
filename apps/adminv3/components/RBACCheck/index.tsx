@@ -34,7 +34,7 @@ export function RBACCheck({
       }
 
       const tokenData: any = jwtDecode<SessionData>(token);
-      console.log(tokenData);
+     // console.log(tokenData);
       const hasAccess = allowList.some(
         (role) => tokenData[`is_${role}`] == "True"
       );

@@ -24,8 +24,8 @@ import "@/public/styles/global.css";
 
 //oauthF
 
-//export const endpoint = "https://api.unitessw.com"; d
-export const endpoint = "http://192.168.101.5:8000";
+export const endpoint = "https://api.unitessw.com";
+//export const endpoint = "http://192.168.101.5:8000";
 
 export function LayoutApp({ children }: PropsWithChildren) {
   return (

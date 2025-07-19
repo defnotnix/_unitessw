@@ -9,7 +9,6 @@ import {
   Container,
   Grid,
   Group,
-  Image,
   Loader,
   Paper,
   Stack,
@@ -25,12 +24,11 @@ import {
   InfoIcon,
 } from "@phosphor-icons/react";
 import { FormHandler } from "@vframework/core";
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useRef, useState } from "react";
 import { formProps } from "./steps/s1_Identity/form.config";
 
 import z from "zod";
 
-import imgLogo from "@/assets/img/sswmini.png";
 import {
   apiBackground,
   apiEducation,
@@ -43,7 +41,7 @@ import {
   apiWork,
 } from "./module.api";
 
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { StepIdentity } from "./steps/s1_Identity";
 import { StepBackground } from "./steps/s2_background";
 import { StepPhysical } from "./steps/s3_physical";
@@ -55,7 +53,7 @@ import { StepCertificates } from "./steps/s7_certifications";
 import { endpoint } from "@/layouts/app";
 
 import { useForceUpdate } from "@mantine/hooks";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { jwtDecode } from "jwt-decode";
 import classes from "./_.module.css";
 import { StepVisit } from "./steps/s10_visit";
@@ -77,7 +75,9 @@ export function _Form() {
 
   const [showForm, setShowForm] = useState(false);
 
-  const { data, isLoading } = useQuery({
+  const isInitialLoad = useRef(true);
+
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["admin", "applicants", "edit"],
     queryFn: async () => {
       const token: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
@@ -93,18 +93,19 @@ export function _Form() {
         setPersonId(data.id);
         setHolder((prev) => ({ ...prev, ...data }));
 
-        const step = Array.from({ length: 8 }, (_, i) => i + 1).find(
-          (i) => data[`is_step${i}`] === false
-        );
+        if (isInitialLoad.current) {
+          const step = Array.from({ length: 8 }, (_, i) => i + 1).find(
+            (i) => data[`is_step${i}`] === false
+          );
 
-        if (step) setCurrent(step);
+          if (step) setCurrent(step);
 
-        const completed = Array.from({ length: 8 }, (_, i) => i + 1).filter(
-          (i) => data[`is_step${i}`] === true
-        );
+          const completed = Array.from({ length: 8 }, (_, i) => i + 1).filter(
+            (i) => data[`is_step${i}`] === true
+          );
 
-        console.log(completed);
-        setCompletedSteps(completed);
+          setCompletedSteps(completed);
+        }
 
         setShowForm(true);
         return {
@@ -254,7 +255,23 @@ export function _Form() {
     },
     {
       component: <StepAcademics />,
-      apiCreate: apiEducation.create,
+      apiCreate: async (body: any) => {
+        const _forCreate = body?.filter((e: any) => {
+          return !e.id;
+        });
+        const _forEdit = body?.filter((e: any) => {
+          return e.id;
+        });
+
+        if (_forCreate.length > 0) {
+          const res = await apiEducation.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiEducation.update(e, e.id));
+
+        return {};
+      },
       apiUpdate: async (body: any) => {
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
@@ -263,8 +280,14 @@ export function _Form() {
           return e.id;
         });
 
-        await apiEducation.create(_forCreate);
-        _forEdit.map((e: any) => apiEducation.update(e, e.id));
+        if (_forCreate.length > 0) {
+          const res = await apiEducation.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiEducation.update(e, e.id));
+
+        return {};
       },
       transform: (e: any) =>
         e.education.map((item: any) => ({
@@ -274,7 +297,23 @@ export function _Form() {
     },
     {
       component: <StepWork />,
-      apiCreate: apiWork.create,
+      apiCreate: async (body: any) => {
+        const _forCreate = body?.filter((e: any) => {
+          return !e.id;
+        });
+        const _forEdit = body?.filter((e: any) => {
+          return e.id;
+        });
+
+        if (_forCreate.length > 0) {
+          const res = await apiWork.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiWork.update(e, e.id));
+
+        return {};
+      },
       apiUpdate: async (body: any) => {
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
@@ -283,8 +322,14 @@ export function _Form() {
           return e.id;
         });
 
-        await apiWork.create(_forCreate);
-        _forEdit.map((e: any) => apiWork.update(e, e.id));
+        if (_forCreate.length > 0) {
+          const res = await apiWork.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiWork.update(e, e.id));
+
+        return {};
       },
       transform: (e: any) =>
         e.work_experience.map((item: any) => ({
@@ -294,7 +339,25 @@ export function _Form() {
     },
     {
       component: <StepCertificates />,
-      apiCreate: apiLicense.create,
+      apiCreate: async (body: any) => {
+        console.log(body);
+
+        const _forCreate = body?.filter((e: any) => {
+          return !e.id;
+        });
+        const _forEdit = body?.filter((e: any) => {
+          return e.id;
+        });
+
+        if (_forCreate.length > 0) {
+          const res = await apiLicense.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiLicense.update(e, e.id));
+
+        return {};
+      },
       apiUpdate: async (body: any) => {
         console.log(body);
 
@@ -305,8 +368,13 @@ export function _Form() {
           return e.id;
         });
 
-        await apiLicense.create(_forCreate);
-        _forEdit.map((e: any) => apiLicense.update(e, e.id));
+        if (_forCreate.length > 0) {
+          const res = await apiLicense.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiLicense.update(e, e.id));
+        return {};
       },
       transform: (e: any) =>
         e.licenses.map((item: any) => ({
@@ -341,15 +409,11 @@ export function _Form() {
 
     {
       component: <StepVisit />,
-      apiCreate: apiJapanVisit.create,
+
       validation: [
         {
           visithistory: z.array(
             z.object({
-              start_year: z.number(),
-
-              end_year: z.number(),
-
               from_month: z.string().trim().max(15, {
                 message: "From month must be 15 characters or fewer",
               }),
@@ -370,8 +434,43 @@ export function _Form() {
         },
       ],
       isFormData: false,
-      apiUpdate: (body: any) =>
-        apiJapanVisit.update(body, data?.a_identification?.id),
+      apiCreate: async (body: any) => {
+        console.log(body);
+
+        const _forCreate = body?.filter((e: any) => {
+          return !e.id;
+        });
+        const _forEdit = body?.filter((e: any) => {
+          return e.id;
+        });
+
+        if (_forCreate.length > 0) {
+          const res = await apiJapanVisit.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiJapanVisit.update(e, e.id));
+
+        return {};
+      },
+      apiUpdate: async (body: any) => {
+        console.log(body);
+
+        const _forCreate = body?.filter((e: any) => {
+          return !e.id;
+        });
+        const _forEdit = body?.filter((e: any) => {
+          return e.id;
+        });
+
+        if (_forCreate.length > 0) {
+          const res = await apiJapanVisit.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiJapanVisit.update(e, e.id));
+        return {};
+      },
 
       transform: (e: any) =>
         e.visithistory.map((item: any) => ({

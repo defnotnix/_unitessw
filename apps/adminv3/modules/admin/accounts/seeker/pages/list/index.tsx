@@ -43,7 +43,7 @@ export function _List() {
         moduleKey={moduleConfig.moduleKey}
         getRecords={getRecords}
         transformOnGet={(data) => {
-          console.log(data);
+          //console.log(data);
           return data.map((item: any) => {
             return {
               ...item,

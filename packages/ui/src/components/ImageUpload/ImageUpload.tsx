@@ -35,11 +35,22 @@ export function ImageUpload({
   multiple?: boolean;
 }) {
   const { hovered, ref }: any = useHover();
+  const [internalError, setInternalError] = useState(false);
 
   return (
     <div ref={ref}>
       {!value ? (
-        <FileButton onChange={onChange} accept="image/*" multiple={multiple}>
+        <FileButton
+          onChange={(e) => {
+            if (e.size <= 3000000) {
+              onChange(e);
+            } else {
+              setInternalError("File size must be less than 3MB");
+            }
+          }}
+          accept="image/png, image/jpeg, image/jpg, image/webp"
+          multiple={multiple}
+        >
           {(props) => (
             <Paper
               bg="brand.0"
@@ -142,11 +153,12 @@ export function ImageUpload({
         </FileButton>
       )}
 
-      {error && (
-        <Text size="xs" color="red" mt="xs">
-          {error}
-        </Text>
-      )}
+      {error ||
+        (internalError && (
+          <Text size="xs" color="red" mt="xs">
+            {error || internalError}
+          </Text>
+        ))}
     </div>
   );
 }

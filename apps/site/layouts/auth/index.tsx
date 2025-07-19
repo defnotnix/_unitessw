@@ -168,13 +168,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                           </>
                         )}
                       </Text>
-                      <div>
-                        <Button size="xs" color="gray" variant="light">
-                          {language === "en"
-                            ? "Open in Google Maps"
-                            : "Googleマップで開く"}
-                        </Button>
-                      </div>
+                     
                     </Stack>
                     <Text size="xs" c="gray.0">
                       {language === "en" ? (
@@ -192,8 +186,8 @@ export function LayoutAuth({ children }: PropsWithChildren) {
 
                     <Text size="xs" c="gray.0">
                       {language === "en"
-                        ? "info@manabiyanepal.com.np"
-                        : "info@manabiyanepal.com.np"}
+                        ? "info@unitessw.com"
+                        : "info@unitessw.com"}
                     </Text>
                   </SimpleGrid>
 
@@ -301,8 +295,8 @@ export function LayoutAuth({ children }: PropsWithChildren) {
 
                 <Text size="xs" c="gray.0">
                   {language === "en"
-                    ? "info@manabiyanepal.com.np"
-                    : "info@manabiyanepal.com.np"}
+                    ? "info@unitessw.com"
+                    : "info@unitessw.com"}
                 </Text>
               </SimpleGrid>
 

@@ -61,7 +61,7 @@ export function LayoutAuth({ children }: PropsWithChildren) {
                   }}
                 >
                   {" "}
-                  | {language == "en" ? "APPLICANT PORTAL" : "応募者ポータル"}
+                  | {language == "en" ? "Seeker Portal" : "応募者ポータル"}
                 </span>
               </Text>
             </Group>
@@ -73,144 +73,143 @@ export function LayoutAuth({ children }: PropsWithChildren) {
           >
             <Paper
               radius="lg"
-              bg="linear-gradient(to bottom, rgba(0,0,0,.7), rgba(0,0,0,.9))"
-              h={{
-                base: "auto",
-                lg: "calc(100vh -   var(--mantine-spacing-xl))",
-              }}
-              py={{ base: "xl" }}
-              px={{ base: "xl", lg: "4rem" }}
               style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
+                backgroundImage:
+                  "url(https://images.pexels.com/photos/18848929/pexels-photo-18848929.jpeg)",
+                backgroundSize: "cover",
+                backgroundPosition: "bottom",
               }}
             >
-              <Group justify="space-between">
-                <Group gap="xs">
-                  <Image
-                    src={images.logoMini}
-                    h={24}
-                    w={32}
-                    style={{
-                      objectFit: "contain",
-                    }}
-                  />
-                  <Text size="xs" c="white" fw={600}>
-                    Manabiya HR Unity
-                    <span
+              <Paper
+                radius="lg"
+                h={{
+                  base: "auto",
+                  lg: "calc(100vh -   var(--mantine-spacing-xl))",
+                }}
+                py={{ base: "xl" }}
+                px={{ base: "xl", lg: "4rem" }}
+                bg="#000000aa"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Group justify="space-between">
+                  <Group gap="xs">
+                    <Image
+                      src={images.logoMini}
+                      h={24}
+                      w={32}
                       style={{
-                        opacity: 0.5,
+                        objectFit: "contain",
                       }}
-                    >
-                      {" "}
-                      |{" "}
-                      {language == "en" ? "APPLICANT PORTAL" : "応募者ポータル"}
-                    </span>
-                  </Text>
-                </Group>
-
-                <Text size="xs" c="gray.0">
-                  {language == "en"
-                    ? " Bridging gap between job seekers and"
-                    : "求職者と企業の間のギャップを埋める"}
-                </Text>
-              </Group>
-
-              <Box>
-                <Text size="3rem" c="gray.0">
-                  {" "}
-                  {language === "en" ? (
-                    <>
-                      {" "}
-                      A platform to bridge{" "}
-                      <i>
-                        career
-                        <br />
-                        opportunities
-                      </i>{" "}
-                      in Japan{" "}
-                    </>
-                  ) : (
-                    <>
-                      {" "}
-                      日本での{" "}
-                      <i>
-                        キャリア
-                        <br />
-                        の機会
-                      </i>{" "}
-                      をつなぐプラットフォーム{" "}
-                    </>
-                  )}{" "}
-                </Text>
-
-                <Paper p="xl" radius="lg" bg="dark.9" mt="xl">
-                  <SimpleGrid cols={4}>
-                    <Text size="xs" c="gray.0" opacity={0.5}>
-                      {language === "en"
-                        ? "OFFICE - NEPAL"
-                        : "オフィス - ネパール"}
-                    </Text>
-
-                    <Stack>
-                      <Text size="xs" c="gray.0">
-                        {language === "en" ? (
-                          <>
-                            New Plaza, Putalisadak,
-                            <br /> Kathmandu, Nepal
-                          </>
-                        ) : (
-                          <>
-                            ニュープラザ、プタリサダック、
-                            <br /> カトマンズ、ネパール
-                          </>
-                        )}
-                      </Text>
-                      <div>
-                        <Button size="xs" color="gray" variant="light">
-                          {language === "en"
-                            ? "Open in Google Maps"
-                            : "Googleマップで開く"}
-                        </Button>
-                      </div>
-                    </Stack>
-                    <Text size="xs" c="gray.0">
-                      {language === "en" ? (
-                        <>
-                 <br />
-                +977 15917178
-                        </>
-                      ) : (
-                        <>
-                 <br />
-                +977 15917178
-                        </>
-                      )}
-                    </Text>
-
-                    <Text size="xs" c="gray.0">
-                      {language === "en"
-                        ? "info@manabiyanepal.com.np"
-                        : "info@manabiyanepal.com.np"}
-                    </Text>
-                  </SimpleGrid>
-
-                  <Divider my="lg" opacity={0.2} />
-
-                  <Group justify="space-between">
-                    <Text size="xs" c="gray.0" fw={600}>
+                    />
+                    <Text size="xl" c="white" fw={600}>
                       Manabiya HR Unity
-                    </Text>
-
-                    <Text size="xs" c="gray.0">
-                      {language === "en"
-                        ? `Copyright © ${String(new Date()).slice(10, 15)} Manabiya HR Unity. All rights reserved.`
-                        : `著作権 © ${String(new Date()).slice(10, 15)} Manabiya HR Unity。全著作権所有。`}
+                      <span
+                        style={{
+                          opacity: 0.5,
+                        }}
+                      >
+                        {" "}
+                        |{" "}
+                        {language == "en" ? "Seeker Portal" : "応募者ポータル"}
+                      </span>
                     </Text>
                   </Group>
-                </Paper>
-              </Box>
+                </Group>
+
+                <Box>
+                  <Text size="3rem" c="gray.0">
+                    {" "}
+                    {language === "en" ? (
+                      <>
+                        {" "}
+                        A platform to bridge{" "}
+                        <i>
+                          career
+                          <br />
+                          opportunities
+                        </i>{" "}
+                        in Japan{" "}
+                      </>
+                    ) : (
+                      <>
+                        {" "}
+                        日本での{" "}
+                        <i>
+                          キャリア
+                          <br />
+                          の機会
+                        </i>{" "}
+                        をつなぐプラットフォーム{" "}
+                      </>
+                    )}{" "}
+                  </Text>
+
+                  <Paper
+                    p="xl"
+                    radius="lg"
+                    bg="#ffffff33"
+                    style={{
+                      backdropFilter: "blur(8px)",
+                    }}
+                    mt="xl"
+                  >
+                    <SimpleGrid cols={4}>
+                      <Text size="xs" c="gray.0" opacity={0.5}>
+                        {language === "en"
+                          ? "OFFICE - NEPAL"
+                          : "オフィス - ネパール"}
+                      </Text>
+
+                      <Stack>
+                        <Text size="xs" c="gray.0">
+                          {language === "en" ? (
+                            <>
+                              New Plaza, Putalisadak,
+                              <br /> Kathmandu, Nepal
+                            </>
+                          ) : (
+                            <>
+                              ニュープラザ、プタリサダック、
+                              <br /> カトマンズ、ネパール
+                            </>
+                          )}
+                        </Text>
+                      </Stack>
+                      <Text size="xs" c="gray.0">
+                        {language === "en" ? (
+                          <>+977 15917178</>
+                        ) : (
+                          <>+977 15917178</>
+                        )}
+                      </Text>
+
+                      <Text size="xs" c="gray.0">
+                        {language === "en"
+                          ? "info@unitessw.com"
+                          : "info@unitessw.com"}
+                      </Text>
+                    </SimpleGrid>
+
+                    <Divider my="lg" opacity={0.2} />
+
+                    <Group justify="space-between">
+                      <Text size="xs" c="gray.0" fw={600}>
+                        Manabiya HR Unity
+                      </Text>
+
+                      <Text size="xs" c="gray.0">
+                        {language === "en"
+                          ? `Copyright © ${String(new Date()).slice(10, 15)} Manabiya HR Unity. All rights reserved.`
+                          : `著作権 © ${String(new Date()).slice(10, 15)} Manabiya HR Unity。全著作権所有。`}
+                      </Text>
+                    </Group>
+                  </Paper>
+                </Box>
+              </Paper>
             </Paper>
           </Grid.Col>
 
@@ -294,8 +293,8 @@ export function LayoutAuth({ children }: PropsWithChildren) {
 
                 <Text size="xs" c="gray.0">
                   {language === "en"
-                    ? "info@manabiyanepal.com.np"
-                    : "info@manabiyanepal.com.np"}
+                    ? "info@unitessw.com"
+                    : "info@unitessw.com"}
                 </Text>
               </SimpleGrid>
 
