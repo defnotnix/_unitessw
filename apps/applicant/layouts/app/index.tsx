@@ -29,8 +29,8 @@ import { LanguageContext, LanguageProvider } from "./app.context";
 
 //oauth
 
-//export const endpoint = "https://api.unitessw.com";
-export const endpoint = "http://192.168.101.5:8000";
+export const endpoint = "https://api.unitessw.com";
+//export const endpoint = "http://192.168.101.5:8000";
 
 export function LayoutApp({ children }: PropsWithChildren) {
   return (
