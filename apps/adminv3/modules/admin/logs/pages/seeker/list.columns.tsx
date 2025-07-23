@@ -19,16 +19,20 @@ export const columns = [
   {
     accessor: "applicant",
     title: "Applicant",
-    render: (row: any) => (
-      <Stack gap={0}>
-        <Text fw={600} size="xs">
-          {row.applicant_name}
-        </Text>
-        <Text size="xs" opacity={0.6}>
-          {row.applicant_email}
-        </Text>
-      </Stack>
-    ),
+    render: (row: any) => {
+      console.log(row);
+      return (
+        <Stack gap={0}>
+          <Text fw={600} size="xs">
+            {row.applicant_first_name} {row.applicant_middle_name}{" "}
+            {row.applicant_last_name}
+          </Text>
+          <Text size="xs" opacity={0.6}>
+            {row.applicant_email}
+          </Text>
+        </Stack>
+      );
+    },
   },
   {
     accessor: "intent",

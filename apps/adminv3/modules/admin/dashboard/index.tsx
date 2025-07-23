@@ -185,19 +185,21 @@ export function ModuleAdminDashboard() {
               <Paper radius={0} bg="brand.0" p="sm" withBorder key={index}>
                 <SimpleGrid cols={4} spacing="md">
                   <div>
-                    <Group gap="xs">
+                    <Group gap="xs" wrap="nowrap">
                       <Avatar
                         src={endpoint + item?.image}
                         size="sm"
                         color="blue"
-                        name={item?.full_name}
+                        name={item?.first_name + item?.last_name}
                       />
                       <div>
                         <Text size="xs" fw={700}>
-                          {item?.full_name}
+                          {item?.first_name} {item?.middle_name}{" "}
+                          {item?.last_name}
                         </Text>
                         <Text size="10px" opacity={0.5} fw={700}>
-                          {item?.furigana}
+                          {item?.jp_last_name} {item?.jp_first_name}{" "}
+                          {item?.jp_middle_name}
                         </Text>
                       </div>
                     </Group>
@@ -438,6 +440,8 @@ export function ModuleAdminDashboard() {
               </Paper>
 
               {querySeekerRequest.data?.map((item: any, index: number) => {
+                console.log(item);
+
                 return (
                   <Paper radius={0} bg="brand.0" p="sm" withBorder key={index}>
                     <SimpleGrid cols={2} spacing="xs">
@@ -456,10 +460,9 @@ export function ModuleAdminDashboard() {
                                 : "Interested"}
                             </Badge>
                             <Text size="xs" fw={700}>
-                              {item?.applicant?.name}
-                            </Text>
-                            <Text size="10px" opacity={0.5} fw={700}>
-                              {item?.applicant?.email}
+                              {item?.applicant?.first_name}{" "}
+                              {item?.applicant?.middle_name}{" "}
+                              {item?.applicant?.last_name}
                             </Text>
                           </Stack>
                         </Group>

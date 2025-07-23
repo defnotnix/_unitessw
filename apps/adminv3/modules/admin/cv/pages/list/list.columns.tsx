@@ -10,31 +10,14 @@ export const columns = [
         <Avatar size="md" src={record.image} />
         <div>
           <Text size="xs" fw={600}>
-            {record.full_name}
+            {record.first_name} {record.middle_name} {record.last_name}
           </Text>
           <Text size="xs" opacity={0.5}>
-            {record.furigana}
+            {record.jp_last_name} {record.jp_first_name} {record.jp_middle_name}
           </Text>
         </div>
       </Group>
     ),
-    sortable: true,
-  },
-
-  {
-    accessor: "st",
-    title: "Status",
-    render: (record: any) => {
-      return (
-        <>
-          <Group gap="xs">
-            <Badge size="xs" color={record?.is_active ? "blue" : "orange"}>
-              {record?.is_active ? "Active" : "Pending Request"}
-            </Badge>
-          </Group>
-        </>
-      );
-    },
     sortable: true,
   },
 

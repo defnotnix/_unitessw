@@ -6,18 +6,17 @@ export const moduleConfig: PropModuleConfig = {
       label: "Manabiya HR Unity Admin",
     },
     {
-      label: "Seekers",
+      label: "Misc",
     },
     {
-      label: "Manage Seekers",
+      label: "Manage Logs",
     },
   ],
   moduleKey: "admin.vacancy.category".split("."),
   endpoint: "/vacancy/category/",
   //
-  moduleTerm: "Vacancy Category",
-  moduleTermPlural: "Vacancies",
-  moduleName: "Vacancies",
-  moduleDescription:
-    "Manage vacancies from companies, and how they are published to applicants.",
+  moduleTerm: "Log",
+  moduleTermPlural: "Logs",
+  moduleName: "Logs",
+  moduleDescription: "Activity Logs",
 };

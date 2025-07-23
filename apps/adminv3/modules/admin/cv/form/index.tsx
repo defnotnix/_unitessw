@@ -26,7 +26,7 @@ import {
   WarningIcon,
 } from "@phosphor-icons/react";
 import { FormHandler } from "@vframework/core";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import { formProps } from "./steps/s1_Identity/form.config";
 
 import imgLogo from "@/assets/img/sswmini.png";
@@ -55,8 +55,6 @@ import { useForceUpdate } from "@mantine/hooks";
 import _ from "lodash";
 
 export function _Form() {
-  const forceUpdate = useForceUpdate();
-
   const Router = useRouter();
 
   const [current, setCurrent] = useState(0);
@@ -65,11 +63,12 @@ export function _Form() {
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
 
   const Params = useParams();
-  const queryParams = useSearchParams();
 
+  const isInitialLoad = useRef(true);
+  const [showForm, setShowForm] = useState(false);
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["admin", "cv", "edit"],
     queryFn: async () => {
       if (Params?.id) {
@@ -82,15 +81,21 @@ export function _Form() {
         setPersonId(data.id);
         setHolder((prev) => ({ ...prev, ...data }));
 
-        const step = Array.from({ length: 7 }, (_, i) => i + 1).find(
-          (i) => data[`is_step${i}`] === false
-        );
-        if (step) setCurrent(step);
+        if (isInitialLoad.current) {
+          const step = Array.from({ length: 8 }, (_, i) => i + 1).find(
+            (i) => data[`is_step${i}`] === false
+          );
 
-        const completed = Array.from({ length: 7 }, (_, i) => i + 1).filter(
-          (i) => data[`is_step${i}`] === true
-        );
-        setCompletedSteps(completed);
+          if (step) setCurrent(step);
+
+          const completed = Array.from({ length: 8 }, (_, i) => i + 1).filter(
+            (i) => data[`is_step${i}`] === true
+          );
+
+          setCompletedSteps(completed);
+        }
+
+        setShowForm(true);
 
         return {
           ...res?.data,
@@ -170,7 +175,23 @@ export function _Form() {
     },
     {
       component: <StepAcademics />,
-      apiCreate: apiEducation.create,
+      apiCreate: async (body: any) => {
+        const _forCreate = body?.filter((e: any) => {
+          return !e.id;
+        });
+        const _forEdit = body?.filter((e: any) => {
+          return e.id;
+        });
+
+        if (_forCreate.length > 0) {
+          const res = await apiEducation.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiEducation.update(e, e.id));
+
+        return {};
+      },
       apiUpdate: async (body: any) => {
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
@@ -180,21 +201,39 @@ export function _Form() {
         });
 
         if (_forCreate.length > 0) {
-          await apiEducation.create(_forCreate);
+          const res = await apiEducation.create(_forCreate);
+          refetch();
         }
-        _forEdit.map((e: any) => apiEducation.update(e, e.id));
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiEducation.update(e, e.id));
+
+        return {};
       },
       transform: (e: any) =>
         e.education.map((item: any) => ({
           person: personId,
           ...item,
-          from_year: item.year?.[0]?.substring(0, 4),
-          to_year: item.year?.[1]?.substring(0, 4),
         })),
     },
     {
       component: <StepWork />,
-      apiCreate: apiWork.create,
+      apiCreate: async (body: any) => {
+        const _forCreate = body?.filter((e: any) => {
+          return !e.id;
+        });
+        const _forEdit = body?.filter((e: any) => {
+          return e.id;
+        });
+
+        if (_forCreate.length > 0) {
+          const res = await apiWork.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiWork.update(e, e.id));
+
+        return {};
+      },
       apiUpdate: async (body: any) => {
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
@@ -204,22 +243,25 @@ export function _Form() {
         });
 
         if (_forCreate.length > 0) {
-          await apiWork.create(_forCreate);
+          const res = await apiWork.create(_forCreate);
+          refetch();
         }
-        _forEdit.map((e: any) => apiWork.update(e, e.id));
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiWork.update(e, e.id));
+
+        return {};
       },
       transform: (e: any) =>
         e.work_experience.map((item: any) => ({
           person: personId,
           ...item,
-          from_year: item.year?.[0]?.substring(0, 4),
-          end_year: item.year?.[1]?.substring(0, 4),
         })),
     },
     {
       component: <StepCertificates />,
-      apiCreate: apiLicense.create,
-      apiUpdate: async (body: any) => {
+      apiCreate: async (body: any) => {
+        console.log(body);
+
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
         });
@@ -228,9 +270,31 @@ export function _Form() {
         });
 
         if (_forCreate.length > 0) {
-          await apiLicense.create(_forCreate);
+          const res = await apiLicense.create(_forCreate);
+          refetch();
         }
-        _forEdit.map((e: any) => apiLicense.update(e, e.id));
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiLicense.update(e, e.id));
+
+        return {};
+      },
+      apiUpdate: async (body: any) => {
+        console.log(body);
+
+        const _forCreate = body?.filter((e: any) => {
+          return !e.id;
+        });
+        const _forEdit = body?.filter((e: any) => {
+          return e.id;
+        });
+
+        if (_forCreate.length > 0) {
+          const res = await apiLicense.create(_forCreate);
+          refetch();
+        }
+        if (_forEdit.length > 0)
+          _forEdit.map((e: any) => apiLicense.update(e, e.id));
+        return {};
       },
       transform: (e: any) =>
         e.licenses.map((item: any) => ({
@@ -481,6 +545,7 @@ export function _Form() {
           </Grid.Col>
           <Grid.Col span={{ base: 12, lg: 8 }}>
             <FormHandler
+              key={JSON.stringify(data)}
               {...formProps}
               formType={isCompleted ? "edit" : "new"}
               initial={data ? data : formProps.initial}
@@ -488,6 +553,31 @@ export function _Form() {
               submitFormData={submitFormData}
               transformDataOnSubmit={transformData}
               onSubmitSuccess={(res) => {
+                if (res.data && current > 1) {
+                  queryClient.setQueryData(
+                    ["admin", "applicants", "edit"],
+                    (old: any) => {
+                      return {
+                        ...old,
+                        ...(current == 2 ? { a_background: res?.data } : {}),
+                        ...(current == 3 ? { a_physical: res?.data } : {}),
+                        ...(current == 4 ? { a_story: res?.data } : {}),
+                        ...(current == 5 ? { a_education: res?.data } : {}),
+                        ...(current == 6
+                          ? { a_work_experience: res?.data }
+                          : {}),
+                        ...(current == 7
+                          ? { a_license_qualification: res?.data }
+                          : {}),
+                        ...(current == 8
+                          ? { a_identification: res?.data }
+                          : {}),
+                        ...(current == 9 ? { a_japan_visit: res?.data } : {}),
+                      };
+                    }
+                  );
+                }
+
                 if (!Params?.id && current == 7) {
                   Router.push("/admin/cv/active");
                 }

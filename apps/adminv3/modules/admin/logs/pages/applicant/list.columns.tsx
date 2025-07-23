@@ -28,7 +28,7 @@ export const columns = [
       <Group wrap="nowrap">
         <Avatar size="sm" radius="xl" name={row.applicant_name} />
         <Text size="xs" fw={500}>
-          {row.applicant_name}
+          {row.applicant_first_name}
         </Text>
       </Group>
     ),

@@ -12,7 +12,7 @@ import {
 } from "../../module.api";
 
 import { ActionIcon, Group, Menu, Space, Text } from "@mantine/core";
-import { WarningIcon, XIcon } from "@phosphor-icons/react";
+import { CheckIcon, WarningIcon, XIcon } from "@phosphor-icons/react";
 import { moduleConfig } from "../../module.config";
 import { columns } from "./list.columns";
 
@@ -43,7 +43,7 @@ export function _List() {
         moduleKey={moduleConfig.moduleKey}
         getRecords={getRecords}
         transformOnGet={(data) => {
-         // console.log(data);
+          // console.log(data);
           return data.map((item: any) => {
             return {
               ...item,
@@ -75,7 +75,7 @@ export function _List() {
           extraActions={({ row, refetch }: any) => (
             <>
               <Menu.Item
-                leftSection={<XIcon />}
+                leftSection={<CheckIcon />}
                 onClick={() => {
                   modals.openConfirmModal({
                     title: (
@@ -96,8 +96,8 @@ export function _List() {
                     children: (
                       <>
                         <Text size="xs" my="md">
-                          This account will be enable and can be used if you
-                          enable it.
+                          This account will be enabled and can be used by the
+                          respective seeker.
                           <br />
                           <br />
                           <span
@@ -145,7 +145,7 @@ export function _List() {
                   });
                 }}
               >
-                Disable Account
+                Enable Account
               </Menu.Item>
             </>
           )}

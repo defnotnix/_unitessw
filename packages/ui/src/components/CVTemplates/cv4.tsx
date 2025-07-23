@@ -36,7 +36,14 @@ export function CV4({
   useEffect(() => {}, [color]);
 
   return (
-    <Paper h={"11.7in"} w={"8.5in"} pos="relative">
+    <Paper
+      h={"11.7in"}
+      w={"8.5in"}
+      pos="relative"
+      style={{
+        overflow: "hidden",
+      }}
+    >
       <Watermark logo={logo} />
       <Paper radius={0} pos="absolute" w="100%" h=".05in" bg={color + ".6"} />
 

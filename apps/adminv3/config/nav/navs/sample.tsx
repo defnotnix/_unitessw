@@ -63,10 +63,6 @@ export const navItems: PropAdminNavItems[] = [
         label: "Disabled Seekers",
         value: "/admin/accounts/disabled-seeker",
       },
-      {
-        label: "Seeker Notice",
-        value: "/admin/accounts/seeker-notice",
-      },
     ],
   },
 

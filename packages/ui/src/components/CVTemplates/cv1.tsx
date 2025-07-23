@@ -34,7 +34,14 @@ export function CV1({
   useEffect(() => {}, [color]);
 
   return (
-    <Paper h={"11.7in"} w={"8.5in"} pos="relative">
+    <Paper
+      h={"11.7in"}
+      w={"8.5in"}
+      pos="relative"
+      style={{
+        overflow: "none",
+      }}
+    >
       <Watermark logo={logo} />
       <Grid gutter={0}>
         <Grid.Col span={4} p="xl" bg={color + ".1"} h="11.7in">

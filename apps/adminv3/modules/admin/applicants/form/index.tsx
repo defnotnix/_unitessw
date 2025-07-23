@@ -53,15 +53,13 @@ import { StepCertificates } from "./steps/s7_certifications";
 import { endpoint } from "@/layouts/app";
 
 import { useForceUpdate } from "@mantine/hooks";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { jwtDecode } from "jwt-decode";
 import classes from "./_.module.css";
 import { StepVisit } from "./steps/s10_visit";
 import { StepIdentification } from "./steps/s8_identification";
 
 export function _Form() {
-  const forceUpdate = useForceUpdate();
-
   const Params = useParams();
 
   const Router = useRouter();
@@ -77,12 +75,12 @@ export function _Form() {
 
   const isInitialLoad = useRef(true);
 
+  const queryClient = useQueryClient();
+
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["admin", "applicants", "edit"],
     queryFn: async () => {
       const token: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
-
-      console.log("TOKEN", token);
 
       if (token.user_id) {
         const res = await apiPersonalInformation.get(Params.id);
@@ -686,6 +684,7 @@ export function _Form() {
           </Grid.Col>
           <Grid.Col span={{ base: 12, lg: 8 }}>
             <FormHandler
+              key={JSON.stringify(data)}
               {...formProps}
               resetOnSubmit={false}
               formType={isCompleted ? "edit" : "new"}
@@ -695,7 +694,32 @@ export function _Form() {
               transformDataOnSubmit={transformData}
               validation={validation}
               onSubmitSuccess={(res) => {
-                if (current == 9) {
+                if (res.data && current > 1) {
+                  queryClient.setQueryData(
+                    ["admin", "applicants", "edit"],
+                    (old: any) => {
+                      return {
+                        ...old,
+                        ...(current == 2 ? { a_background: res?.data } : {}),
+                        ...(current == 3 ? { a_physical: res?.data } : {}),
+                        ...(current == 4 ? { a_story: res?.data } : {}),
+                        ...(current == 5 ? { a_education: res?.data } : {}),
+                        ...(current == 6
+                          ? { a_work_experience: res?.data }
+                          : {}),
+                        ...(current == 7
+                          ? { a_license_qualification: res?.data }
+                          : {}),
+                        ...(current == 8
+                          ? { a_identification: res?.data }
+                          : {}),
+                        ...(current == 9 ? { a_japan_visit: res?.data } : {}),
+                      };
+                    }
+                  );
+                }
+
+                if (current == 10) {
                   Router.push("/myprofile");
                 }
 
