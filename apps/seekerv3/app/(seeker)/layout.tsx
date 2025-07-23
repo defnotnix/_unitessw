@@ -32,7 +32,7 @@ export default function TokenCheck({ children }: PropsWithChildren) {
 
         setChecked(true);
       } catch (err) {
-        
+        console.log(err);
         router.push("/");
       }
     };
