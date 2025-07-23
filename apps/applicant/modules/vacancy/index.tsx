@@ -37,7 +37,7 @@ export function ModuleApplicantVacancy() {
       const res = await moduleApiCall.getRecords({
         endpoint: "/vacancy/info/",
       });
-      console.log(res);
+      
       return res;
     },
   });

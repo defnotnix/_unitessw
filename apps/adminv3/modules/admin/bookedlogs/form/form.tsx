@@ -31,7 +31,7 @@ export function _Form() {
     queryKey: ["vacancy", "category"],
     queryFn: async () => {
       const res = await getCategories();
-      console.log(res);
+      
       return res;
     },
     initialData: [],

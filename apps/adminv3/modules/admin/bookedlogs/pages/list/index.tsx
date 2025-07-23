@@ -57,7 +57,7 @@ export function _List() {
     mutationFn: async (id) => {
       const res: any = await apiPersonalInformation.get(id);
 
-      console.log(res);
+      
 
       if (!res.err) {
         setInfo({
@@ -226,7 +226,7 @@ export function _List() {
                           }
                         })
                         .catch((err) => {
-                          console.log(err);
+                          
                           triggerNotification.form.isError({
                             message: "Request Rejected",
                           });

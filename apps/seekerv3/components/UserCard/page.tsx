@@ -110,7 +110,7 @@ export function UserCard({
     mutationFn: async () => {
       const res: any = await apiPersonalInformation.get(applicant.id);
 
-      console.log(res);
+      
 
       if (!res.err) {
         setInfo({

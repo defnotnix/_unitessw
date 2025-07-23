@@ -145,12 +145,11 @@ export function ModuleAuthOTP() {
       // if (form.values.remember) {
       //   handleRememberMe();
       // }
- sessionStorage.removeItem("ssw_otp");
+      sessionStorage.removeItem("ssw_otp");
       form.setFieldValue("fLoading", false);
       triggerNotification.auth.isSuccess({});
     },
     onError: (err: any) => {
-      console.log(err.object);
       const { detail, type } = err.object.response.data;
       form.setErrors({
         otp: detail?.data?.otp[0] || "Invalid OTP",
@@ -183,7 +182,6 @@ export function ModuleAuthOTP() {
       Router.push("/");
     },
     onError: (err: any) => {
-      console.log(err);
       const { detail } = err.object;
       formRe.setErrors({
         password:

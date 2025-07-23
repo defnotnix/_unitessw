@@ -70,7 +70,7 @@ export function _ListDeleted() {
   //   queryKey: ["dashboard", "stats"],
   //   queryFn: async () => {
   //     const res = [];
-  //     console.log(res);
+  //     
   //     return res;
   //   },
   // });
@@ -156,7 +156,7 @@ export function _ListDeleted() {
                   onConfirm: async () => {
                     triggerNotification.form.isLoading({});
                     const res = await restoreRecord({}, row.id);
-                    console.log(res);
+                    
                     triggerNotification.form.isSuccess({});
                     refetch();
                   },

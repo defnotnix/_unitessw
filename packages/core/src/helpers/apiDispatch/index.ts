@@ -19,12 +19,10 @@ async function handleTokenExpiry() {
       }
     )
     .then((e) => {
-      console.log(e);
       sessionStorage.setItem("sswtoken", e?.headers?.xauthorization);
       return true;
     })
     .catch((err) => {
-      console.log(err);
       return false;
     });
 
@@ -103,7 +101,6 @@ export async function post({
           "MakotaAllahuAkhbar " + sessionStorage.getItem("sswtoken"),
       },
     });
-    console.log(response);
 
     return {
       err: false,

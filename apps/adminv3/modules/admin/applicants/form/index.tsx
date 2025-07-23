@@ -86,7 +86,7 @@ export function _Form() {
         const res = await apiPersonalInformation.get(Params.id);
         const data = res?.data || {};
 
-        console.log(data);
+    
 
         setPersonId(data.id);
         setHolder((prev) => ({ ...prev, ...data }));
@@ -338,7 +338,7 @@ export function _Form() {
     {
       component: <StepCertificates />,
       apiCreate: async (body: any) => {
-        console.log(body);
+        ;
 
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
@@ -357,7 +357,7 @@ export function _Form() {
         return {};
       },
       apiUpdate: async (body: any) => {
-        console.log(body);
+        ;
 
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
@@ -433,7 +433,7 @@ export function _Form() {
       ],
       isFormData: false,
       apiCreate: async (body: any) => {
-        console.log(body);
+        ;
 
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
@@ -452,7 +452,7 @@ export function _Form() {
         return {};
       },
       apiUpdate: async (body: any) => {
-        console.log(body);
+        ;
 
         const _forCreate = body?.filter((e: any) => {
           return !e.id;

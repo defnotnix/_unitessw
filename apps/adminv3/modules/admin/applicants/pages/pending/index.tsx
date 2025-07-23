@@ -68,7 +68,7 @@ export function _ListPending() {
   //   queryKey: ["dashboard", "stats"],
   //   queryFn: async () => {
   //     const res = [];
-  //     console.log(res);
+  //     
   //     return res;
   //   },
   // });
@@ -87,7 +87,7 @@ export function _ListPending() {
     mutationFn: async (id) => {
       const res: any = await apiPersonalInformation.get(id);
 
-      console.log(res);
+      
 
       if (!res.err) {
         setInfo({

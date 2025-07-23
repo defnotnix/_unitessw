@@ -44,7 +44,7 @@ export function ModuleSeekerHome() {
     queryKey: ["seeker", "category"],
     queryFn: async () => {
       const res = await getJobCategory();
-      console.log(res);
+      
       return res;
     },
     initialData: [],

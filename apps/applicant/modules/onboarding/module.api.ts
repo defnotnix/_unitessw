@@ -60,7 +60,6 @@ export const apiBackground = {
     });
   },
   update: async (body: any, id: any) => {
-    console.log(body, id);
     return await moduleApiCall.editRecord("/applicant/background/", body, id);
   },
 };

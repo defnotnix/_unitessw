@@ -26,7 +26,7 @@ async function getRecords({
       ...params,
     },
   });
-  console.log(params)
+
   return res.err ? [] : res.data;
 }
 
@@ -39,7 +39,6 @@ async function getSingleRecord(endpoint: string, id: any): Promise<any> {
 
 async function createRecord(endpoint: string, body: any): Promise<any> {
   const isFormData = body instanceof FormData;
-  console.log(isFormData);
 
   return await post({
     endpoint,

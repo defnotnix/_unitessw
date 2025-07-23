@@ -132,7 +132,6 @@ export function ModuleAuthSignUp() {
     triggerNotification.auth.isLoading({});
     setProcessingGoogle(true);
     if (tokenResponse?.credential) {
-      console.log(tokenResponse);
       await googleLogin({
         token: tokenResponse.credential,
       });

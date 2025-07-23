@@ -74,7 +74,6 @@ export function _Form() {
       if (Params?.id) {
         const id = Params.id;
         const res = await apiPersonalInformation.get(Params.id);
-        console.log("THIS", res);
 
         const data = res?.data || {};
 
@@ -260,8 +259,6 @@ export function _Form() {
     {
       component: <StepCertificates />,
       apiCreate: async (body: any) => {
-        console.log(body);
-
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
         });
@@ -279,8 +276,6 @@ export function _Form() {
         return {};
       },
       apiUpdate: async (body: any) => {
-        console.log(body);
-
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
         });

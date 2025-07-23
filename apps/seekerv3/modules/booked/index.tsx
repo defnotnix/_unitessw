@@ -60,7 +60,7 @@ export function ModuleApplicantBooked() {
       const res = await moduleApiCall.getRecords({
         endpoint: "/logs/interview/",
       });
-      console.log(res);
+      
 
       return res;
     },

@@ -20,7 +20,6 @@ export const columns = [
     accessor: "applicant",
     title: "Applicant",
     render: (row: any) => {
-      console.log(row);
       return (
         <Stack gap={0}>
           <Text fw={600} size="xs">

@@ -64,7 +64,7 @@ export function ModuleAuthSignIn() {
   const Params = useSearchParams();
 
   const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => console.log(tokenResponse),
+    onSuccess: (tokenResponse) => {},
   });
 
   const [processingGoogle, setProcessingGoogle] = useState(false);
@@ -98,7 +98,6 @@ export function ModuleAuthSignIn() {
 
   function handleRedirect(res: any) {
     const decoded: any = jwtDecode(res.data?.access_token);
-    console.log(decoded);
 
     Router.push("/home");
   }
@@ -125,7 +124,6 @@ export function ModuleAuthSignIn() {
     onError: (err: any) => {
       const { response } = err.object;
 
-      console.log("ERROR", response);
       setErrorType(response?.data?.alias || "nan");
       form.setFieldValue("fLoading", false);
       triggerNotification.auth.isError({

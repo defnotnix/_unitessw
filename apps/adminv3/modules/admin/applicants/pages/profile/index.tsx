@@ -68,7 +68,7 @@ export function _Profile() {
     queryKey: ["player", "playerData"],
     queryFn: async () => {
       const res = await getSingleRecord(Params.id);
-      console.log(res);
+      
       return res;
     },
   });

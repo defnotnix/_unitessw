@@ -257,7 +257,6 @@ export function ModuleTableLayout({
 
   useEffect(() => {
     if (page == curPageValue?.page && pageSize == curPageValue?.pageSize) {
-      console.log("Same Page");
     } else {
       setTimeout(() => {
         refetch();
@@ -281,7 +280,6 @@ export function ModuleTableLayout({
       }
     },
     onError: (err: any) => {
-      console.log(err);
       triggerNotification.form.isError({});
     },
   });

@@ -90,12 +90,9 @@ export function ModuleOnboarding() {
       } else {
         const token: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
 
-        console.log("TOKEN", token);
         if (token.user_id) {
           const res = await apiPersonalInformation.get(token.user_id);
           const data = res?.data || {};
-
-          console.log(data);
 
           setPersonId(data.id);
           setHolder((prev) => ({ ...prev, ...data }));
@@ -331,8 +328,6 @@ export function ModuleOnboarding() {
     {
       component: <StepCertificates />,
       apiCreate: async (body: any) => {
-        console.log(body);
-
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
         });
@@ -350,8 +345,6 @@ export function ModuleOnboarding() {
         return {};
       },
       apiUpdate: async (body: any) => {
-        console.log(body);
-
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
         });
@@ -426,8 +419,6 @@ export function ModuleOnboarding() {
       ],
       isFormData: false,
       apiCreate: async (body: any) => {
-        console.log(body);
-
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
         });
@@ -445,8 +436,6 @@ export function ModuleOnboarding() {
         return {};
       },
       apiUpdate: async (body: any) => {
-        console.log(body);
-
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
         });
@@ -706,8 +695,6 @@ export function ModuleOnboarding() {
               transformDataOnSubmit={transformData}
               validation={validation}
               onSubmitSuccess={(res) => {
-                console.log("res", res);
-
                 if (res.data && current > 1) {
                   queryClient.setQueryData(
                     ["admin", "applicants", "edit"],
@@ -746,7 +733,6 @@ export function ModuleOnboarding() {
                 }
 
                 if (!completedSteps.includes(current)) {
-                  console.log("updating current", [...completedSteps, current]);
                   setCompletedSteps([...completedSteps, current]);
                 }
               }}

@@ -28,7 +28,6 @@ export const formProps: any = {
   transformDataOnSubmit: (formdata: any) => {
     const { image, ...res } = formdata;
 
-    console.log("call", formdata);
 
     return {
       ...res,

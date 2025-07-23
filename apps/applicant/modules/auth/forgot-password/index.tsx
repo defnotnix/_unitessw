@@ -114,7 +114,7 @@ export function ModuleAuthForgotPassword() {
 
       form.setErrors(response?.data);
 
-      console.log("ERROR", response);
+
       setErrorType(response?.data?.type || "nan");
       form.setFieldValue("fLoading", false);
       triggerNotification.auth.isError({

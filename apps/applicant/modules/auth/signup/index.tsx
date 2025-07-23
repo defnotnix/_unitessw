@@ -110,8 +110,6 @@ export function ModuleAuthSignUp() {
       }, 1000);
     },
     onError: (err: any) => {
-      console.log("ERR", err?.object);
-
       const { detail, type } = err.object?.response?.data;
 
       form.setErrors(detail);
@@ -135,7 +133,6 @@ export function ModuleAuthSignUp() {
     triggerNotification.auth.isLoading({});
     setProcessingGoogle(true);
     if (tokenResponse?.credential) {
-      console.log(tokenResponse);
       await googleLogin({
         token: tokenResponse.credential,
       });
@@ -293,7 +290,6 @@ export function ModuleAuthSignUp() {
           <GoogleLogin
             shape="circle"
             onSuccess={(credentialResponse) => {
-              console.log(credentialResponse);
               onGoogleSuccess(credentialResponse);
             }}
             onError={() => {

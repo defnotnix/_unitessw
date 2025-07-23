@@ -4,7 +4,6 @@ import { moduleConfig } from "./module.config";
 const endpoint = moduleConfig.endpoint || "";
 
 export const getRecords = async (props: any) => {
-  console.log(props);
   const { searchValue, endpoint, ...rest } = props;
   return moduleApiCall.getRecords({
     ...rest,

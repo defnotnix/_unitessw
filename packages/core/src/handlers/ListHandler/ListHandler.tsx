@@ -189,7 +189,7 @@ export function ListHandler({
         );
       }
     } catch (err) {
-      console.log(err);
+      
       return [];
     }
   };

@@ -45,7 +45,7 @@ export function ModuleOnboarding() {
   const [complete, setComplete] = useState(false);
 
   const token: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
-  console.log(token);
+
 
   const FormLayout = ({ children }: PropsWithChildren) => {
     const { handleSubmit } = FormHandler.usePropContext();

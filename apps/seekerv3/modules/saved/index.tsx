@@ -66,7 +66,7 @@ export function ModuleSeekerApplicantsSaved() {
           pageSize: 20,
         },
       });
-      console.log(res);
+      
 
       return res.map((item: any) => {
         return {

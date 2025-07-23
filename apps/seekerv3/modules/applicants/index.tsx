@@ -79,7 +79,7 @@ export function ModuleSeekerApplicants() {
     queryKey: ["seeker", "category"],
     queryFn: async () => {
       const res = await getJobCategory();
-      console.log(res);
+      
       return res;
     },
     initialData: [],
@@ -97,7 +97,7 @@ export function ModuleSeekerApplicants() {
         },
       });
 
-      console.log(res);
+      
       setPaginationData(res.pagination);
 
       return res.results;

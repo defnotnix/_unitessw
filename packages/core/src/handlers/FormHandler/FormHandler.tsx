@@ -140,7 +140,7 @@ export function FormHandler({
         })
       : _dataToProcess;
     // TEST
-    console.log(_dataToSend);
+
     // SUBMIT
     return apiSubmit(_dataToSend, form.getValues()?.id);
   }
@@ -149,9 +149,7 @@ export function FormHandler({
     mutationFn: mutationSubmiFunction,
     // SUCCESS HANDLER
     onSuccess: (res: any) => {
-      console.log("success");
       if (formType == "new") {
-        console.log("Resetting Form");
         if (resetOnSubmit) form.reset();
         form.setValues({});
       }
@@ -208,8 +206,6 @@ export function FormHandler({
   });
 
   const handleSubmit = () => {
-    console.log("submit", form.validate());
-
     if (!form.validate().hasErrors) {
       onSubmitInitiate();
       mutationSubmit.mutate();

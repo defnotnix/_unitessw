@@ -77,7 +77,7 @@ export function _CV() {
     queryKey: ["admin", "cv", String(Params.id)],
     queryFn: async () => {
       const res: any = await apiPersonalInformation.get(Params.id);
-      console.log(res?.data);
+
       if (!res.err) {
         return {
           ...res?.data,

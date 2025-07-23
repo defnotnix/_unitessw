@@ -76,7 +76,7 @@ export function _List() {
   //   queryKey: ["dashboard", "stats"],
   //   queryFn: async () => {
   //     const res = [];
-  //     console.log(res);
+  //     
   //     return res;
   //   },
   // });
@@ -97,7 +97,7 @@ export function _List() {
       queryKey: ["seeker", "category"],
       queryFn: async () => {
         const res = await getJobCategory();
-        console.log(res);
+        
         return res;
       },
       initialData: [],

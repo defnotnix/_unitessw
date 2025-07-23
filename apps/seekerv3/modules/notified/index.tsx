@@ -58,7 +58,7 @@ export function ModuleApplicantNotified() {
       const res = await moduleApiCall.getRecords({
         endpoint: "/logs/interest/",
       });
-      console.log(res);
+      
 
       return res;
     },

@@ -140,7 +140,7 @@ export function _List() {
                           }
                         })
                         .catch((err) => {
-                          console.log(err);
+                          
                           triggerNotification.form.isError({
                             message: "Request Rejected",
                           });

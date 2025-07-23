@@ -9,7 +9,7 @@ export async function apiLogin(body: { email: string; password: string }) {
   });
 }
 export async function googleLogin(body: any) {
-  console.log("sending", body);
+
   return await apiDispatch.post({
     endpoint: "/authenticate/applicant/google/login/",
     body,

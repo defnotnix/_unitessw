@@ -92,7 +92,6 @@ export function ModuleAuthSignIn() {
       triggerNotification.auth.isSuccess({});
 
       const decoded: any = jwtDecode(res.data?.access_token);
-      console.log(decoded);
 
       setTimeout(() => {
         Router.push(
@@ -103,7 +102,6 @@ export function ModuleAuthSignIn() {
     onError: (err: any) => {
       const { response } = err.object;
 
-      console.log("ERROR", response);
       setErrorType(response?.data?.type || "nan");
       form.setFieldValue("fLoading", false);
       triggerNotification.auth.isError({

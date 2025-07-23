@@ -83,7 +83,6 @@ export function ModuleAuthSignIn() {
 
   function handleRedirect(res: any) {
     const decoded: any = jwtDecode(res.data?.access_token);
-    console.log("Decoded", decoded);
 
     if (decoded?.is_step9 == true) {
       Router.push("/applicant");
@@ -130,7 +129,6 @@ export function ModuleAuthSignIn() {
     onError: (err: any) => {
       const { response } = err.object;
 
-      console.log("ERROR", response);
       if (
         response.data.message ==
         "This Account Has Not Been Verified with OTP. Please Proceed to OTP Verification."
@@ -161,7 +159,6 @@ export function ModuleAuthSignIn() {
     triggerNotification.auth.isLoading({});
     setProcessingGoogle(true);
     if (tokenResponse?.credential) {
-      console.log(tokenResponse);
       await googleLogin({
         token: tokenResponse.credential,
       })
@@ -295,7 +292,6 @@ export function ModuleAuthSignIn() {
           <GoogleLogin
             shape="circle"
             onSuccess={(credentialResponse) => {
-              console.log(credentialResponse);
               onGoogleSuccess(credentialResponse);
             }}
             onError={() => {

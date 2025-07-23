@@ -57,7 +57,7 @@ export function ModuleAdminDashboard() {
     queryKey: ["admin", "dashboard", "applicants"],
     queryFn: async () => {
       const res = await getUnpublished({});
-      console.log(res);
+
       return res.results;
     },
     initialData: [],
@@ -67,7 +67,7 @@ export function ModuleAdminDashboard() {
     queryKey: ["admin", "dashboard", "seekerRequest"],
     queryFn: async () => {
       const res = await getSeekerReqRecords();
-      console.log(res);
+
       return res.results;
     },
     initialData: [],
@@ -79,7 +79,7 @@ export function ModuleAdminDashboard() {
       const res = await moduleApiCall.getRecords({
         endpoint: "/dashboard/admin/",
       });
-      console.log(res);
+
       return res;
     },
     initialData: {
@@ -440,8 +440,6 @@ export function ModuleAdminDashboard() {
               </Paper>
 
               {querySeekerRequest.data?.map((item: any, index: number) => {
-                console.log(item);
-
                 return (
                   <Paper radius={0} bg="brand.0" p="sm" withBorder key={index}>
                     <SimpleGrid cols={2} spacing="xs">
@@ -533,7 +531,7 @@ export function ModuleAdminDashboard() {
                                     }
                                   })
                                   .catch((err) => {
-                                    console.log(err);
+                                    
                                     triggerNotification.form.isError({
                                       message: "Request Rejected",
                                     });

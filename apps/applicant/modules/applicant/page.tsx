@@ -177,7 +177,7 @@ export function ModuleApplicant() {
     queryFn: async () => {
       const _td: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
       const res: any = await apiPersonalInformation.get(_td?.user_id);
-      console.log(res?.data);
+ 
       if (!res.err) {
         return {
           ...res?.data,

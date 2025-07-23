@@ -1,10 +1,9 @@
-import { apiDispatch, moduleApiCall } from "@vframework/core";
+import { moduleApiCall } from "@vframework/core";
 import { moduleConfig } from "./module.config";
 
 const endpoint = moduleConfig.endpoint || "";
 
 export const getRecords = async (props: any) => {
-  console.log(props);
   const { searchValue, endpoint, ...rest } = props;
   return moduleApiCall.getRecords({
     ...rest,
@@ -14,7 +13,6 @@ export const getRecords = async (props: any) => {
 };
 
 export const getUnpublished = (props: any) => {
-  console.log(props);
   return moduleApiCall.getRecords({
     endpoint: "/applicant/unpublished/",
   });

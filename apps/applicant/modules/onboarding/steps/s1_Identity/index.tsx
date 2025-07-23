@@ -82,7 +82,7 @@ export function StepIdentity() {
     queryKey: ["admin", "applicants", "category"],
     queryFn: async () => {
       const res = await apiCategory();
-      console.log(res);
+      
       if (!res?.err) {
         return res?.data;
       } else {
