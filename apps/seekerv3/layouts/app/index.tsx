@@ -28,8 +28,8 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 
 //oauth
 
-//export const endpoint = "https://api.unitessw.com";
-export const endpoint = "http://10.0.0.9:8000";
+export const endpoint = "https://api.unitessw.com";
+//export const endpoint = "http://10.0.0.9:8000";
 
 export function LayoutApp({ children }: PropsWithChildren) {
   return (
