@@ -49,8 +49,8 @@ export function CV1({
             <Stack gap="xs">
               <Text size="2.5rem" fw={800}>
                 {language === "en"
-                  ? `${data?.first_name} ${data?.middle_name} ${data?.last_name}`
-                  : `${data?.jp_first_name} ${data?.jp_middle_name} ${data?.jp_last_name}`}
+                  ? `${data?.first_name} ${data?.middle_name || ""} ${data?.last_name}`
+                  : `${data?.jp_first_name} ${data?.jp_middle_name || ""} ${data?.jp_last_name}`}
               </Text>
             </Stack>
 
@@ -107,7 +107,7 @@ export function CV1({
               {language === "en" ? "About Me" : "自己紹介"}
             </Text>
             <Text size="10px" fw={700}>
-              Printed :{" "}
+              {language == "en" ? "Printed" : "印刷日時"} :{" "}
               {language == "en"
                 ? new Date(date).toLocaleDateString()
                 : new Date(date).toLocaleDateString("ja")}

@@ -27,7 +27,6 @@ export const formProps: any = {
   transformDataOnSubmit: (formdata: any) => {
     const { image, ...res } = formdata;
 
-
     return {
       ...res,
       ...(formdata.image instanceof File ? { image: formdata.image } : {}),

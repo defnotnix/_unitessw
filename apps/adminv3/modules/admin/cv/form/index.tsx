@@ -8,7 +8,6 @@ import {
   Container,
   Grid,
   Group,
-  Image,
   Loader,
   Paper,
   Stack,
@@ -20,16 +19,12 @@ import {
   ArrowRightIcon,
   CheckIcon as Check,
   CheckIcon,
-  ExclamationMarkIcon as ExclamationMark,
-  HashIcon as Hash,
   InfoIcon,
-  WarningIcon,
 } from "@phosphor-icons/react";
 import { FormHandler } from "@vframework/core";
-import { PropsWithChildren, useEffect, useRef, useState } from "react";
+import { PropsWithChildren, useRef, useState } from "react";
 import { formProps } from "./steps/s1_Identity/form.config";
 
-import imgLogo from "@/assets/img/sswmini.png";
 import {
   apiBackground,
   apiEducation,
@@ -40,7 +35,7 @@ import {
   apiWork,
 } from "./module.api";
 
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { StepIdentity } from "./steps/s1_Identity";
 import { StepBackground } from "./steps/s2_background";
 import { StepPhysical } from "./steps/s3_physical";
@@ -49,10 +44,8 @@ import { StepAcademics } from "./steps/s5_academics";
 import { StepWork } from "./steps/s6_work";
 import { StepCertificates } from "./steps/s7_certifications";
 
-import classes from "./_.module.css";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useForceUpdate } from "@mantine/hooks";
-import _ from "lodash";
+import classes from "./_.module.css";
 
 export function _Form() {
   const Router = useRouter();
@@ -499,7 +492,7 @@ export function _Form() {
                       p="md"
                       bg={current === index ? "gray.0" : "none"}
                       onClick={() => {
-                        Params.id && setCurrent(index);
+                        setCurrent(index);
                       }}
                     >
                       <Group justify="space-between">
@@ -573,8 +566,10 @@ export function _Form() {
                   );
                 }
 
-                if (!Params?.id && current == 7) {
-                  Router.push("/admin/cv/active");
+                if (current == 7) {
+                  // # HAVE TO TEST
+
+                  Router.push("/admin/cv/active/" + personId);
                 }
 
                 if (!res?.err && res?.data?.id && current === 1) {
