@@ -334,8 +334,9 @@ export function CV3({
                     <Text size="xs" fw={800}>
                       {language === "jp" ? item.label_jp : item.label}
                     </Text>
-                    <Text size="xs">
-                      {language === "jp" ? data[item.jpKey] : data[item.enKey]}
+                     <Text size="xs">
+                      {language === "jp" ? data[item.jpKey] : data[item.enKey]}{" "}
+                      {item?.unit || ""}
                     </Text>
                   </React.Fragment>
                 ))}

@@ -53,7 +53,7 @@ export function _CV() {
   // * DEFINITIONS
   const [language, setLanguage] = useState("en");
   const [cvType, setCvType] = useState("1");
-  const [cvLogo, setCvLogo] = useState("mb");
+  const [cvLogo, setCvLogo] = useState("us");
   const [cvColor, setCvColor] = useState<any>("brand");
   const Params = useParams();
 

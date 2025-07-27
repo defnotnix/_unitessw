@@ -17,7 +17,12 @@ import {
 import React, { useEffect } from "react";
 import { Watermark } from "./watermar";
 
-import { personalDetails } from "./personalDetails";
+import {
+  genderMap,
+  maritalStatusMap,
+  monthMap,
+  personalDetails,
+} from "./personalDetails";
 
 export function CV3({
   color = "brand",
@@ -67,7 +72,7 @@ export function CV3({
           <Divider my="md" />
 
           <Text size="xs" fw={800}>
-            Academics
+            {language == "en" ? "Academics" : "学歴"}
           </Text>
 
           <Table
@@ -98,7 +103,7 @@ export function CV3({
                 <Table.Tr key={index}>
                   <Table.Td>{index + 1}</Table.Td>
                   <Table.Td>
-                    {`${item.start_month}, ${item.start_year} - ${item?.end_year ? `${item.end_month}, ${item.end_year}` : "Ongoing"}`}
+                    {`${language == "en" ? item.start_month : monthMap[item.start_month]}, ${item.start_year} - ${item?.end_year ? `${language == "en" ? item.end_month : monthMap[item.end_month]}, ${item.end_year}` : "Ongoing"}`}
                   </Table.Td>
                   <Table.Td>
                     <b>
@@ -119,7 +124,7 @@ export function CV3({
 
           <Divider my="md" />
           <Text size="xs" fw={800}>
-            Work History
+            {language === "en" ? "Work History" : "勤務履歴"}
           </Text>
 
           <Table
@@ -151,7 +156,7 @@ export function CV3({
                 <Table.Tr key={index}>
                   <Table.Td>{index + 1}</Table.Td>
                   <Table.Td>
-                    {`${item.start_month}, ${item.start_year} - ${item?.end_year ? `${item.end_month}, ${item.end_year}` : "Ongoing"}`}
+                    {`${language == "en" ? item.start_month : monthMap[item.start_month]}, ${item.start_year} - ${item?.end_year ? `${language == "en" ? item.end_month : monthMap[item.end_month]}, ${item.end_year}` : "Ongoing"}`}
                   </Table.Td>
                   <Table.Td>
                     <b>{language === "en" ? item.company : item.jp_company}</b>
@@ -197,11 +202,21 @@ export function CV3({
               {data?.licenses?.map((item: any, index: number) => (
                 <Table.Tr key={index}>
                   <Table.Td>{index + 1}</Table.Td>
-                  <Table.Td>{`${item.month}, ${item.year} `}</Table.Td>
+                  <Table.Td>{`${language == "en" ? item.month : monthMap[item.month]}, ${item.year} `}</Table.Td>
+
                   <Table.Td>
                     <b>{language === "en" ? item.name : item.jp_name}</b>
                   </Table.Td>
-                  <Table.Td>{item?.status ? "Active" : "Expired"}</Table.Td>
+                  <Table.Td>
+                    {" "}
+                    {item?.status
+                      ? language == "en"
+                        ? "Active"
+                        : "有効"
+                      : language == "en"
+                        ? "Expired"
+                        : "無効"}
+                  </Table.Td>
                 </Table.Tr>
               ))}
             </Table.Tbody>
@@ -216,12 +231,17 @@ export function CV3({
           mt="1.35in"
           pos="relative"
         >
-          <Text size="10px" fw={700} pos="absolute" top="-1in" right="32px">
-            Printed :{" "}
-            {language == "en"
-              ? new Date(date).toLocaleDateString()
-              : new Date(date).toLocaleDateString("ja")}
-          </Text>
+          <Group gap="xs" pos="absolute" top="-1in" right="32px">
+            <Text size="10px" fw={700}>
+              {language == "en" ? "ID" : "ID"} : {"CV-" + data?.code}
+            </Text>
+            <Text size="10px" fw={700}>
+              {language == "en" ? "Printed" : "印刷日時"} :{" "}
+              {language === "en"
+                ? new Date(date).toLocaleDateString()
+                : new Date(date).toLocaleDateString("ja-JP-u-ca-japanese")}
+            </Text>
+          </Group>
 
           <Stack gap="s">
             <div>
@@ -282,16 +302,46 @@ export function CV3({
               </Text>
 
               <SimpleGrid cols={2} spacing="xs" mt="xl">
+                <React.Fragment>
+                  <Text size="xs" fw={800}>
+                    {language === "jp" ? "名前" : "Name"}
+                  </Text>
+                  <Text size="xs">
+                    {language === "en"
+                      ? `${data?.first_name} ${data?.middle_name || ""} ${data?.last_name}`
+                      : `${data?.jp_first_name} ${data?.jp_middle_name || ""} ${data?.jp_last_name}`}
+                  </Text>
+                </React.Fragment>
+
+                <Text size="xs" fw={800}>
+                  {language === "en" ? "Gender" : "性別"}
+                </Text>
+                <Text size="xs">
+                  {language === "en"
+                    ? data?.gender
+                    : genderMap[data?.gender] || ""}
+                </Text>
+
                 {personalDetails.map((item, index) => (
                   <React.Fragment key={index}>
                     <Text size="xs" fw={800}>
                       {language === "jp" ? item.label_jp : item.label}
                     </Text>
                     <Text size="xs">
-                      {language === "jp" ? data[item.jpKey] : data[item.enKey]}
+                      {language === "jp" ? data[item.jpKey] : data[item.enKey]}{" "}
+                      {item?.unit || ""}
                     </Text>
                   </React.Fragment>
                 ))}
+
+                <Text size="xs" fw={800}>
+                  {language === "en" ? "Martial Status" : "マーティング"}
+                </Text>
+                <Text size="xs">
+                  {language === "en"
+                    ? data?.martial_status
+                    : maritalStatusMap[data?.martial_status] || ""}
+                </Text>
               </SimpleGrid>
             </div>
 

@@ -719,7 +719,7 @@ export function ModuleTableLayout({
                 columns={[
                   {
                     accessor: "#",
-                    title: "#",
+                    title: "S.N.",
                     width: 50,
                     render: (row, index) => <>{index + 1}</>,
                   },

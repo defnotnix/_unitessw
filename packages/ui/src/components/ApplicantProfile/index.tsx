@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import { info } from "console";
 import React, { ReactNode } from "react";
+import { monthMap } from "../CVTemplates/personalDetails";
 
 export const personalDetails = {
   basicInfo: [
@@ -148,6 +149,8 @@ export const personalDetails = {
     },
   ],
 };
+
+const language = "en";
 
 export function ApplicantProfile({
   info,
@@ -438,7 +441,7 @@ export function ApplicantProfile({
                 <Table.Tr key={index}>
                   <Table.Td>{index + 1}</Table.Td>
                   <Table.Td>
-                    {`${item.start_month}, ${item.start_year} - ${item?.end_year ? `${item.end_month}, ${item.end_year}` : "Ongoing"}`}
+                    {`${language == "en" ? item.start_month : monthMap[item.start_month]}, ${item.start_year} - ${item?.end_year ? `${language == "en" ? item.end_month : monthMap[item.end_month]}, ${item.end_year}` : "Ongoing"}`}
                   </Table.Td>
                   <Table.Td>
                     <b>
@@ -489,7 +492,7 @@ export function ApplicantProfile({
                 <Table.Tr key={index}>
                   <Table.Td>{index + 1}</Table.Td>
                   <Table.Td>
-                    {`${item.start_month}, ${item.start_year} - ${item?.end_year ? `${item.end_month}, ${item.end_year}` : "Ongoing"}`}
+                    {`${language == "en" ? item.start_month : monthMap[item.start_month]}, ${item.start_year} - ${item?.end_year ? `${language == "en" ? item.end_month : monthMap[item.end_month]}, ${item.end_year}` : "Ongoing"}`}
                   </Table.Td>
                   <Table.Td>
                     <b>{lang == "en" ? item.company : item.jp_company}</b>
@@ -533,7 +536,8 @@ export function ApplicantProfile({
               {info?.licenses?.map((item: any, index: number) => (
                 <Table.Tr key={index}>
                   <Table.Td>{index + 1}</Table.Td>
-                  <Table.Td>{`${item.month}, ${item.year} `}</Table.Td>
+                  <Table.Td>{`${language == "en" ? item.month : monthMap[item.month]}, ${item.year} `}</Table.Td>
+
                   <Table.Td>
                     <b>{lang == "en" ? item.name : item.jp_name}</b>
                   </Table.Td>
@@ -544,7 +548,7 @@ export function ApplicantProfile({
                         : "有効"
                       : lang == "en"
                         ? "Expired"
-                        : "失効"}
+                        : "無効"}
                   </Table.Td>
                 </Table.Tr>
               ))}

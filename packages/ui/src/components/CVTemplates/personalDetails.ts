@@ -1,3 +1,33 @@
+export const maritalStatusMap: any = {
+  Single: "独身",
+  Married: "結婚",
+  Divorced: "離婚",
+  Widowed: "未亡人",
+  Separated: "別居",
+  Partnered: "パートナーシップ",
+};
+
+export const genderMap: any = {
+  Male: "男性",
+  Female: "女性",
+  Other: "その他",
+};
+
+export const monthMap: any = {
+  January: "1月",
+  February: "2月",
+  March: "3月",
+  April: "4月",
+  May: "5月",
+  June: "6月",
+  July: "7月",
+  August: "8月",
+  September: "9月",
+  October: "10月",
+  November: "11月",
+  December: "12月",
+};
+
 export const personalDetails = [
   {
     label: "Applicant ID",
@@ -11,12 +41,7 @@ export const personalDetails = [
     enKey: "date_of_birth",
     jpKey: "date_of_birth",
   },
-  {
-    label: "Gender",
-    label_jp: "性別",
-    enKey: "gender",
-    jpKey: "gender",
-  },
+
   {
     label: "Nationality",
     label_jp: "国籍",
@@ -35,12 +60,7 @@ export const personalDetails = [
     enKey: "religion",
     jpKey: "jp_religion",
   },
-  {
-    label: "Marital Status",
-    label_jp: "配偶者の有無",
-    enKey: "martial_status",
-    jpKey: "martial_status",
-  },
+
   {
     label: "Current Address",
     label_jp: "現在の住所",

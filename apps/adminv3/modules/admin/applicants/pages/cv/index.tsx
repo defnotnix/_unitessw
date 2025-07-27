@@ -9,7 +9,7 @@ import {
   Center,
   ColorSwatch,
   Container,
-  Divider,
+  Drawer,
   Grid,
   Group,
   Loader,
@@ -17,15 +17,22 @@ import {
   Select,
   Text,
 } from "@mantine/core";
-import { ArrowLeftIcon, HouseIcon, PrinterIcon } from "@phosphor-icons/react";
+import {
+  ArrowLeftIcon,
+  EyeIcon,
+  HouseIcon,
+  PenIcon,
+  PrinterIcon,
+} from "@phosphor-icons/react";
 import { useRef, useState } from "react";
 
-import { CV } from "@vframework/ui";
-import { useReactToPrint } from "react-to-print";
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
-import { apiPersonalInformation } from "../../form/module.api";
 import { DateInput } from "@mantine/dates";
+import { useDisclosure } from "@mantine/hooks";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { ApplicantProfile, CV } from "@vframework/ui";
+import { useParams, useRouter } from "next/navigation";
+import { useReactToPrint } from "react-to-print";
+import { apiPersonalInformation } from "../../form/module.api";
 
 const bread = [
   {
@@ -53,9 +60,39 @@ export function _CV() {
   // * DEFINITIONS
   const [language, setLanguage] = useState("en");
   const [cvType, setCvType] = useState("1");
-  const [cvLogo, setCvLogo] = useState("mb");
+  const [cvLogo, setCvLogo] = useState("us");
   const [cvColor, setCvColor] = useState<any>("brand");
-  const Params = useParams();
+  const Params: any = useParams();
+  const Router = useRouter();
+  const [opened, { open, close }] = useDisclosure();
+  const [info, setInfo] = useState<any>({});
+
+  const { mutate } = useMutation({
+    mutationKey: ["admin", "cv"],
+    mutationFn: async (id) => {
+      const res: any = await apiPersonalInformation.get(id);
+
+      if (!res.err) {
+        setInfo({
+          ...res?.data,
+          ...res?.data?.a_background,
+
+          ...res?.data?.a_physical,
+          ...res?.data?.a_story,
+          ...res?.data?.a_identification,
+          category: String(res?.data?.category),
+          education: res?.data?.a_education,
+          work_experience: res?.data?.a_work_experience,
+          licenses: res?.data?.a_license_qualification,
+          mainId: res?.data?.id,
+          pastvisits: res?.data?.a_japan_visit,
+        });
+        return {};
+      } else {
+        return {};
+      }
+    },
+  });
 
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -213,6 +250,28 @@ export function _CV() {
                     Print CV (
                     {cvTypes.find((item: any) => item.value == cvType)?.label})
                   </Button>
+
+                  <Button
+                    leftSection={<PenIcon />}
+                    variant="light"
+                    size="xs"
+                    onClick={() => {
+                      Router.push("/admin/applicants/all/edit/" + Params.id);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    leftSection={<EyeIcon />}
+                    variant="subtle"
+                    size="xs"
+                    onClick={async () => {
+                      await mutate(Params.id);
+                      open();
+                    }}
+                  >
+                    Profile
+                  </Button>
                 </ButtonGroup>
               </Group>
             </Grid.Col>
@@ -300,6 +359,26 @@ export function _CV() {
           <div ref={contentRef}>{renderCVTemplate()}</div>
         </Paper>
       </Center>
+
+      <Drawer
+        size="xl"
+        opened={opened}
+        onClose={close}
+        position="right"
+        title={
+          <Text size="xs" tt="uppercase">
+            Applicant Profile
+          </Text>
+        }
+        styles={{
+          body: {
+            padding: 0,
+            background: "var(--mantine-color-gray-2)",
+          },
+        }}
+      >
+        <ApplicantProfile info={info} lang="en" />
+      </Drawer>
     </>
   );
 }

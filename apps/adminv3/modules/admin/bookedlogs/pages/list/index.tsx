@@ -634,7 +634,7 @@ export function _List() {
                           : "有効"
                         : lang == "en"
                           ? "Expired"
-                          : "失効"}
+                          : "無効"}
                     </Table.Td>
                   </Table.Tr>
                 ))}
