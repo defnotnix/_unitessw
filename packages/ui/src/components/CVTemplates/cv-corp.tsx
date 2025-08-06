@@ -459,10 +459,20 @@ export function CVCorp({
 
             {data?.education.map((ed: any, index: number) => (
               <tr key={index}>
-                <td>{`${ed.start_month}, ${ed.start_year}`}</td>
-                <td>{`${ed.end_month}, ${ed.end_year}`}</td>
                 <td
-                  colSpan={7}
+                  colSpan={2}
+                  style={{
+                    textAlign: "left",
+                  }}
+                >{`${ed.start_month}, ${ed.start_year}`}</td>
+                <td
+                  colSpan={2}
+                  style={{
+                    textAlign: "left",
+                  }}
+                >{`${ed.end_month}, ${ed.end_year}`}</td>
+                <td
+                  colSpan={4}
                   style={{
                     textAlign: "left",
                   }}
@@ -470,6 +480,7 @@ export function CVCorp({
                   {ed?.jp_institution}
                 </td>
                 <td
+                  colSpan={2}
                   style={{
                     textAlign: "left",
                   }}
@@ -480,10 +491,8 @@ export function CVCorp({
             ))}
 
             <tr>
-              <td></td>
-              <td></td>
               <td
-                colSpan={8}
+                colSpan={10}
                 style={{
                   borderRight: "none!important",
                   textAlign: "right",
@@ -512,27 +521,48 @@ export function CVCorp({
 
             {data?.work_experience.map((work: any, index: number) => (
               <tr key={index}>
-                <td>{`${work.start_month}, ${work.start_year}`}</td>
-                <td>{`${work.end_month}, ${work.end_year}`}</td>
+                <td
+                  colSpan={2}
+                  style={{
+                    textAlign: "left",
+                  }}
+                >{`${work.start_month}, ${work.start_year}`}</td>
+                <td
+                  colSpan={2}
+                  style={{
+                    textAlign: "left",
+                  }}
+                >{`${work.end_month}, ${work.end_year}`}</td>
 
                 <td
-                  colSpan={6}
+                  colSpan={3}
                   style={{
                     textAlign: "left",
                   }}
                 >
                   {work?.jp_company}
                 </td>
-                <td>{work?.jp_role}</td>
-                <td>{work?.jp_notes}</td>
+                <td
+                  colSpan={2}
+                  style={{
+                    textAlign: "left",
+                  }}
+                >
+                  {work?.jp_role}
+                </td>
+                <td
+                  style={{
+                    textAlign: "left",
+                  }}
+                >
+                  {work?.jp_notes}
+                </td>
               </tr>
             ))}
 
             <tr>
-              <td></td>
-              <td></td>
               <td
-                colSpan={8}
+                colSpan={10}
                 style={{
                   borderRight: "none!important",
                   textAlign: "right",
@@ -595,13 +625,11 @@ export function CVCorp({
                   padding: ".1in 4px",
                 }}
               >
-                <p>
-                  {data?.jp_motivation_statement}
-                  <br />
-                  {data?.jp_personal_traits}
-                  <br />
-                  {data?.jp_future_goals}
-                </p>
+                {data?.jp_motivation_statement}
+                <br />
+                {data?.jp_personal_traits}
+                <br />
+                {data?.jp_future_goals}
               </td>
             </tr>
 

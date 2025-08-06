@@ -1,5 +1,5 @@
 .cvtable {
-  font-size: 0.085in;
+  font-size: 0.116in;
   font-family: "Times New Roman";
   border-collapse: collapse;
   width: 100%;
@@ -8,6 +8,7 @@
     border: 1px solid #000;
     text-align: center;
     min-height: 0.5in;
+    padding:0 .05in;
   }
 
   td p {
@@ -22,7 +23,6 @@
 }
 
 .tdHighlight {
- 
   font-weight: bold;
 }
 

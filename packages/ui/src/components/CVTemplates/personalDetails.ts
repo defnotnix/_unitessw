@@ -28,7 +28,13 @@ export const monthMap: any = {
   December: "12月",
 };
 
-export const personalDetails = [
+export const personalDetails: {
+  label: string;
+  label_jp: string;
+  enKey: string;
+  jpKey: string;
+  unit?: string;
+}[] = [
   {
     label: "Applicant ID",
     label_jp: "生年月日",

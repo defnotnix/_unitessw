@@ -49,7 +49,7 @@ export function CV3({
       <Grid gutter={0}>
         <Grid.Col span={8} px="xl" py=".5in">
           <Group wrap="nowrap">
-            <Avatar src={data?.image} size="xl" />
+            <Image src={data?.image} h={"1in"} w=".8in" />
             <div>
               <Text size="2.5rem" fw={800}>
                 {language === "en"
@@ -344,7 +344,7 @@ export function CV3({
                 </Text>
               </SimpleGrid>
             </div>
-
+            {/* 
             {!printSt && data?.youtube_link && (
               <AspectRatio ratio={16 / 9} mt={-16}>
                 <iframe
@@ -355,7 +355,7 @@ export function CV3({
                   allowFullScreen
                 />
               </AspectRatio>
-            )}
+            )} */}
           </Stack>
         </Grid.Col>
       </Grid>

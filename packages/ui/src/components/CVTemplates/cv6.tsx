@@ -299,9 +299,9 @@ export function CV6({
           h="11.7in"
         >
           <Stack gap="xl">
-            <Image src={data?.image} />
+            <Image h="2.6in" src={data?.image} />
 
-            {!printSt && data?.youtube_link && (
+            {/* {!printSt && data?.youtube_link && (
               <AspectRatio ratio={16 / 9} mt={-16}>
                 <iframe
                   src={data?.youtube_link}
@@ -311,7 +311,7 @@ export function CV6({
                   allowFullScreen
                 />
               </AspectRatio>
-            )}
+            )} */}
 
             <div>
               <Text size="xs" fw={800} c="gray.0">

@@ -63,9 +63,9 @@ export function CV1({
               </Text>
             </Stack>
 
-            <Image src={data?.image} />
+            <Image h={"2.8in"} src={data?.image} />
 
-            {!printSt && data?.youtube_link && (
+            {/* {!printSt && data?.youtube_link && (
               <AspectRatio ratio={16 / 9} mt={-16}>
                 <iframe
                   src={data?.youtube_link}
@@ -75,7 +75,7 @@ export function CV1({
                   allowFullScreen
                 />
               </AspectRatio>
-            )}
+            )} */}
 
             <div>
               <Text size="xs" fw={800}>

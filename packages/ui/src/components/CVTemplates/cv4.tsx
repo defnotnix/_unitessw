@@ -137,7 +137,7 @@ export function CV4({
                         )}
                   </Text>
                 </Group>
-                <Image src={data?.image} />
+                <Image h={"2.2in"} src={data?.image} />
               </Grid.Col>
             </Grid>
           </Paper>
@@ -352,7 +352,7 @@ export function CV4({
 
             <Divider />
 
-            {!printSt && data?.youtube_link && (
+            {/* {!printSt && data?.youtube_link && (
               <AspectRatio ratio={16 / 9} mt={-16}>
                 <iframe
                   src={data?.youtube_link}
@@ -362,7 +362,7 @@ export function CV4({
                   allowFullScreen
                 />
               </AspectRatio>
-            )}
+            )} */}
           </Stack>
         </Grid.Col>
       </Grid>
