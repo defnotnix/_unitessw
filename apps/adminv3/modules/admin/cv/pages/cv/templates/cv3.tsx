@@ -326,7 +326,7 @@ export function CV3({
               </Text>
 
               <SimpleGrid cols={2} spacing="xs" mt="xl">
-                {personalDetails.map((item, index) => (
+                {personalDetails.map((item: any, index: number) => (
                   <React.Fragment key={index}>
                     <Text size="xs" fw={800}>
                       {language === "jp" ? item.label_jp : item.label}
