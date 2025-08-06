@@ -41,7 +41,7 @@ import {
   apiWork,
 } from "./module.api";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { StepIdentity } from "./steps/s1_Identity";
 import { StepBackground } from "./steps/s2_background";
 import { StepPhysical } from "./steps/s3_physical";
@@ -61,6 +61,7 @@ import { StepIdentification } from "./steps/s8_identification";
 
 export function _Form() {
   const Params = useParams();
+  const Pathname = usePathname();
 
   const Router = useRouter();
 
@@ -82,11 +83,9 @@ export function _Form() {
     queryFn: async () => {
       const token: any = jwtDecode(sessionStorage.getItem("sswtoken") || "");
 
-      if (token.user_id) {
+      if (token.user_id && Params.id) {
         const res = await apiPersonalInformation.get(Params.id);
         const data = res?.data || {};
-
-    
 
         setPersonId(data.id);
         setHolder((prev) => ({ ...prev, ...data }));
@@ -132,6 +131,7 @@ export function _Form() {
             : null,
         };
       } else {
+        setShowForm(true);
         return formProps.initial;
       }
     },
@@ -192,6 +192,32 @@ export function _Form() {
           You have successfully completed the onboarding application process for
           the aplicant.
         </Text>
+
+        <Text size="xs">
+          The applicant form has been successfully submitted.
+        </Text>
+        <Text size="xs" opacity={0.5}>
+          Now you can,
+        </Text>
+
+        <Group gap="xs">
+          <Button
+            onClick={() => {
+              Router.push("/admin/applicants/all/" + personId);
+            }}
+          >
+            Review CV
+          </Button>
+          <Button
+            variant="light"
+            hidden={Pathname.includes("/admin/applicants/all/edit/")}
+            onClick={() => {
+              Router.back();
+            }}
+          >
+            Continue to applicants
+          </Button>
+        </Group>
       </Stack>
     );
   };
@@ -338,8 +364,6 @@ export function _Form() {
     {
       component: <StepCertificates />,
       apiCreate: async (body: any) => {
-        ;
-
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
         });
@@ -357,8 +381,6 @@ export function _Form() {
         return {};
       },
       apiUpdate: async (body: any) => {
-        ;
-
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
         });
@@ -433,8 +455,6 @@ export function _Form() {
       ],
       isFormData: false,
       apiCreate: async (body: any) => {
-        ;
-
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
         });
@@ -452,8 +472,6 @@ export function _Form() {
         return {};
       },
       apiUpdate: async (body: any) => {
-        ;
-
         const _forCreate = body?.filter((e: any) => {
           return !e.id;
         });
